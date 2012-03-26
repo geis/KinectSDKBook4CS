@@ -1,0 +1,10 @@
+﻿<Window x:Class="DepthAndPlayerIndex.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="521" Width="663"
+        Closing="Window_Closing">
+    <Grid>
+        <Image Name="imageRgbCamera" Stretch="Uniform" />
+        <Image Name="imageDepthCamera" Stretch="Uniform" Opacity="0.7" />
+    </Grid>
+</Window>

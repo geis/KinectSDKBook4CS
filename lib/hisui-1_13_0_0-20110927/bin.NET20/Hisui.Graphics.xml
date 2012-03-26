@@ -1,0 +1,2813 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.Graphics</name>
+    </assembly>
+    <members>
+        <member name="T:Hisui.Graphics.ICamera">
+            <summary>
+            カメラの情報を保持するインターフェイスです。
+            ビューイングボリュームの情報やスクリーンの大きさなどの情報を保持します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Zoom(System.Double)">
+            <summary>
+            画面を拡大縮小します。
+            適用後の <see cref="P:Hisui.Graphics.ICamera.ViewingScale"/> は <c>ViewingScale /= scale</c> となります。
+            </summary>
+            <param name="scale">拡大率を表す正の数値。1以上で拡大、1以下で縮小。</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Zoom(System.Double,Hisui.Geom.Point2i)">
+            <summary>
+            画面を拡大縮小します。
+            適用後の <see cref="P:Hisui.Graphics.ICamera.ViewingScale"/> は <c>ViewingScale /= scale</c> となります。
+            </summary>
+            <param name="scale">拡大率を表す正の数値。1以上で拡大、1以下で縮小。</param>
+            <param name="center">拡大縮小の中心点</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Zoom(Hisui.Geom.Box2i)">
+            <summary>
+            指定された矩形領域 <paramref name="rect"/> にカメラをズームします。
+            </summary>
+            <param name="rect"></param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Pan(Hisui.Geom.Vector2i)">
+            <summary>
+            指定されたベクトル <paramref name="mov"/> だけカメラをパン（平行移動）します。
+            </summary>
+            <param name="mov"></param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Rotate(Hisui.Geom.Vector3d,System.Double)">
+            <summary>
+            指定された回転軸周りに指定された角度だけビューを回転します。
+            </summary>
+            <param name="axis">大域座標系で指定された回転軸の方向ベクトル</param>
+            <param name="rad">回転角度（ラジアン）</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Rotate(Hisui.Geom.Line3d,System.Double)">
+            <summary>
+            指定された回転軸周りに指定された角度だけビューを回転します。
+            </summary>
+            <param name="axis">大域座標系で指定された回転軸</param>
+            <param name="rad">回転角度（ラジアン）</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Fit(Hisui.Geom.Box3d)">
+            <summary>
+            大域座標系のボックス <paramref name="box"/> が丁度視野に収まるようにビューをフィットします。
+            </summary>
+            <param name="box">ビューをフィットさせる対象物</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.Fit(Hisui.Geom.Sphere3d)">
+            <summary>
+            大域座標系の球体 <paramref name="sphere"/> が丁度視野に収まるようにビューをフィットします。
+            </summary>
+            <param name="sphere">ビューをフィットさせる対象物</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.GetDepth(Hisui.Geom.Point3d)">
+            <summary>
+            カメラ座標系 <see cref="P:Hisui.Graphics.ICamera.ViewingPos"/> から見た <paramref name="p_world"/> のZ座標を返します。
+            <c>ViewingPos.Localize( p_world ).z</c> と同義です。
+            </summary>
+            <param name="p_world">大域座標系の任意の点</param>
+            <returns>カメラ座標系のZ座標</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.GetEyeshotLine(System.Drawing.Point)">
+            <summary>
+            スクリーン上の点 <paramref name="p"/> を通過する視線を返します。
+            </summary>
+            <param name="p">スクリーン上の通過点</param>
+            <returns>視線を表す直線</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.GetEyeshotLine(Hisui.Geom.Point2i,System.UInt32)">
+            <summary>
+            スクリーン座標系の点 (<paramref name="p"/>, <paramref name="depth"/>) を通過する視線を返します。
+            </summary>
+            <param name="p">スクリーン座標系の通過点のXY座標</param>
+            <param name="depth">スクリーン座標系の通過点の深さ（Z座標）</param>
+            <returns>視線を表す直線</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.GetViewingScale(System.Double)">
+            <summary>
+            指定デプスにおけるビューイング領域のサイズを取得します。
+            平行投影モードでは <paramref name="cameraZ"/> に関わらず常に <see cref="P:Hisui.Graphics.ICamera.ViewingScale"/> と同じです。
+            </summary>
+            <param name="cameraZ">カメラ座標系でのZ座標（デプス）</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.GetLengthPerPixel(System.Double)">
+            <summary>
+            指定デプスにおける距離とピクセルの比を返します。
+            平行投影モードでは <paramref name="cameraZ"/> に関わらず常に <see cref="P:Hisui.Graphics.ICamera.LengthPerPixel"/> と同じです。
+            </summary>
+            <param name="cameraZ">カメラ座標系でのZ座標（デプス）</param>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.DepthToCameraZ(System.Double)">
+            <summary>
+            デプス（0以上1以下）をカメラ座標系のZ座標に変換します。
+            </summary>
+            <param name="depth">デプス値（0以上1以下）</param>
+            <returns>カメラ座標系でのZ座標</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.DepthToCameraZ(System.UInt32)">
+            <summary>
+            デプス（0以上uint.MaxValue以下）をカメラ座標系のZ座標に変換します。
+            </summary>
+            <param name="depth">デプス値（0以上uint.MaxValue以下）</param>
+            <returns>カメラ座標系でのZ座標</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToDepth(System.Double)">
+            <summary>
+            カメラ座標系のZをデプス値（0以上1以下）に変換します。
+            </summary>
+            <param name="cameraZ">カメラ座標系でのZ座標</param>
+            <returns>デプス値（0以上1以下）</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToDepth(Hisui.Geom.Point3d)">
+            <summary>
+            ワールド座標系の点のデプス値（0以上1以下）を取得します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToScreen(Hisui.Geom.Vector3d)">
+            <summary>カメラ座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToScreen(Hisui.Geom.Point3d)">
+            <summary>カメラ座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToScreen(Hisui.Geom.Point3d,System.Double@)">
+            <summary>カメラ座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToScreen(Hisui.Geom.Point3d,System.UInt32@)">
+            <summary>カメラ座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToScreen2d(Hisui.Geom.Point3d)">
+            <summary>カメラ座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToScreen3d(Hisui.Geom.Point3d)">
+            <summary>カメラ座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToWorld(Hisui.Geom.Vector3d)">
+            <summary>カメラ座標系からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToWorld(Hisui.Geom.Point3d)">
+            <summary>カメラ座標系からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.CameraToWorld(Hisui.Geom.HmCod3d)">
+            <summary>カメラ座標系からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCamera(Hisui.Geom.Point2i)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCamera(Hisui.Geom.Point2i,System.UInt32)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCamera(Hisui.Geom.Point2i,System.Double)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCamera(Hisui.Geom.Vector2i)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCamera(Hisui.Geom.Vector2i,System.Double)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCameraOnZ(Hisui.Geom.Point2i,System.Double)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToCameraOnZ(Hisui.Geom.Vector2i,System.Double)">
+            <summary>スクリーン座標からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorld(Hisui.Geom.Vector2i)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorld(Hisui.Geom.Vector2i,System.Double)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorld(System.Drawing.Point)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorld(Hisui.Geom.Point2i)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorld(Hisui.Geom.Point2i,System.UInt32)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorld(Hisui.Geom.Point2i,System.Double)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorldOnZ(Hisui.Geom.Point2i,System.Double)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.ScreenToWorldOnZ(Hisui.Geom.Vector2i,System.Double)">
+            <summary>スクリーン座標からワールド座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToCamera(Hisui.Geom.Vector3d)">
+            <summary>ワールド座標系からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToCamera(Hisui.Geom.Point3d)">
+            <summary>ワールド座標系からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToCamera(Hisui.Geom.HmCod3d)">
+            <summary>ワールド座標系からカメラ座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToScreen(Hisui.Geom.Vector3d)">
+            <summary>ワールド座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToScreen(Hisui.Geom.Point3d)">
+            <summary>ワールド座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToScreen(Hisui.Geom.Point3d,System.Double@)">
+            <summary>ワールド座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToScreen(Hisui.Geom.Point3d,System.UInt32@)">
+            <summary>ワールド座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToScreen2d(Hisui.Geom.Point3d)">
+            <summary>ワールド座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="M:Hisui.Graphics.ICamera.WorldToScreen3d(Hisui.Geom.Point3d)">
+            <summary>ワールド座標系からスクリーン座標系へ座標変換します。</summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.Perspective">
+            <summary>
+            true なら透視投影モード、false なら平行投影モードとなります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingAngle">
+            <summary>
+            視錐台の角度をラジアンで set/get します。
+            値が大きいほどパースが強くなります。
+            <see cref="P:Hisui.Graphics.ICamera.Perspective"/>が true の場合のみ有効です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingPos">
+            <summary>
+            大域座標系からみた注視点の位置（座標系）を set/get します。
+            カメラの位置は <see cref="P:Hisui.Graphics.ICamera.ViewingPos"/> から <see cref="P:Hisui.Graphics.ICamera.FocalDistance"/> だけ離れた位置ですが、
+            便宜上この <see cref="P:Hisui.Graphics.ICamera.ViewingPos"/> をカメラ座標系と呼んでいます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingCenter">
+            <summary>
+            画面中央の点をカメラ座標系のXY座標で set/get します。（あまり使用されません）
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingScale">
+            <summary>
+            注視点を中心として画面に収まる範囲を set/get します。
+            値が大きいほどシーンは縮小されて描画されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.FocalDistance">
+            <summary>
+            焦点距離を返します。
+            カメラの位置から注視点までの距離を表す数値で、<see cref="P:Hisui.Graphics.ICamera.ViewingScale"/> / tan( <see cref="P:Hisui.Graphics.ICamera.ViewingAngle"/> ) で計算されます。
+            <see cref="P:Hisui.Graphics.ICamera.Perspective"/>が true の場合のみ有効です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.EyeshotVector">
+            <summary>
+            視線方向ベクトルを返します。<c>-ViewingPos.n</c> と同義です。
+            なお <see cref="P:Hisui.Graphics.ICamera.Perspective"/> == true の場合はピクセルごとに視線方向が違いますので
+            <see cref="M:Hisui.Graphics.ICamera.GetEyeshotLine(System.Drawing.Point)"/> を使用してください。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.EyePosition">
+            <summary>
+            カメラの位置を返します。注視点から視線方向に <see cref="P:Hisui.Graphics.ICamera.FocalDistance"/> だけ戻った位置を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.LengthPerPixel">
+            <summary>
+            スクリーン上の 1 pixel に対応するワールド座標系での距離を返します。
+            <see cref="P:Hisui.Graphics.ICamera.Perspective"/> が true の場合は、<see cref="P:Hisui.Graphics.ICamera.ViewingPos"/> のXY平面上における距離を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ScreenSize">
+            <summary>
+            スクリーンの大きさを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingDepth">
+            <summary>
+            視体積の奥行きを表す値です。
+            視体積は <see cref="P:Hisui.Graphics.ICamera.ViewingPos"/> から前後に±<see cref="P:Hisui.Graphics.ICamera.ViewingDepth"/>だけの奥行きを持ちます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingSize">
+            <summary>
+            スクリーンの描画されるサイズを大域座標系の寸法で返します。
+            <see cref="P:Hisui.Graphics.ICamera.ScreenSize"/> のアスペクト比と <see cref="P:Hisui.Graphics.ICamera.ViewingSize"/> のアスペクト比は一致します。
+            また <c>Math.Min( ViewingSize.x, ViewingSize.y ) == ViewingScale</c> が常に成立します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.ViewingVolume">
+            <summary>
+            カメラのレンズの位置から見た視体積を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ICamera.WorldSphere">
+            <summary>
+            大域空間におけるシーン全体の位置と大きさを球で取得します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.CameraData">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> のデータ（の一部）をコピーして保持するためのオブジェクトです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.CameraData.ViewingPos">
+            <summary>
+            ワールド座標系から見たカメラ座標系です。
+            実際にはこれは注視点の座標系で、カメラの位置は <see cref="F:Hisui.Graphics.CameraData.ViewingPos"/> から焦点距離だけ離れた位置ですが、
+            便宜上この <see cref="F:Hisui.Graphics.CameraData.ViewingPos"/> をカメラ座標系と呼んでいます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.CameraData.ViewingCenter">
+            <summary>
+            画面中央の点をカメラ座標系のXY座標で表します。（あまり使用されません）
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.CameraData.ViewingScale">
+            <summary>
+            注視点を中心として画面に収まる範囲の半径値です。
+            値が大きいほどシーンは縮小されて描画されます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.CameraData.ViewingAngle">
+            <summary>
+            視錐台の角度（ラジアン）です。
+            値が大きいほどパースが強くなります。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.CameraData.Perspective">
+            <summary>
+            true なら透視投影モード、false なら平行投影モードとなります。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.CameraData.#ctor">
+            <summary>
+            デフォルトコンストラクタ。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.CameraData.#ctor(Hisui.Graphics.ICamera)">
+            <summary>
+            コンストラクタ。<see cref="T:Hisui.Graphics.ICamera"/> の情報をコピーします。
+            </summary>
+            <param name="camera">コピー元のカメラ</param>
+        </member>
+        <member name="M:Hisui.Graphics.CameraData.ApplyTo(Hisui.Graphics.ICamera)">
+            <summary>
+            自身のカメラ情報を <paramref name="camera"/> に適用します。
+            </summary>
+            <param name="camera">コピー先のカメラ</param>
+        </member>
+        <member name="M:Hisui.Graphics.CameraData.Interpolate(Hisui.Graphics.CameraData,System.Double,Hisui.Graphics.CameraData,System.Double)">
+            <summary>
+            カメラの動きを線形補間します。
+            </summary>
+            <param name="c1">始点のカメラ情報</param>
+            <param name="w1">始点のカメラ情報の重み</param>
+            <param name="c2">終点のカメラ情報</param>
+            <param name="w2">終点のカメラ情報の重み</param>
+            <returns>カメラ情報の重みつき平均</returns>
+        </member>
+        <member name="M:Hisui.Graphics.CameraData.Interpolate(Hisui.Graphics.CameraData,Hisui.Graphics.CameraData,System.Double)">
+            <summary>
+            カメラの動きを線形補間します。
+            </summary>
+            <param name="c1">始点のカメラ情報</param>
+            <param name="c2">終点のカメラ情報</param>
+            <param name="w2">補間の重み。0から1の数値で、0の時は始点、1の時は終点のカメラ情報に一致します。</param>
+            <returns>カメラ情報の重みつき平均</returns>
+        </member>
+        <member name="T:Hisui.Graphics.CameraFactory">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> オブジェクトを生成する関数を持つ static class です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.CameraFactory.NewInstance(Hisui.Geom.IBoundary3d,System.Func{Hisui.Geom.Size2i})">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> オブジェクトを生成します。
+            </summary>
+            <param name="world">描画する世界の大きさを指定します。<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>に設定されます。</param>
+            <param name="screen">スクリーンの大きさを返す関数を指定します。</param>
+            <returns>生成された<see cref="T:Hisui.Graphics.ICamera"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.CameraFactory.NewInstance(Hisui.Geom.IBoundary3d,Hisui.Geom.Size2i)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> オブジェクトを生成します。
+            </summary>
+            <param name="world">描画する世界の大きさを指定します。<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>に設定されます。</param>
+            <param name="screenSize">スクリーンの大きさを指定します。</param>
+            <returns>生成された<see cref="T:Hisui.Graphics.ICamera"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.CameraFactory.NewInstance(Hisui.Geom.IBoundary3d,System.Windows.Forms.Control)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> オブジェクトを生成します。
+            </summary>
+            <param name="world">描画する世界の大きさを指定します。<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>に設定されます。</param>
+            <param name="screen">スクリーンとなるコントロールを指定します。</param>
+            <returns>生成された<see cref="T:Hisui.Graphics.ICamera"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.CameraFactory.NewInstance(Hisui.Geom.IBoundary3d,System.Drawing.Image)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> オブジェクトを生成します。
+            </summary>
+            <param name="world">描画する世界の大きさを指定します。<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>に設定されます。</param>
+            <param name="screen">スクリーンとなるイメージを指定します。</param>
+            <returns>生成された<see cref="T:Hisui.Graphics.ICamera"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.CameraFactory.NewInstance(Hisui.Graphics.ICamera)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ICamera"/> オブジェクトのコピーを生成します。
+            </summary>
+            <param name="src">コピー元のカメラ</param>
+            <returns>コピーされたカメラ</returns>
+        </member>
+        <member name="T:Hisui.Graphics.SceneCollection">
+            <summary>
+            複数の <see cref="T:Hisui.Graphics.IScene"/> をリストで管理するシーンクラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.IScene">
+            <summary>
+            描画の1単位を表すインターフェイスです。シーングラフに組み込まれて描画されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.IScene.Draw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            描画関数です。実装クラス側で任意の描画コードを記述します。
+            </summary>
+            <param name="sc">コンテキストオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Graphics.SceneCollection.Add(System.Action{Hisui.Graphics.ISceneContext})">
+            <summary>
+            描画関数から <see cref="T:Hisui.Graphics.SceneDelegator"/> オブジェクトを生成してリストに追加します。
+            </summary>
+            <param name="method">描画関数</param>
+            <returns>追加された <see cref="T:Hisui.Graphics.IScene"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneCollection.Draw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            リストに含まれるシーンを全て描画します。
+            </summary>
+            <param name="context">描画コンテキスト</param>
+        </member>
+        <member name="E:Hisui.Graphics.SceneCollection.PreDraw">
+            <summary>
+            <see cref="M:Hisui.Graphics.SceneCollection.Draw(Hisui.Graphics.ISceneContext)"/> でリスト全体を描画する前に発生するイベントです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.ClipCapping">
+            <summary>
+            クリップ平面によってクリップされた面をキャッピングする機能を実装した <see cref="T:Hisui.Graphics.IDecoration"/> です。
+            このクラスのインスタンスを直接生成することは出来ず、<see cref="F:Hisui.Graphics.ClipCapping.Instances"/> プロパティから取得します。
+            </summary>
+            <seealso cref="T:Hisui.Graphics.ClipPlane"/>
+        </member>
+        <member name="T:Hisui.Graphics.IDecoration">
+            <summary>
+            <see cref="T:Hisui.Graphics.IScene"/> の描画を装飾するためのインターフェイスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.IDecoration.PreDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            本体のシーン描画の前に呼び出されます。
+            </summary>
+            <param name="sc">コンテキストオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Graphics.IDecoration.PostDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            本体のシーン描画の終了後に呼び出されます。
+            </summary>
+            <param name="sc">コンテキストオブジェクト</param>
+        </member>
+        <member name="F:Hisui.Graphics.ClipCapping.Instances">
+            <summary>
+            <see cref="T:Hisui.Graphics.ClipCapping"/> インスタンスのコレクションです。
+            インスタンスの数は <c>GL_MAX_CLIP_PLANES</c> 固定であり、各インスタンスが <see cref="T:Hisui.Graphics.ClipPlane"/> のインスタンスと一対一に対応しています。
+            </summary>
+            <seealso cref="F:Hisui.Graphics.ClipPlane.Instances"/>
+        </member>
+        <member name="M:Hisui.Graphics.ClipCapping.PreDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            本体のシーン描画の前に呼び出されます。
+            対応する<see cref="T:Hisui.Graphics.ClipPlane"/>が有効な場合に、キャッピングためのステンシルテストを設定します。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.ClipCapping.PostDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            本体のシーン描画の終了後に呼び出されます。
+            対応する<see cref="T:Hisui.Graphics.ClipPlane"/>が有効な場合に、ステンシルバッファを利用してキャッピング面を描画します。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="P:Hisui.Graphics.ClipCapping.Material">
+            <summary>
+            キャッピング面のマテリアルを set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.ClipPlane">
+            <summary>
+            クリップ平面機能を実装した <see cref="T:Hisui.Graphics.IDecoration"/> です。
+            このクラスのインスタンスを直接生成することは出来ず、<see cref="F:Hisui.Graphics.ClipPlane.Instances"/> プロパティから取得します。
+            </summary>
+            <seealso cref="T:Hisui.Graphics.ClipCapping"/>
+        </member>
+        <member name="F:Hisui.Graphics.ClipPlane.Instances">
+            <summary>
+            <see cref="T:Hisui.Graphics.ClipPlane"/> インスタンスのコレクションです。
+            インスタンスの数は <c>GL_MAX_CLIP_PLANES</c> 固定であり、各インスタンスが <see cref="T:Hisui.Graphics.ClipCapping"/> のインスタンスと一対一に対応しています。
+            </summary>
+            <seealso cref="F:Hisui.Graphics.ClipCapping.Instances"/>
+        </member>
+        <member name="M:Hisui.Graphics.ClipPlane.PreDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            本体のシーン描画の前に呼び出され、クリップ平面を設定します。
+            <see cref="P:Hisui.Graphics.ClipPlane.Capping"/> が true に設定されている場合は対応する <see cref="T:Hisui.Graphics.ClipCapping"/> の <c>PreDraw()</c> も呼び出します。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.ClipPlane.PostDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            本体のシーン描画の終了後に呼び出されます。
+            <see cref="P:Hisui.Graphics.ClipPlane.Capping"/> が true に設定されている場合は対応する <see cref="T:Hisui.Graphics.ClipCapping"/> の <c>PostDraw()</c> も呼び出します。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="P:Hisui.Graphics.ClipPlane.CodSys">
+            <summary>
+            クリップ平面を表す局所座標系を set/get します。
+            この局所座標系のXY面がクリップ平面となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ClipPlane.Capping">
+            <summary>
+            キャッピング処理を有効にするかどうかを設定します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.StandardViewOperation">
+            <summary>
+            標準的なビュー操作を定義した <see cref="T:Hisui.Graphics.ViewOperation"/> の派生クラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.ViewOperation">
+            <summary>
+            マウスによるビュー操作（回転、パン、拡大縮小など）を定義するための抽象クラスです。
+            派生クラスでマウスのイベントハンドラをオーバーライドすることにより、ビュー操作の動作を定義することが出来ます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.OnMouseWheel(System.Windows.Forms.Keys,System.Int32)">
+            <summary>
+            マウスホイール操作のイベントハンドラです。派生クラスでオーバーライドされます。
+            </summary>
+            <param name="modifier">押されている修飾キー（ShiftやControlなど）</param>
+            <param name="delta">ホイールの回転量</param>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.OnMouseMove(System.Windows.Forms.MouseButtons,System.Windows.Forms.Keys,Hisui.Geom.Point2i)">
+            <summary>
+            マウス移動のイベントハンドラです。派生クラスでオーバーライドされます。
+            </summary>
+            <param name="button">押されているマウスボタン</param>
+            <param name="modifier">押されている修飾キー（ShiftやControlなど）</param>
+            <param name="pos">マウスの位置</param>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.OnMouseDown(System.Windows.Forms.MouseButtons,System.Windows.Forms.Keys,Hisui.Geom.Point2i)">
+            <summary>
+            マウスボタン押下のイベントハンドラです。派生クラスでオーバーライドされます。
+            </summary>
+            <param name="button">押されてたマウスボタン</param>
+            <param name="modifier">押されている修飾キー（ShiftやControlなど）</param>
+            <param name="pos">マウスの位置</param>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.OnMouseUp(System.Windows.Forms.MouseButtons,System.Windows.Forms.Keys,Hisui.Geom.Point2i)">
+            <summary>
+            押していたマウスボタンを離したときのイベントハンドラです。派生クラスでオーバーライドされます。
+            </summary>
+            <param name="button">押されていたマウスボタン</param>
+            <param name="modifier">押されている修飾キー（ShiftやControlなど）</param>
+            <param name="pos">マウスの位置</param>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.EnterOperation">
+            <summary>
+            ビュー操作を開始したときに呼び出します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.ExitOperation">
+            <summary>
+            ビュー操作が終了したときに呼び出します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperation.MakeCameraAnimation(Hisui.Graphics.IView,Hisui.Graphics.CameraData,System.Int32)">
+            <summary>
+            カメラを移動するアニメーションを実行します。
+            </summary>
+            <param name="view">アニメーションさせるビュー</param>
+            <param name="end">移動先のカメラ情報</param>
+            <param name="milliseconds">アニメーション時間</param>
+        </member>
+        <member name="E:Hisui.Graphics.ViewOperation.OperationEnter">
+            <summary>
+            ビュー操作が開始したときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.ViewOperation.OperationExit">
+            <summary>
+            ビュー操作が終了したときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ViewOperation.Camera">
+            <summary>
+            カメラを取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ViewOperation.View">
+            <summary>
+            このビュー操作が関連付けられているビューを取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ViewOperation.Operating">
+            <summary>
+            ビュー操作中の場合に true を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.#ctor(Hisui.Graphics.StandardViewOperation.Setting)">
+            <summary>
+            コンストラクタ。ビュー操作設定を指定して構築します。
+            </summary>
+            <param name="setting">ビュー操作設定</param>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.#ctor">
+            <summary>
+            デフォルトコンストラクタ。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.Rotation(Hisui.Geom.Vector2i)">
+            <summary>
+            ビューの回転操作 <see cref="F:Hisui.Graphics.ViewOperations.Rotation"/> に対するカメラの動作を定義する仮想関数です。
+            </summary>
+            <param name="mouseMove">マウスの移動量</param>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.Pan(Hisui.Geom.Vector2i)">
+            <summary>
+            ビューの平行移動操作 <see cref="F:Hisui.Graphics.ViewOperations.Pan"/> に対するカメラの動作を定義する仮想関数です。
+            </summary>
+            <param name="mouseMove">マウスの移動量</param>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.Zoom(Hisui.Geom.Vector2i)">
+            <summary>
+            ビューの拡大縮小操作 <see cref="F:Hisui.Graphics.ViewOperations.Zoom"/> に対するカメラの動作を定義する仮想関数です。
+            </summary>
+            <param name="mouseMove">マウスの移動量</param>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.Perspective(Hisui.Geom.Vector2i)">
+            <summary>
+            ビューのパース強度変更操作 <see cref="F:Hisui.Graphics.ViewOperations.Perspective"/> に対するカメラの動作を定義する仮想関数です。
+            </summary>
+            <param name="mouseMove">マウスの移動量</param>
+        </member>
+        <member name="M:Hisui.Graphics.StandardViewOperation.Spin(Hisui.Geom.Point2i,Hisui.Geom.Point2i)">
+            <summary>
+            ビューのスピン操作 <see cref="F:Hisui.Graphics.ViewOperations.Spin"/> に対するカメラの動作を定義する仮想関数です。
+            </summary>
+            <param name="from">マウス移動前の位置</param>
+            <param name="to">マウス移動後の位置（現在の位置）</param>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.Bindings">
+            <summary>
+            各ビュー操作に対するマウスボタンや修飾キーの割り当て設定を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.TemporaryBindings">
+            <summary>
+            各ビュー操作に対するマウスボタンや修飾キーの一時的な割り当て設定を取得します。
+            同じビュー操作に対する設定が <see cref="P:Hisui.Graphics.StandardViewOperation.Bindings"/> と重複している場合には、
+            <see cref="P:Hisui.Graphics.StandardViewOperation.TemporaryBindings"/> の設定が優先されます。
+            従って、<see cref="P:Hisui.Graphics.StandardViewOperation.Bindings"/> の設定はそのまま維持しつつ一時的に割り当てを変更したい場合に
+            <see cref="P:Hisui.Graphics.StandardViewOperation.TemporaryBindings"/> が活用できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.DragZoomSign">
+            <summary>
+            マウスドラッグによるビューの拡大縮小操作の符号で、+1 か -1 が設定されます。
+            +1 を設定すると下にドラッグしたときに拡大、-1 を設定すると上にドラッグしたときに拡大となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.WheelZoomSign">
+            <summary>
+            マウスホイールによるビューの拡大縮小操作の符号で、+1 か -1 が設定されます。
+            +1 を設定すると下に回したときに拡大、-1 を設定すると上に回したときに拡大となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.RotationRadius">
+            <summary>
+            ビューの回転操作に使用される回転半径を取得します。
+            この値が小さいほど、マウスの移動量に対するビューの回転量が大きくなります。
+            デフォルトは <c>0.5 * Camera.ViewingDepth</c> と実装されていますが、派生クラスでオーバーライドすることによりこの値を変更可能です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.AutoFocus">
+            <summary>
+            オートフォーカス機能のON/OFFを設定します。
+            オートフォーカス機能がONの場合は、ビュー操作（<see cref="F:Hisui.Graphics.ViewOperations.Perspective"/>、<see cref="F:Hisui.Graphics.ViewOperations.Rotation"/>
+            以外）の終了時に注視点（すなわち回転中心）がビューの中心の対象物に自動設定されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.ZoomToMousePosition">
+            <summary>
+            マウス位置に向かってズームするかどうかを設定します。
+            OFFの場合は常にビューの中心が拡大縮小の中心になります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.ZKeptRotation">
+            <summary>
+            ビューの回転操作でZ軸が傾かないようにするかどうかを制御します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.StandardViewOperation.Setting">
+            <summary>
+            ビュー操作の設定情報を格納します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.Bindings">
+            <summary>
+            各ビュー操作に対するマウスや修飾キーの割り当て設定を格納します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.DragZoomSign">
+            <summary>
+            マウスドラッグによるビューの拡大縮小操作の符号で、+1 か -1 が設定されます。
+            +1 を設定すると下にドラッグしたときに拡大、-1 を設定すると上にドラッグしたときに拡大となります。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.WheelZoomSign">
+            <summary>
+            マウスホイールによるビューの拡大縮小操作の符号で、+1 か -1 が設定されます。
+            +1 を設定すると下に回したときに拡大、-1 を設定すると上に回したときに拡大となります。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.LowerZoomScale">
+            <summary>
+            ビューを拡大できる限界を設定します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.UpperZoomScale">
+            <summary>
+            ビューを縮小できる限界を設定します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.AutoFocus">
+            <summary>
+            オートフォーカス機能のON/OFFを設定します。
+            オートフォーカス機能がONの場合は、ビュー操作（<see cref="F:Hisui.Graphics.ViewOperations.Perspective"/>、<see cref="F:Hisui.Graphics.ViewOperations.Rotation"/>
+            以外）の終了時に注視点（すなわち回転中心）がビューの中心の対象物に自動設定されます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.Setting.ZoomToMousePosition">
+            <summary>
+            マウス位置に向かってズームするかどうかを設定します。
+            OFFの場合は常にビューの中心が拡大縮小の中心になります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.StandardViewOperation.Setting.ZKeptRotation">
+            <summary>
+            ビューの回転操作でZ軸が傾かないようにするかどうかを制御します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.StandardViewOperation.ZoomScale">
+            <summary>
+            拡大縮小のスケールを表します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.ZoomScale.Value">
+            <summary>
+            ビューの拡大縮小操作の <see cref="P:Hisui.Graphics.ICamera.ViewingScale"/> を設定します。
+            <see cref="F:Hisui.Graphics.StandardViewOperation.ZoomScale.IsPercent"/> が true の場合は <see cref="P:Hisui.Graphics.ICamera.WorldSphere"/> の半径値に対する百分率で値を設定します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.StandardViewOperation.ZoomScale.IsPercent">
+            <summary>
+            <see cref="F:Hisui.Graphics.StandardViewOperation.ZoomScale.Value"/> プロパティの値を <see cref="P:Hisui.Graphics.ICamera.WorldSphere"/> の半径値に対する百分率と解釈するかどうかを設定します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.DocumentViews">
+            <summary>
+            ひとつの <see cref="T:Hisui.Core.Document"/> と複数の <see cref="T:Hisui.Graphics.IView"/> を関連付けるクラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.ISceneHolder">
+            <summary>
+            ワールド座標系、カメラ座標系、スクリーン座標系のシーンを束ねるインターフェイスです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneHolder.WorldScenes">
+            <summary>
+            ワールド座標系のシーンコレクションです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneHolder.CameraScenes">
+            <summary>
+            カメラ座標系のシーンコレクションです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneHolder.BackgroundScenes">
+            <summary>
+            スクリーン座標系の背景シーンコレクションです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneHolder.ForgroundScenes">
+            <summary>
+            スクリーン座標系の前景シーンコレクションです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.DocumentViews.Document">
+            <summary>
+            <see cref="T:Hisui.Core.Document"/> インスタンスです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.DocumentViews.WorldDocumentScene">
+            <summary>
+            <see cref="F:Hisui.Graphics.DocumentViews.Document"/> のワールド座標系におけるシーンです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.DocumentViews.ScreenDocumentScene">
+            <summary>
+            <see cref="F:Hisui.Graphics.DocumentViews.Document"/> のスクリーン座標系におけるシーンです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.#ctor(Hisui.Core.Document)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="document">ドキュメント</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.ContainsView(Hisui.Graphics.IView)">
+            <summary>
+            引数に指定された <paramref name="view"/> が <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に含まれる場合は true を返します。
+            </summary>
+            <param name="view">判定するビュー</param>
+            <returns><paramref name="view"/> が <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に含まれる場合は true</returns>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.AddView(Hisui.Graphics.IView,Hisui.Graphics.ViewOperation)">
+            <summary>
+            ビューを追加し、<see cref="F:Hisui.Graphics.DocumentViews.Document"/> 全体のシーンを割り当てます。
+            </summary>
+            <param name="view">追加するビュー</param>
+            <param name="viewop">ビュー操作</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.AddView(Hisui.Graphics.IView)">
+            <summary>
+            ビューを追加し、<see cref="F:Hisui.Graphics.DocumentViews.Document"/> 全体のシーンを割り当てます。
+            </summary>
+            <param name="view">追加するビュー</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.AddView(Hisui.Graphics.IView,Hisui.Core.IEntry,Hisui.Graphics.ViewOperation)">
+            <summary>
+            ビューを追加し、<paramref name="entry"/> 配下のシーンを割り当てます。
+            </summary>
+            <param name="view">追加するビュー</param>
+            <param name="entry"><paramref name="view"/> に割り当てるエントリ</param>
+            <param name="viewop">ビュー操作</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.AddView(Hisui.Graphics.IView,Hisui.Core.IEntry)">
+            <summary>
+            ビューを追加し、<paramref name="entry"/> 配下のシーンを割り当てます。
+            </summary>
+            <param name="view">追加するビュー</param>
+            <param name="entry"><paramref name="view"/> に割り当てるエントリ</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.AddView(Hisui.Graphics.IView,System.Int32[],Hisui.Graphics.ViewOperation)">
+            <summary>
+            ビューを追加し、引数に指定されたパス <paramref name="target"/> 配下のシーンを割り当てます。
+            </summary>
+            <param name="view">追加するビュー</param>
+            <param name="target"><paramref name="view"/> に割り当てるエントリへのパス。
+            null または長さ0の配列を指定すると、<see cref="F:Hisui.Graphics.DocumentViews.Document"/>全体のシーンが割り当てられます。</param>
+            <param name="viewop">ビュー操作</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.Invalidate">
+            <summary>
+            すべての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に対して <see cref="M:Hisui.Graphics.IView.Invalidate"/> を呼び出します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.Refresh">
+            <summary>
+            すべての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に対して <see cref="M:Hisui.Graphics.IView.Refresh"/> を呼び出します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.Fit">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.ActiveView"/> をアニメーション付きでシーン全体にフィットさせます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.Fit(Hisui.Geom.CodAxis)">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.ActiveView"/> をアニメーション付きでフィットさせます。
+            </summary>
+            <param name="dir">フィットさせる向き。この方向に正対する方向にビューがフィットします。</param>
+        </member>
+        <member name="M:Hisui.Graphics.DocumentViews.Fit(Hisui.Geom.CodSys3d,System.Double)">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.ActiveView"/> をアニメーション付きでフィットさせます。
+            </summary>
+            <param name="pos">フィットさせる注視点（カメラ座標系）</param>
+            <param name="scale">フィットさせるスケール</param>
+        </member>
+        <member name="E:Hisui.Graphics.DocumentViews.ViewHistoryChanged">
+            <summary>
+            ビュー操作が行われると発生するイベントです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.WorldScenes">
+            <summary>ワールド座標系のシーンコレクションです。関連付けられた全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に表示されます。</summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.CameraScenes">
+            <summary>カメラ座標系のシーンコレクションです。関連付けられた全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に表示されます。</summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.BackgroundScenes">
+            <summary>スクリーン背景のシーンコレクションです。関連付けられた全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に表示されます。</summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.ForgroundScenes">
+            <summary>スクリーン前景のシーンコレクションです。関連付けられた全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> に表示されます。</summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.Events">
+            <summary>
+            関連付けられた <see cref="P:Hisui.Graphics.DocumentViews.Views"/> で発生したイベントがハンドリングできます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.Views">
+            <summary>
+            <see cref="F:Hisui.Graphics.DocumentViews.Document"/> に関連付けられた <see cref="T:Hisui.Graphics.IView"/> を列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.ActiveView">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.IView"/> を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.ActiveHistory">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.ActiveView"/> のビュー操作履歴を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.ActiveViewTargetPath">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.ActiveView"/> に割り当てられる <see cref="P:Hisui.Core.IEntry.Path"/> を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.ActiveViewTargetEntry">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.ActiveView"/>に割り当てられる <see cref="T:Hisui.Core.IEntry"/> を set/get します。
+            <see cref="F:Hisui.Graphics.DocumentViews.Document"/> 全体に割り当てる場合は null を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.Cursor">
+            <summary>
+            <see cref="P:Hisui.Graphics.DocumentViews.Views"/> のマウスカーソルを set/get します。
+            設定すると全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> のマウスカーソルが変更されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.UseWaitCursor">
+            <summary>
+            待機カーソルを使用するかどうかを set/get します。
+            設定すると全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> の <c>UseWaitCursor</c> が更新されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.BackColor">
+            <summary>
+            背景色を set/get します。
+            設定すると全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> の <see cref="P:Hisui.Graphics.IView.BackColor"/> が更新されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.DocumentViews.Perspective">
+            <summary>
+            透視投影モードかどうかを set/get します。
+            設定すると全ての <see cref="P:Hisui.Graphics.DocumentViews.Views"/> の <see cref="P:Hisui.Graphics.ICamera.Perspective"/> が更新されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.EntryBoundary.SolveEigenValueVector(Hisui.Geom.Matrix3d,System.Double[]@,Hisui.Geom.Vector3d[]@)">
+            <summary>
+              パワー法で固有値・固有ベクトルを求める
+            </summary>
+            <remarks>
+              パワー法による固有値と固有ベクトルの求め方
+              http://aoki2.si.gunma-u.ac.jp/lecture/power-method/power.html
+            
+              パワー法は，あくまでも簡便法である。
+              より一般的で精度も十分で計算速度も速いアルゴリズムは数多くある。
+            </remarks>
+        </member>
+        <member name="T:Hisui.Graphics.IViewEvents">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> で発生するイベントを集めたインターフェイスです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.MouseDown">
+            <summary>
+            マウスのボタンを押したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.MouseUp">
+            <summary>
+            マウスのボタンを離したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.MouseClick">
+            <summary>
+            クリックしたときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.MouseDoubleClick">
+            <summary>
+            ダブルクリックしたときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.MouseMove">
+            <summary>
+            マウスを動かしたときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.MouseWheel">
+            <summary>
+            マウスのホイールを回したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.KeyDown">
+            <summary>
+            キーボードのキーを押したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.KeyUp">
+            <summary>
+            キーボードのキーを離したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.KeyPress">
+            <summary>
+            文字キーを押したときに発生します。
+            <see cref="E:Hisui.Graphics.IViewEvents.KeyDown"/> の後、<see cref="E:Hisui.Graphics.IViewEvents.KeyUp"/> の前に発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.PreviewKeyDown">
+            <summary>
+            キーボードのキーを押したときに <see cref="E:Hisui.Graphics.IViewEvents.KeyDown"/> より前に発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.SizeChanged">
+            <summary>
+            ビューのサイズが変更されると発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Graphics.IViewEvents.Paint">
+            <summary>
+            ビューが描画されるときに発生します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.FboAttachment">
+            <summary>
+            FBO(framebuffer-object) にアタッチ可能なバッファ種類を表す列挙型です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color00">
+            <summary>カラーバッファ00</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color01">
+            <summary>カラーバッファ01</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color02">
+            <summary>カラーバッファ02</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color03">
+            <summary>カラーバッファ03</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color04">
+            <summary>カラーバッファ04</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color05">
+            <summary>カラーバッファ05</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color06">
+            <summary>カラーバッファ06</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color07">
+            <summary>カラーバッファ07</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color08">
+            <summary>カラーバッファ08</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color09">
+            <summary>カラーバッファ09</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color10">
+            <summary>カラーバッファ10</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color11">
+            <summary>カラーバッファ11</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color12">
+            <summary>カラーバッファ12</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color13">
+            <summary>カラーバッファ13</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color14">
+            <summary>カラーバッファ14</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Color15">
+            <summary>カラーバッファ15</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Depth">
+            <summary>デプスバッファ</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.Stencil">
+            <summary>ステンシルバッファ</summary>
+        </member>
+        <member name="F:Hisui.Graphics.FboAttachment.DepthStencil">
+            <summary>デプスバッファとステンシルバッファの両方を担うバッファ</summary>
+        </member>
+        <member name="T:Hisui.Graphics.FrameBuffer">
+            <summary>
+            OpenGL でオフスクリーンレンダリングを実現する FBO(framebuffer-object) 機能をラップしたクラスです。
+            </summary>
+            <remarks>
+            下記にこのクラスの典型的な使い方を表すサンプルコードを示します。
+            <code>
+            Texture2d tex = null;
+            using ( var fb = new FrameBuffer( size ) ) {
+              fb.AssignRenderBuffer( FboAttachment.Depth );
+              fb.AssignTexture( FboAttachment.Color00, TextureType.RGBA8_2D );
+              fb.DrawWorldScene( sc => { /* 描画処理 */ }, worldBoundary, cameraData );
+              tex = fb.DetatchTexture( FboAttachment.Color00 );
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.#ctor(Hisui.Geom.Size2i)">
+            <summary>
+            コンストラクタ。現在のレンダリングコンテキストに FBO を生成します。
+            </summary>
+            <param name="size">画像サイズ</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.Dispose">
+            <summary>
+            現在のレンダリングコンテキストから FBO を削除します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.GetTexture(Hisui.Graphics.FboAttachment)">
+            <summary>
+            引数 <paramref name="attachment"/> で指定されたバッファにアタッチされているテクスチャを取得します。
+            アタッチされているテクスチャが存在しない場合は null を返します。
+            </summary>
+            <param name="attachment">取得するバッファ種類</param>
+            <returns><paramref name="attachment"/> にアタッチされているテクスチャ</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.GetRenderBuffer(Hisui.Graphics.FboAttachment)">
+            <summary>
+            引数 <paramref name="attachment"/> で指定されたバッファにアタッチされているレンダーバッファを取得します。
+            アタッチされているレンダーバッファが存在しない場合は 0 を返します。
+            </summary>
+            <param name="attachment">取得するバッファ種類</param>
+            <returns><paramref name="attachment"/> にアタッチされているレンダーバッファ</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.AttachTexture(Hisui.Graphics.Texture2d)">
+            <summary>
+            テクスチャをカラーバッファ <see cref="F:Hisui.Graphics.FboAttachment.Color00"/> としてアタッチします。
+            このFBOの <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/> と同時にアタッチされたテクスチャも <c>Dispose()</c> されるようになります。
+            </summary>
+            <param name="texture">アタッチするテクスチャ</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.AttachTexture(Hisui.Graphics.FboAttachment,Hisui.Graphics.Texture2d)">
+            <summary>
+            テクスチャを指定されたバッファ <paramref name="attachment"/> にアタッチします。
+            このFBOの <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/> と同時にアタッチされたテクスチャも <c>Dispose()</c> されるようになります。
+            </summary>
+            <param name="attachment">アタッチ先のバッファ種類</param>
+            <param name="texture">アタッチするテクスチャ</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.SwapTexture(Hisui.Graphics.FboAttachment,Hisui.Graphics.Texture2d@)">
+            <summary>
+            <paramref name="attachment"/> にアタッチされているテクスチャを <paramref name="swap"/> と入れ替えます。
+            このFBOの <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/> と同時にアタッチされたテクスチャも <c>Dispose()</c> されるようになります。
+            逆に入れ替わりで取得されたテクスチャはこのFBOの管理下から外れるため、FBOが <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/>
+            されてもそのテクスチャは <c>Dispose()</c> されません。
+            </summary>
+            <param name="attachment">アタッチ先のバッファ種類</param>
+            <param name="swap">in: アタッチするテクスチャ, out: 入れ替わりででタッチされたテクスチャ</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.DetachTexture">
+            <summary>
+            カラーバッファ <see cref="F:Hisui.Graphics.FboAttachment.Color00"/> からテクスチャをデタッチし、そのテクスチャを返します。
+            アタッチされているテクスチャが存在しない場合は null を返します。
+            デタッチされたテクスチャはこのFBOの管理下から外れるため、FBOが <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/>
+            されてもそのテクスチャは <c>Dispose()</c> されなくなります。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.DetachTexture(Hisui.Graphics.FboAttachment)">
+            <summary>
+            <paramref name="attachment"/> からテクスチャをデタッチし、そのテクスチャを返します。
+            アタッチされているテクスチャが存在しない場合は null を返します。
+            デタッチされたテクスチャはこのFBOの管理下から外れるため、FBOが <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/>
+            されてもそのテクスチャは <c>Dispose()</c> されなくなります。
+            </summary>
+            <param name="attachment">デタッチするバッファ種類</param>
+            <returns>デタッチされたテクスチャ（見つからない場合は null）</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.AssignTexture(Hisui.Graphics.TextureType)">
+            <summary>
+            新たにテクスチャを生成しカラーバッファ <see cref="F:Hisui.Graphics.FboAttachment.Color00"/> にアタッチします。
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.AssignTexture(Hisui.Graphics.FboAttachment,Hisui.Graphics.TextureType)">
+            <summary>
+            新たにテクスチャを生成し <paramref name="attachment"/> にアタッチします。
+            </summary>
+            <param name="attachment">アタッチ先のバッファ種類</param>
+            <param name="type">生成するテクスチャのタイプ</param>
+            <returns>生成されたテクスチャ</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.AttachRenderBuffer(Hisui.Graphics.FboAttachment,System.UInt32)">
+            <summary>
+            レンダーバッファを <paramref name="attachment"/> にアタッチします。
+            このFBOの <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/> でアタッチされているレンダーバッファは削除されます。
+            </summary>
+            <param name="attachment">アタッチ先のバッファ種類</param>
+            <param name="renbuf">アタッチするレンダーバッファ</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.DetachRenderBuffer(Hisui.Graphics.FboAttachment)">
+            <summary>
+            <paramref name="attachment"/> からレンダーバッファをデタッチします。
+            デタッチされたレンダーバッファはこのFBOの管理下から外れるため、FBOが <see cref="M:Hisui.Graphics.FrameBuffer.Dispose"/>
+            されてもそのレンダーバッファは削除されません。
+            </summary>
+            <param name="attachment">デタッチするバッファ種類</param>
+            <returns>デタッチされたレンダーバッファ</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.AssignRenderBuffer(Hisui.Graphics.FboAttachment)">
+            <summary>
+            新たにレンダーバッファを生成して <paramref name="attachment"/> にアタッチします。
+            </summary>
+            <param name="attachment">アタッチ先のバッファ種類</param>
+            <returns>生成されたレンダーバッファ</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.DrawWorldScene(System.Action{Hisui.Graphics.ISceneContext},Hisui.Geom.IBoundary3d,Hisui.Geom.CodSys3d,System.Double)">
+            <summary>
+            FBOにワールド座標系のシーンを描画します。
+            </summary>
+            <param name="draw">描画関数</param>
+            <param name="world">描画対象の大きさ（<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>）</param>
+            <param name="viewpos">注視点の座標系（<see cref="P:Hisui.Graphics.ICamera.ViewingPos"/>）</param>
+            <param name="viewscale">描画スケール（<see cref="P:Hisui.Graphics.ICamera.ViewingScale"/>）</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.DrawWorldScene(System.Action{Hisui.Graphics.ISceneContext},Hisui.Geom.IBoundary3d,Hisui.Graphics.CameraData)">
+            <summary>
+            FBOにワールド座標系のシーンを描画します。
+            </summary>
+            <param name="draw">描画関数</param>
+            <param name="world">描画対象の大きさ（<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>）</param>
+            <param name="camdat">カメラ情報</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.DrawScene(System.Action{Hisui.Graphics.ISceneContext},Hisui.Geom.IBoundary3d,Hisui.Graphics.CameraData)">
+            <summary>
+            FBOにカメラ座標系のシーンを描画します。
+            </summary>
+            <param name="draw">描画関数</param>
+            <param name="world">描画対象の大きさ（<see cref="P:Hisui.Graphics.ICamera.WorldSphere"/>）</param>
+            <param name="camdat">カメラ情報</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.BindBuffer">
+            <summary>
+            FBOをバインドし、<see cref="T:System.IDisposable"/> オブジェクトを返します。
+            返された <see cref="T:System.IDisposable"/> オブジェクトの <c>Dispose()</c> が呼ばれると、FBOのバインドが解除されます。
+            </summary>
+            <remarks>
+            通常、次のように <c>using</c> 節で使用されます。
+            <code>
+            FrameBuffer fb = ...;
+            using ( fb.BindBuffer() ) {
+              描画処理;
+            }
+            </code>
+            </remarks>
+            <returns>FBOのバインドを解除するためのオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.BindBuffer(Hisui.Geom.IBoundary3d,Hisui.Graphics.ISceneContext@)">
+            <summary>
+            FBOをバインドし、<see cref="T:System.IDisposable"/> オブジェクトを返します。
+            返された <see cref="T:System.IDisposable"/> オブジェクトの <c>Dispose()</c> が呼ばれると、FBOのバインドが解除されます。
+            </summary>
+            <remarks>
+            通常、次のように <c>using</c> 節で使用されます。
+            <code>
+            FrameBuffer fb = ...;
+            using ( fb.BindBuffer() ) {
+              描画処理;
+            }
+            </code>
+            </remarks>
+            <returns>FBOのバインドを解除するためのオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.InitViewport">
+            <summary>
+            ビューポートを設定します。
+            カラーバッファは黒、デプスバッファは1.0で初期化されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.InitViewport(System.Drawing.Color,System.Double)">
+            <summary>
+            ビューポートを設定します。
+            </summary>
+            <param name="clearColor">カラーバッファを初期化する色を設定します</param>
+            <param name="clearDepth">デプスバッファを初期化する値を設定します</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.InitViewport(Hisui.Geom.Color4f,System.Double)">
+            <summary>
+            ビューポートを設定します。
+            </summary>
+            <param name="clearColor">カラーバッファを初期化する色を設定します</param>
+            <param name="clearDepth">デプスバッファを初期化する値を設定します</param>
+        </member>
+        <member name="M:Hisui.Graphics.FrameBuffer.InitProjection(Hisui.Graphics.ICamera)">
+            <summary>
+            プロジェクションマトリックスを設定します。
+            </summary>
+            <param name="camera">カメラ</param>
+        </member>
+        <member name="P:Hisui.Graphics.FrameBuffer.Size">
+            <summary>
+            フレームバッファの画像サイズです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.FrameBuffer.Width">
+            <summary>
+            フレームバッファの幅です。<c>Size.x</c> と同値です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.FrameBuffer.Height">
+            <summary>
+            フレームバッファの高さです。<c>Size.y</c> と同値です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.FrameBuffer.IsBound">
+            <summary>
+            このFBOがバインドされているとき true を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.ISceneContext">
+            <summary>
+            描画のコンテキスト情報を保持するインターフェイスです。
+            OpenGLのレンダリングコンテキストに対応し、描画命令をラップしています。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.SetLocation(Hisui.Graphics.SceneLocation)">
+            <summary>
+            座標系タイプを設定します。
+            このメソッドはフレームワーク側で呼び出されます。
+            アプリケーションはこのメソッドを使用しないでください。
+            </summary>
+            <param name="location">座標系タイプ</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawSceneObject(Hisui.Graphics.ISceneObject)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ISceneObject"/> を描画します。
+            このメソッドで描画されるシーンはセレクションモードでネームスタックに積まれるため、
+            <see cref="M:Hisui.Graphics.IView.Pick(Hisui.Geom.Box2i,Hisui.Core.Filter)"/>でピックすることが出来ます。
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.GetPixel(Hisui.Geom.Point2i)">
+            <summary>
+            カラーバッファから指定したピクセルの色を取得します。
+            </summary>
+            <param name="pt">ピクセル座標</param>
+            <returns>カラーバッファから読み取った色</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.GetDepth(Hisui.Geom.Point2i)">
+            <summary>
+            デプスバッファから指定したピクセルのデプス値を取得します。
+            </summary>
+            <param name="pt">ピクセル座標</param>
+            <returns>デプスバッファから読み取ったデプス座標値</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.GetDepth(Hisui.Geom.Box2i)">
+            <summary>
+            デプス座標値指定したピクセル矩形領域の最も手前のデプス値を取得します。
+            </summary>
+            <param name="rect">ピクセル矩形領域</param>
+            <returns>デプスバッファから読み取った指定領域のデプス座標値の最小値（最も手前のデプス値）</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.PushDecoration(Hisui.Graphics.IDecoration)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ISceneDecorator"/> の <c>PreDraw()</c> 関数でアクティブになった <see cref="T:Hisui.Graphics.IDecoration"/> がスタックにプッシュされます。
+            このメソッドはフレームワーク側で呼び出されます。
+            アプリケーションから呼び出す必要はありません。
+            </summary>
+            <param name="deco">スタックに積む<see cref="T:Hisui.Graphics.IDecoration"/>オブジェクト</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.PopDecoration(System.Type)">
+            <summary>
+            <see cref="T:Hisui.Graphics.ISceneDecorator"/> の <c>PostDraw()</c> 関数で非アクティブになった <see cref="T:Hisui.Graphics.IDecoration"/> がスタックからポップされます。
+            このメソッドはフレームワーク側で呼び出されます。
+            アプリケーションから呼び出す必要はありません。
+            </summary>
+            <param name="type"><see cref="T:Hisui.Graphics.IDecoration"/>オブジェクトのキーとなる型を指定します</param>
+            <returns>ポップされた<see cref="T:Hisui.Graphics.IDecoration"/>オブジェクトが返ります</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.PeekDecoration(System.Type)">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.IDecoration"/> オブジェクトを取得します。
+            </summary>
+            <param name="type"><see cref="T:Hisui.Graphics.IDecoration"/>オブジェクトのキーとなる型を指定します</param>
+            <returns>現在アクティブな <see cref="T:Hisui.Graphics.IDecoration"/> オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.PopDecoration``1">
+            <summary>
+            <see cref="T:Hisui.Graphics.ISceneDecorator"/> の <c>PostDraw()</c> 関数で非アクティブになった <see cref="T:Hisui.Graphics.IDecoration"/> がスタックからポップされます。
+            このメソッドはフレームワーク側で呼び出されます。
+            アプリケーションから呼び出す必要はありません。
+            </summary>
+            <typeparam name="T">ポップする<see cref="T:Hisui.Graphics.IDecoration"/>オブジェクトのキーとなる型</typeparam>
+            <returns>ポップされた<see cref="T:Hisui.Graphics.IDecoration"/>オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.PeekDecoration``1">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.IDecoration"/> オブジェクトを取得します。
+            </summary>
+            <typeparam name="T">取得する<see cref="T:Hisui.Graphics.IDecoration"/>オブジェクトのキーとなる型</typeparam>
+            <returns>現在アクティブな <see cref="T:Hisui.Graphics.IDecoration"/> オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.Draw(Hisui.OpenGL.GLPrimType,System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary>
+            <c>glBegin()</c>, <c>glEnd()</c> を用いて描画します。
+            </summary>
+            <param name="type">描画するプリミティブのタイプ</param>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawPoints(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて点列を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawLines(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて線分を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawLineStrip(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて折線を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawLineLoop(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて折線ループを描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawTriangles(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて三角形を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawTriangleStrip(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて三角系列を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawTriangleFan(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて三角系列を扇状に描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawQuads(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて四辺形を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawQuadStrip(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて四辺形列を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawPolygon(System.Action{Hisui.OpenGL.HiGL.IBeginEnd})">
+            <summary><c>glBegin()</c>, <c>glEnd()</c> を用いて多角形を描画します。</summary>
+            <param name="draw">このアクションで頂点座標や法線ベクトル、色などを指定</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawStrokeRoman(System.String,System.Int32,System.Int32,System.Double)">
+            <summary>
+            スクリーン座標で指定した位置にストロークフォントで文字を描画します。
+            <see cref="P:Hisui.Graphics.ISceneContext.Location"/> が <see cref="F:Hisui.Graphics.SceneLocation.Screen"/> の場合のみ利用できます。
+            </summary>
+            <param name="str">描画文字列。アスキー文字のみ使用できます。</param>
+            <param name="x">スクリーン座標系のX座標</param>
+            <param name="y">スクリーン座標系のY座標</param>
+            <param name="scale">描画する文字の大きさ</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.DrawStrokeRoman(System.String,Hisui.Geom.Point3d,System.Double)">
+            <summary>
+            ワールド座標系で指定した位置にストロークフォントで文字を描画します。
+            <see cref="P:Hisui.Graphics.ISceneContext.Location"/> が <see cref="F:Hisui.Graphics.SceneLocation.World"/> の場合のみ利用できます。
+            文字は常に視線方向に正対するように描画されます。
+            </summary>
+            <param name="str">描画文字列。アスキー文字のみ使用できます。</param>
+            <param name="pos">文字列の描画位置をワールド座標系で指定します。</param>
+            <param name="scale">描画する文字の大きさをスクリーン座標系の寸法で指定します</param>
+        </member>
+        <member name="M:Hisui.Graphics.ISceneContext.Push">
+            <summary>
+            <see cref="T:Hisui.Graphics.IScope"/> オブジェクトをプッシュします。
+            通常 <c>using</c> 節で使用され、そのスコープ内のみで局所的に <see cref="T:Hisui.Graphics.ISceneContext"/> の状態を変更したい場合に使用されます。
+            </summary>
+            <remarks>
+            次のように使用されます。
+            <code>
+            void hoge( ISceneContext sc )
+            {
+              using ( var scope = sc.Push() ) {
+                scope.Lighting = false; // このスコープ内でのみライティングがOFFになる。
+                ...
+              }
+            }
+            </code>
+            </remarks>
+            <returns><see cref="T:Hisui.Graphics.IScope"/>オブジェクト</returns>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Context">
+            <summary>
+            レンダリングコンテキストを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Camera">
+            <summary>
+            カメラを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Location">
+            <summary>
+            シーンの座標系タイプ（ワールド座標系/カメラ座標系/スクリーン座標系）を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Highlighting">
+            <summary>
+            現在ハイライト描画モードなら true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.ViewOperation">
+            <summary>
+            ビューオペレーション中かどうかを表すフラグを set/get します。
+            基本的にはこのプロパティはフレームワーク側で設定されます。
+            アプリケーションがこのプロパティに値をセットする必要はありません。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Lighting">
+            <summary>
+            ライティング（シェーディング）を有効にするかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Normalization">
+            <summary>
+            法線ベクトルを自動的に正規化するかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.DepthTest">
+            <summary>
+            デプステストを行うかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.DepthMask">
+            <summary>
+            デプス値をデプスマップに書き込むかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.StencilTest">
+            <summary>
+            ステンシルテストを行うかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.ColorMaterial">
+            <summary>
+            カラーマテリアルモードを有効にするかどうかを set/get します。
+            true を設定すると、オモテ面とウラ面両方の Ambient 色と Diffuse 色をカラーマテリアルに設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Material">
+            <summary>
+            マテリアルを set/get します。
+            取得されるのはオモテ面のマテリアル（<see cref="P:Hisui.Graphics.ISceneContext.FrontMaterial"/>）です。
+            マテリアルを設定すると <see cref="P:Hisui.Graphics.ISceneContext.FrontMaterial"/>, <see cref="P:Hisui.Graphics.ISceneContext.BackMaterial"/>, <see cref="P:Hisui.Graphics.ISceneContext.Color"/> の3つに値が設定されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.FrontMaterial">
+            <summary>
+            オモテ面のマテリアルを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.BackMaterial">
+            <summary>
+            ウラ面のマテリアルを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Color">
+            <summary>
+            使用する色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Normal">
+            <summary>
+            使用する法線ベクトルを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.BackFaceCulling">
+            <summary>
+            ウラ面をカリングするかどうかを set/get します。
+            true を設定するとオモテ面のみが描画されるようになります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.PolygonMode">
+            <summary>
+            使用するポリゴンモードを set/get します。
+            </summary>
+            <seealso cref="P:Hisui.Graphics.ISceneContext.PolygonMode"/>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.LineStipple">
+            <summary>
+            使用する線種を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.PointSize">
+            <summary>
+            使用する点のサイズを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.LineWidth">
+            <summary>
+            使用する線の太さを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.Matrix">
+            <summary>
+            使用するモデルビュー座標変換行列を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ISceneContext.IsSelectionMode">
+            <summary>
+            現在セレクションモードの場合に true を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.GLViewControl">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.IView">
+            <summary>
+            OpenGL による描画が可能なビューコントロールを表すインターフェイスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.IView.Pick(System.Int32,System.Int32,System.Int32,System.Int32,Hisui.Core.Filter)">
+            <summary>
+            指定されたピクセルに描画されているオブジェクトをピックします。
+            </summary>
+            <param name="x">ピック位置のX座標</param>
+            <param name="y">ピック位置のY座標</param>
+            <param name="dx">ピック領域の幅</param>
+            <param name="dy">ピック領域の高さ</param>
+            <param name="filter">ピックフィルタ。このフィルタにパスするオブジェクトのみがピックされます。</param>
+            <returns>ピック情報を保持する<see cref="T:Hisui.Graphics.Selection"/>オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.IView.Pick(Hisui.Geom.Box2i,Hisui.Core.Filter)">
+            <summary>
+            指定されたピクセルに描画されているオブジェクトをピックします。
+            </summary>
+            <param name="rect">ピック領域</param>
+            <param name="filter">ピックフィルタ。このフィルタにパスするオブジェクトのみがピックされます。</param>
+            <returns>ピック情報を保持する<see cref="T:Hisui.Graphics.Selection"/>オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.IView.DrawScreenScene(Hisui.Graphics.IScene)">
+            <summary>
+            スクリーン座標系にシーンを即時描画します。
+            </summary>
+            <param name="scene">描画するシーン</param>
+        </member>
+        <member name="M:Hisui.Graphics.IView.DrawWorldScene(Hisui.Graphics.IScene)">
+            <summary>
+            ワールド座標系にシーンを即時描画します。
+            </summary>
+            <param name="scene">描画するシーン</param>
+        </member>
+        <member name="M:Hisui.Graphics.IView.Fit">
+            <summary>
+            ビューを<see cref="P:Hisui.Graphics.IView.FitBoundary"/>にフィットさせます。
+            <see cref="P:Hisui.Graphics.IView.FitBoundary"/>を更新するためにまず<see cref="P:Hisui.Graphics.IView.SceneGraph"/>が<see cref="M:Hisui.Core.Builder.Build(Hisui.Core.IDependent)"/>されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.IView.Refresh">
+            <summary>
+            ビューを強制的に即時再描画します。
+            </summary>
+            <seealso cref="M:Hisui.Graphics.IView.Invalidate"/>
+        </member>
+        <member name="M:Hisui.Graphics.IView.Invalidate">
+            <summary>
+            ビュー領域全体を無効化し、描画メッセージを送信します。
+            次の描画イベントのタイミングでビューが更新されます。
+            </summary>
+            <seealso cref="M:Hisui.Graphics.IView.Refresh"/>
+        </member>
+        <member name="M:Hisui.Graphics.IView.FindForm">
+            <summary>
+            コントロールがあるフォームを取得します。
+            </summary>
+            <returns>コントロールがあるフォーム</returns>
+        </member>
+        <member name="M:Hisui.Graphics.IView.CreateSceneContext(Hisui.Graphics.ICamera)">
+            <summary>
+            コンテキストオブジェクトを生成します。
+            </summary>
+            <param name="camera">カメラ</param>
+            <returns>生成されたコンテキストオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.IView.GetImage">
+            <summary>
+            GLのカラーバッファからビットマップ画像を取得します。
+            </summary>
+            <returns>ビットマップ画像</returns>
+        </member>
+        <member name="P:Hisui.Graphics.IView.Events">
+            <summary>
+            ビューで発生するイベント群を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.MillisecondsPerFrame">
+            <summary>
+            前回の描画における1フレームあたりの描画時間をミリ秒単位で返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.Camera">
+            <summary>
+            カメラを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.SceneContext">
+            <summary>
+            描画コンテキストを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.SceneGraph">
+            <summary>
+            このビューに割り当てられているシーングラフを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.BackColor">
+            <summary>
+            背景色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.Operation">
+            <summary>
+            <see cref="T:Hisui.Graphics.ViewOperation"/>オブジェクトを set/get します。
+            アプリケーションは独自の<see cref="T:Hisui.Graphics.ViewOperation"/>を設定することでビュー操作をカスタマイズ出来ます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IView.FitBoundary">
+            <summary>
+            ワールド座標系にある描画対象の大きさを set/get します。
+            視体積の構築や<see cref="M:Hisui.Graphics.IView.Fit"/>などで使用されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Pick(System.Int32,System.Int32,System.Int32,System.Int32,Hisui.Core.Filter)">
+            <summary>
+            指定されたピクセルに描画されているオブジェクトをピックします。
+            </summary>
+            <param name="x">ピック位置のX座標</param>
+            <param name="y">ピック位置のY座標</param>
+            <param name="dx">ピック領域の幅</param>
+            <param name="dy">ピック領域の高さ</param>
+            <param name="filter">ピックフィルタ。このフィルタにパスするオブジェクトのみがピックされます。</param>
+            <returns>ピック情報を保持する<see cref="T:Hisui.Graphics.Selection"/>オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Pick(Hisui.Geom.Box2i,Hisui.Core.Filter)">
+            <summary>
+            指定されたピクセルに描画されているオブジェクトをピックします。
+            </summary>
+            <param name="rect">ピック領域</param>
+            <param name="filter">ピックフィルタ。このフィルタにパスするオブジェクトのみがピックされます。</param>
+            <returns>ピック情報を保持する<see cref="T:Hisui.Graphics.Selection"/>オブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.DrawScreenScene(Hisui.Graphics.IScene)">
+            <summary>
+            スクリーン座標系にシーンを即時描画します。
+            </summary>
+            <param name="scene">描画するシーン</param>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.DrawWorldScene(Hisui.Graphics.IScene)">
+            <summary>
+            ワールド座標系にシーンを即時描画します。
+            </summary>
+            <param name="scene">描画するシーン</param>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Fit">
+            <summary>
+            ビューを<see cref="P:Hisui.Graphics.GLViewControl.FitBoundary"/>にフィットさせます。
+            <see cref="P:Hisui.Graphics.GLViewControl.FitBoundary"/>を更新するためにまず<see cref="P:Hisui.Graphics.GLViewControl.SceneGraph"/>が<see cref="M:Hisui.Core.Builder.Build(Hisui.Core.IDependent)"/>されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.CreateSceneContext(Hisui.Graphics.ICamera)">
+            <summary>
+            コンテキストオブジェクトを生成します。
+            </summary>
+            <param name="camera">カメラ</param>
+            <returns>生成されたコンテキストオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.GetImage">
+            <summary>
+            GLのカラーバッファからビットマップ画像を取得します。
+            </summary>
+            <returns>ビットマップ画像</returns>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IView#Invalidate">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IView#FindForm">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_MouseDown(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_MouseDown(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_MouseUp(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_MouseUp(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_MouseClick(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_MouseClick(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_MouseDoubleClick(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_MouseDoubleClick(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_MouseMove(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_MouseMove(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_MouseWheel(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_MouseWheel(System.Windows.Forms.MouseEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_KeyDown(System.Windows.Forms.KeyEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_KeyDown(System.Windows.Forms.KeyEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_KeyUp(System.Windows.Forms.KeyEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_KeyUp(System.Windows.Forms.KeyEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_KeyPress(System.Windows.Forms.KeyPressEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_KeyPress(System.Windows.Forms.KeyPressEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_SizeChanged(System.EventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_SizeChanged(System.EventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#add_Paint(System.Windows.Forms.PaintEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.GLViewControl.Hisui#Graphics#IViewEvents#remove_Paint(System.Windows.Forms.PaintEventHandler)">
+            <summary>
+            <see cref="T:Hisui.Graphics.IView"/> を実装した <see cref="T:System.Windows.Forms.UserControl"/> クラスです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.Hisui#Graphics#IView#Events">
+            <summary>
+            ビューで発生するイベント群を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.MillisecondsPerFrame">
+            <summary>
+            前回の描画における1フレームあたりの描画時間をミリ秒単位で返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.SceneContext">
+            <summary>
+            描画コンテキストを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.Camera">
+            <summary>
+            カメラを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.SceneGraph">
+            <summary>
+            このビューに割り当てられているシーングラフを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.Operation">
+            <summary>
+            <see cref="T:Hisui.Graphics.ViewOperation"/>オブジェクトを set/get します。
+            アプリケーションは独自の<see cref="T:Hisui.Graphics.ViewOperation"/>を設定することでビュー操作をカスタマイズ出来ます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.GLViewControl.FitBoundary">
+            <summary>
+            ワールド座標系にある描画対象の大きさを set/get します。
+            視体積の構築や<see cref="M:Hisui.Graphics.GLViewControl.Fit"/>などで使用されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.GraphicsUT.SetMaterial(Hisui.Graphics.ISceneDecorator,System.Nullable{Hisui.Graphics.Material},System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定または削除します。
+            </summary>
+            <remarks>
+            <paramref name="front"/> と <paramref name="back"/> の両方に null を指定された場合は、
+            <paramref name="entry"/> から <see cref="T:Hisui.Graphics.MaterialDecoration"/> を削除します。
+            </remarks>
+            <param name="sd"><see cref="T:Hisui.Graphics.ISceneDecorator"/></param>
+            <param name="frnt">オモテ面のマテリアル</param>
+            <param name="back">ウラ面のマテリアル</param>
+        </member>
+        <member name="M:Hisui.GraphicsUT.SetMaterial(Hisui.Graphics.ISceneDecorator,System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定または削除します。
+            <c>GraphicsUT.SetMaterial( sd, mat, null )</c> と同義です。
+            </summary>
+            <param name="sd"><see cref="T:Hisui.Graphics.ISceneDecorator"/></param>
+            <param name="mat">両面のマテリアル</param>
+        </member>
+        <member name="T:Hisui.Graphics.IScope">
+            <summary>
+            <see cref="T:Hisui.Graphics.ISceneContext"/> の状態を局所的に変更するために使用されるインターフェイスです。
+            <see cref="M:Hisui.Graphics.ISceneContext.Push"/> メソッドでインスタンスが生成されます。
+            <see cref="T:System.IDisposable"/> インターフェイスを継承しており、通常 <c>using</c> 節で使用されます。
+            </summary>
+            <remarks>
+            次のように使用されます。
+            <code>
+            ISceneContext sc = ...;
+            using ( var scope = sc.Push() ) {
+              scope.Lighting = false; // このスコープ内でのみライティングがOFFになります。
+              ...
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Hisui.Graphics.IScope.EnableDecoration(Hisui.Graphics.IDecoration)">
+            <summary>
+            局所的に <see cref="T:Hisui.Graphics.IDecoration"/> をアクティブにします。
+            つまり <see cref="M:Hisui.Graphics.IScope.EnableDecoration(Hisui.Graphics.IDecoration)"/> の呼び出しと共に <see cref="M:Hisui.Graphics.IDecoration.PreDraw(Hisui.Graphics.ISceneContext)"/> が呼ばれ、
+            <see cref="M:System.IDisposable.Dispose"/> の呼び出しと共に <see cref="M:Hisui.Graphics.IDecoration.PostDraw(Hisui.Graphics.ISceneContext)"/> が呼ばれます。
+            </summary>
+            <param name="deco">アクティブにするデコレーション</param>
+        </member>
+        <member name="M:Hisui.Graphics.IScope.MultMatrix(Hisui.Geom.HmMatrix3d)">
+            <summary>
+            局所的にモデルビュー座標変換行列に掛け算します。
+            </summary>
+            <param name="mat">掛けるマトリックス</param>
+        </member>
+        <member name="M:Hisui.Graphics.IScope.MultMatrix(Hisui.Geom.HmMatrix3f)">
+            <summary>
+            局所的にモデルビュー座標変換行列に掛け算します。
+            </summary>
+            <param name="mat">掛けるマトリックス</param>
+        </member>
+        <member name="M:Hisui.Graphics.IScope.MultMatrix(Hisui.Geom.CodSys3d)">
+            <summary>
+            局所的にモデルビュー座標変換行列に掛け算し、以降の描画が指定した局所座標系で行われるようにします。
+            </summary>
+            <param name="codsys">局所座標系</param>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.BackFaceCulling">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.BackFaceCulling"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.ColorMaterial">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.ColorMaterial"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.DepthMask">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.DepthMask"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.DepthTest">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.DepthTest"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.StencilTest">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.StencilTest"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.Lighting">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.Lighting"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.Normalization">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.Normalization"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.LineStipple">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.LineStipple"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.LineWidth">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.LineWidth"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.Color">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.Color"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.Material">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.Material"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.FrontMaterial">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.FrontMaterial"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.BackMaterial">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.BackMaterial"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.Matrix">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.Matrix"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.Normal">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.Normal"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.PointSize">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.PointSize"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.PolygonMode">
+            <summary>
+            局所的に <see cref="P:Hisui.Graphics.ISceneContext.PolygonMode"/> を設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.IScope.ShaderProgram">
+            <summary>
+            有効なシェーダープログラムを set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.Material">
+            <summary>
+            マテリアルを表す構造体です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.Material.MaxShininess">
+            <summary>
+            <see cref="P:Hisui.Graphics.Material.Shininess"/> に設定可能な値の最大値です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.Material.#ctor(System.Drawing.Color,System.Drawing.Color,System.Drawing.Color,System.Double,System.Double)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="ambient">マテリアルの環境色</param>
+            <param name="diffuse">マテリアルの拡散色</param>
+            <param name="specular">マテリアルの鏡面色</param>
+            <param name="shininess">マテリアルの鏡面指数</param>
+            <param name="opacity">マテリアルの不透明度（0から1までの実数）</param>
+        </member>
+        <member name="M:Hisui.Graphics.Material.#ctor(System.Drawing.Color,System.Drawing.Color,System.Double,System.Double)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="color">マテリアルの環境色と拡散色</param>
+            <param name="specular">マテリアルの鏡面色</param>
+            <param name="shininess">マテリアルの鏡面指数</param>
+            <param name="opacity">マテリアルの不透明度（0から1までの実数）</param>
+        </member>
+        <member name="M:Hisui.Graphics.Material.#ctor(System.Drawing.Color,System.Drawing.Color,System.Double)">
+            <summary>
+            コンストラクタ。
+            <see cref="P:Hisui.Graphics.Material.Opacity"/> は <paramref name="color"/> の <see cref="P:System.Drawing.Color.A"/> プロパティから計算されます。
+            </summary>
+            <param name="color">マテリアルの環境色と拡散色</param>
+            <param name="specular">マテリアルの鏡面色</param>
+            <param name="shininess">マテリアルの鏡面指数</param>
+        </member>
+        <member name="M:Hisui.Graphics.Material.#ctor(System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            コンストラクタ。
+            <see cref="P:Hisui.Graphics.Material.Opacity"/> は <paramref name="color"/> の <see cref="P:System.Drawing.Color.A"/> プロパティから計算されます。
+            <see cref="P:Hisui.Graphics.Material.Shininess"/> には <see cref="F:Hisui.Graphics.Material.MaxShininess"/> が設定されます。
+            </summary>
+            <param name="color">マテリアルの環境色と拡散色</param>
+            <param name="specular">マテリアルの鏡面色</param>
+        </member>
+        <member name="M:Hisui.Graphics.Material.#ctor(System.Drawing.Color)">
+            <summary>
+            コンストラクタ。
+            <see cref="P:Hisui.Graphics.Material.SpecularColor"/> は <see cref="P:System.Drawing.Color.Black"/> が設定されます。
+            <see cref="P:Hisui.Graphics.Material.Opacity"/> は <paramref name="color"/> の <see cref="P:System.Drawing.Color.A"/> プロパティから計算されます。
+            <see cref="P:Hisui.Graphics.Material.Shininess"/> には <see cref="F:Hisui.Graphics.Material.MaxShininess"/> が設定されます。
+            </summary>
+            <param name="color"></param>
+        </member>
+        <member name="P:Hisui.Graphics.Material.Color">
+            <summary>
+            マテリアルの環境色と拡散色
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.AmbientColor">
+            <summary>
+            マテリアルの環境色
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.DiffuseColor">
+            <summary>
+            マテリアルの拡散色
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.SpecularColor">
+            <summary>
+            マテリアルの鏡面色
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.EmissionColor">
+            <summary>
+            マテリアルの放射色
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.Shininess">
+            <summary>
+            鏡面指数
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.Opacity">
+            <summary>
+            不透明度を set/get します。
+            値の範囲は [0, 1] で、0が完全に透明、1が不透明を意味します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Material.Default">
+            <summary>
+            デフォルトのマテリアルです。
+            <see cref="P:Hisui.Graphics.Material.Color"/> に <see cref="P:System.Drawing.Color.LightGray"/>、
+            <see cref="P:Hisui.Graphics.Material.SpecularColor"/> に <see cref="P:System.Drawing.Color.Gray"/> が設定されています。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.MaterialDecoration">
+            <summary>
+            マテリアルを設定する <see cref="T:Hisui.Graphics.IDecoration"/> です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.MaterialDecoration.#ctor(Hisui.Graphics.Material,Hisui.Graphics.Material)">
+            <summary>
+            コンストラクタ。オモテ面とウラ面のマテリアルを指定して構築します。
+            <see cref="P:Hisui.Graphics.MaterialDecoration.UseBackMaterial"/> プロパティは true に設定されます。
+            </summary>
+            <param name="front">オモテ面のマテリアル</param>
+            <param name="back">ウラ面のマテリアル</param>
+        </member>
+        <member name="M:Hisui.Graphics.MaterialDecoration.#ctor(Hisui.Graphics.Material)">
+            <summary>
+            コンストラクタ。オモテ面とウラ面の両方が同じマテリアルに設定されます。
+            <see cref="P:Hisui.Graphics.MaterialDecoration.UseBackMaterial"/> プロパティは false に設定されます。
+            </summary>
+            <param name="mat">マテリアル</param>
+        </member>
+        <member name="M:Hisui.Graphics.MaterialDecoration.#ctor">
+            <summary>
+            デフォルトコンストラクタ。<see cref="P:Hisui.Graphics.Material.Default"/> で初期化されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.MaterialDecoration.Hisui#Graphics#IDecoration#PreDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IDecoration.PreDraw(Hisui.Graphics.ISceneContext)"/> の実装です。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.MaterialDecoration.Hisui#Graphics#IDecoration#PostDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IDecoration.PostDraw(Hisui.Graphics.ISceneContext)"/> の実装です。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.UseBackMaterial">
+            <summary>
+            オモテ面とは別にウラ面にマテリアルを設定するかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.Material">
+            <summary>
+            オモテ面のマテリアルを set/get します。
+            <see cref="P:Hisui.Graphics.MaterialDecoration.UseBackMaterial"/> が true の場合はオモテ面のマテリアル、false の場合は両面のマテリアルとなります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.BackMaterial">
+            <summary>
+            ウラ面のマテリアルを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.Color">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.Material"/> の環境色と拡散色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.SpecularColor">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.Material"/> の鏡面色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.EmissionColor">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.Material"/> の放射色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.Shininess">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.Material"/> の鏡面指数を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.Opacity">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.Material"/> の不透明度を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.BackColor">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.BackMaterial"/> の環境色と拡散色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.BackSpecularColor">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.BackMaterial"/> の鏡面色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.BackEmissionColor">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.BackMaterial"/> の放射色を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.BackShininess">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.BackMaterial"/> の鏡面指数を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.MaterialDecoration.BackOpacity">
+            <summary>
+            <see cref="P:Hisui.Graphics.MaterialDecoration.BackMaterial"/> の不透明度を set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.Light">
+            <summary>
+            OpenGLの光源です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.Light.Draw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            光源を設定（描画）します。
+            </summary>
+            <param name="context">描画コンテキスト</param>
+        </member>
+        <member name="P:Hisui.Graphics.Light.Lights">
+            <summary>
+            長さ8の光源の配列を返します。OpenGLでは光源が8つまで設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.ID">
+            <summary>
+            光源のIDを返します。
+            <see cref="F:Hisui.OpenGL.GL.GL_LIGHT0"/> から <see cref="F:Hisui.OpenGL.GL.GL_LIGHT7"/> までの数値が割り当てられます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.Enabled">
+            <summary>
+            光源のON/OFFを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.IsWorldCoordinate">
+            <summary>
+            光源をワールド座標系に置くかカメラ座標系に置くかを set/get します。
+            <see cref="P:Hisui.Graphics.Light.Position"/>プロパティがワールド座標系の座標とみなすか、カメラ座標系の座標とみなすか、が設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.Position">
+            <summary>
+            光源の位置を同次座標で set/get します。
+            <c>Position.w == 0</c> の場合は無限遠点に置かれた光源と解釈され、平行光源となります。
+            <c>Position.w != 0</c> の場合は点光源となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.AmbientColor">
+            <summary>
+            環境光を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.DiffuseColor">
+            <summary>
+            拡散光を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.SpecularColor">
+            <summary>
+            反射光を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.SpotDirection">
+            <summary>
+            スポットライトとして使用する場合の光軸の方向を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.SpotExponent">
+            <summary>
+            スポットライトの減衰項の指数を set/get します。値の範囲は [0, 128] で、デフォルト値は 0 です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.SpotCutoff">
+            <summary>
+            スポットライトの開き角（光軸から母線までの角度）を set/get します。
+            単位は度で、範囲は [0, 90] です。ただしスポットライト効果をOFFにするときは 180 を指定します。
+            デフォルト値は180です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.Light.Attenuation">
+            <summary>
+            光源の減衰項を長さ3の配列で返します。
+            現在の仕様は固定値 new float[3]{ 1.0f, 0.0f, 0.0f } を返すだけで、変更は出来ません。
+            この固定値は「減衰なし」を意味し、減衰効果を設定することは出来ません。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.LineStipple">
+            <summary>
+            線種を表す列挙子です。
+            <see cref="M:Hisui.OpenGL.GL.glLineStipple(System.Int32,System.UInt16)"/> に指定する線種パターンを表すビット列が格納されています。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.LineStipple.Solid">
+            <summary>実線</summary>
+        </member>
+        <member name="F:Hisui.Graphics.LineStipple.Dash">
+            <summary>破線</summary>
+        </member>
+        <member name="F:Hisui.Graphics.LineStipple.Dash2">
+            <summary>細かめの破線</summary>
+        </member>
+        <member name="F:Hisui.Graphics.LineStipple.Dot">
+            <summary>点線</summary>
+        </member>
+        <member name="T:Hisui.Graphics.LineStippleDecoration">
+            <summary>
+            線種を設定する <see cref="T:Hisui.Graphics.IDecoration"/> クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.LineStippleDecoration.PreDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IDecoration.PreDraw(Hisui.Graphics.ISceneContext)"/> の実装です。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.LineStippleDecoration.PostDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IDecoration.PostDraw(Hisui.Graphics.ISceneContext)"/> の実装です。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.LineStippleDecoration.#ctor">
+            <summary>
+            デフォルトコンストラクタ。線種は実線 <see cref="F:Hisui.Graphics.LineStipple.Solid"/> が設定されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.LineStippleDecoration.#ctor(Hisui.Graphics.LineStipple)">
+            <summary>
+            コンストラクタ。線種を指定して構築します。
+            </summary>
+            <param name="pattern">線種</param>
+        </member>
+        <member name="P:Hisui.Graphics.LineStippleDecoration.Pattern">
+            <summary>
+            線種を set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.PointSizeDecoration">
+            <summary>
+            点の描画サイズを設定する <see cref="T:Hisui.Graphics.IDecoration"/> です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.PointSizeDecoration.PreDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IDecoration.PreDraw(Hisui.Graphics.ISceneContext)"/> の実装です。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.PointSizeDecoration.PostDraw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IDecoration.PostDraw(Hisui.Graphics.ISceneContext)"/> の実装です。
+            </summary>
+            <param name="sc">描画コンテキスト</param>
+        </member>
+        <member name="M:Hisui.Graphics.PointSizeDecoration.#ctor">
+            <summary>
+            デフォルトコンストラクタ。<see cref="P:Hisui.Graphics.PointSizeDecoration.Size"/> は 1 に初期化されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.PointSizeDecoration.#ctor(System.Single)">
+            <summary>
+            コンストラクタ。<see cref="P:Hisui.Graphics.PointSizeDecoration.Size"/> を指定して構築します。
+            </summary>
+            <param name="size">点のサイズ</param>
+        </member>
+        <member name="P:Hisui.Graphics.PointSizeDecoration.Size">
+            <summary>
+            点のサイズを set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.PolygonMode">
+            <summary>
+            ポリゴンモードを表す列挙型です。
+            </summary>
+            <seealso cref="M:Hisui.OpenGL.GL.glPolygonMode(System.UInt32,System.UInt32)"/>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonMode.Point">
+            <summary>ポリゴンの頂点を描画するモード</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonMode.Line">
+            <summary>ポリゴンのエッジを描画するモード</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonMode.Fill">
+            <summary>ポリゴンの面を描画するモード</summary>
+        </member>
+        <member name="T:Hisui.Graphics.PolygonStyles">
+            <summary>
+            ポリゴンの描画スタイルを表す列挙型です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.None">
+            <summary>何も描画しません</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.Face">
+            <summary>面を描画します</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.Edge">
+            <summary>エッジを描画します</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.Vertex">
+            <summary>頂点を描画します</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.FaceEdge">
+            <summary>面とエッジを描画します</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.FaceVertex">
+            <summary>面と頂点を描画します</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.EdgeVertex">
+            <summary>エッジと頂点を描画します</summary>
+        </member>
+        <member name="F:Hisui.Graphics.PolygonStyles.All">
+            <summary>面、エッジ、頂点すべてを描画します</summary>
+        </member>
+        <member name="T:Hisui.Graphics.SceneAttribute">
+            <summary>
+            シーン属性です。
+            <see cref="T:Hisui.Graphics.IScene"/> インターフェイスを実装したクラスにこの属性を付けると、
+            <see cref="F:Hisui.Graphics.SceneAttribute.SourceType"/> で指定された型のエンティティを描画するためのシーンとしてプラグインされます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.SceneAttribute.SourceType">
+            <summary>
+            描画対象のエンティティの型です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.SceneAttribute.#ctor(System.Type)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="srcType">描画対象エンティティの型を指定します</param>
+        </member>
+        <member name="M:Hisui.Graphics.SceneAttribute.#ctor(System.Type,Hisui.Graphics.SceneLocation)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="srcType">描画対象エンティティの型を指定します</param>
+            <param name="location">描画する座標系を指定します</param>
+        </member>
+        <member name="P:Hisui.Graphics.SceneAttribute.Location">
+            <summary>
+            シーンを描画する座標系（ワールドかカメラかスクリーンか）を set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.SceneDelegator">
+            <summary>
+            描画関数（デリゲート/ラムダ式）から <see cref="T:Hisui.Graphics.IScene"/> を生成するクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.SceneDelegator.#ctor(System.Action{Hisui.Graphics.ISceneContext})">
+            <summary>
+            コンストラクタ。
+            引数に指定された描画関数 <paramref name="method"/> が <see cref="M:Hisui.Graphics.SceneDelegator.Draw(Hisui.Graphics.ISceneContext)"/> で呼び出されます。
+            </summary>
+            <param name="method">描画関数</param>
+        </member>
+        <member name="M:Hisui.Graphics.SceneDelegator.Draw(Hisui.Graphics.ISceneContext)">
+            <summary>
+            <see cref="M:Hisui.Graphics.IScene.Draw(Hisui.Graphics.ISceneContext)"/> の実装。
+            コンストラクタで指定した描画関数を呼び出します。
+            </summary>
+            <param name="context">描画コンテキスト</param>
+        </member>
+        <member name="T:Hisui.Graphics.SceneFactory">
+            <summary>
+            エンティティに対応する <see cref="T:Hisui.Graphics.IScene"/> オブジェクトを生成するファクトリクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.NewInstance(System.Object,System.Type)">
+            <summary>
+            引数に指定されたエンティティ型 <paramref name="type"/> に関連付けて登録された
+            <see cref="T:Hisui.Graphics.IScene"/> 実装クラスを探し出し、コンストラクタ引数に <paramref name="src"/>
+            を指定してインスタンスを生成します。
+            <c>src.GetType()</c> は <paramref name="type"/> かその派生クラスである必要があります。
+            </summary>
+            <param name="src">生成されるシーンが描画するエンティティ。シーンクラスのコンストラクタ引数に指定されます。</param>
+            <param name="type">シーンクラスが関連付けられているエンティティ型</param>
+            <returns>生成されたシーンオブジェクト。失敗した場合は null を返します。</returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.NewInstance(System.Object)">
+            <summary>
+            エンティティ <paramref name="src"/> を描画するシーンオブジェクトを生成します。
+            </summary>
+            <param name="src">生成されるシーンが描画するエンティティ。シーンクラスのコンストラクタ引数に指定されます。</param>
+            <returns>生成されたシーンオブジェクト。失敗した場合は null を返します。</returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.NewInstance(Hisui.Core.IEntry)">
+            <summary>
+            <see cref="T:Hisui.Core.IEntry"/> が保持するエンティティを描画するシーンオブジェクトを生成します。
+            </summary>
+            <param name="entry">生成されるシーンが描画するエントリ</param>
+            <returns>生成されたシーン</returns>
+            <remarks>
+            <paramref name="entry.Entity"/> が <see cref="T:Hisui.Graphics.IScene"/> を実装している場合には、<c>(IScene)entry.Entity</c> を返します。
+            <para>
+            見つかったシーンクラスのコンストラクタが引数を2つ取る場合には、2番目の引数に <paramref name="entry"/> を渡します。
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document)">
+            <summary>
+            登録されているドキュメント描画シーン <see cref="T:Hisui.Graphics.IDocumentScene"/> を取得します。
+            <paramref name="document"/> に対応するシーンが登録されていない場合にはインスタンスを new して返します。
+            </summary>
+            <param name="document">シーンが描画するドキュメント</param>
+            <returns>ドキュメントを描画する <see cref="T:Hisui.Graphics.IDocumentScene"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document,Hisui.Graphics.SceneLocation)">
+            <summary>
+            登録されているドキュメント描画シーン <see cref="T:Hisui.Graphics.IDocumentScene"/> を取得します。
+            <paramref name="document"/> に対応するシーンが登録されていない場合にはインスタンスを new して返します。
+            </summary>
+            <param name="document">シーンが描画するドキュメント</param>
+            <param name="location">シーンの座標系</param>
+            <returns>ドキュメントを描画する <see cref="T:Hisui.Graphics.IDocumentScene"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.FindInstance(Hisui.Core.Document,Hisui.Graphics.SceneLocation)">
+            <summary>
+            登録されているドキュメント描画シーン <see cref="T:Hisui.Graphics.IDocumentScene"/> を取得します。
+            <paramref name="document"/> に対応するシーンが登録されていない場合には null を返します。
+            </summary>
+            <param name="document">シーンが描画するドキュメント</param>
+            <param name="location">シーンの座標系</param>
+            <returns>ドキュメントを描画する <see cref="T:Hisui.Graphics.IDocumentScene"/></returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.RegisterToPluginLoader">
+            <summary>
+            <see cref="T:Hisui.Graphics.SceneFactory"/> を <see cref="T:Hisui.Core.PluginLoader"/> に登録し、<see cref="E:Hisui.Core.PluginLoader.TypeLoadEvent"/>
+            イベントで取得されるプラグイン型が <see cref="M:Hisui.Graphics.SceneFactory.AddSceneType(System.Type)"/> に渡されるようにします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.AddSceneType(System.Type)">
+            <summary>
+            指定された型をシーンクラスとして登録します。
+            登録された場合には true を、シーンクラスとしての条件を満たしていない場合には false を返します。
+            </summary>
+            <param name="sceneType">登録するシーンクラス</param>
+            <returns>シーン登録に成功した場合は true</returns>
+        </member>
+        <member name="M:Hisui.Graphics.SceneFactory.ContainsEntityType(System.Type)">
+            <summary>
+            引数に指定された型 <paramref name="entityType"/> に対応する <see cref="T:Hisui.Graphics.IScene"/> クラスが登録されているかどうかを判定します。
+            </summary>
+            <param name="entityType">エンティティ型</param>
+            <returns><paramref name="entityType"/> を描画するシーンが登録されているかどうか</returns>
+        </member>
+        <member name="T:Hisui.Graphics.TextureType">
+            <summary>
+            2Dテクスチャのタイプを表す列挙型です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.Texture2d">
+            <summary>
+            2Dテクスチャを表すクラスです。
+            このクラスは、複数のビューで同じテクスチャマッピングをしたい場合には使用できません。
+            その場合は <see cref="M:Hisui.OpenGL.HiGL.CreateTextureObject(System.Drawing.Bitmap)"/> の使用を検討してください。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.Texture2d.FromBitmap(System.Drawing.Bitmap)">
+            <summary>
+            ビットマップ画像からテクスチャを生成します。画像のサイズは2のn乗でなくてはなりません。
+            </summary>
+            <param name="bmp">テクスチャにするビットマップ画像</param>
+            <returns>生成されたテクスチャ</returns>
+            <seealso cref="M:Hisui.OpenGL.HiGL.CreateTextureObject(System.Drawing.Bitmap)"/>
+        </member>
+        <member name="T:Hisui.Graphics.Util">
+            <summary>
+            OpenGLでプリミティブな形状を描画する関数群です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.Util.DrawLine(Hisui.Geom.Point3d,Hisui.Geom.Point3d)">
+            <summary>
+            2点を結ぶ線分を描画します。
+            </summary>
+            <param name="p1">線分の始点</param>
+            <param name="p2">線分の終点</param>
+        </member>
+        <member name="M:Hisui.Graphics.Util.DrawWireBox(Hisui.Geom.Box3d)">
+            <summary>
+            OpenGLで直方体 <paramref name="box"/> のワイヤーフレーム（全ての辺の線要素）を描画します。
+            </summary>
+            <param name="box">描画する直方体</param>
+        </member>
+        <member name="M:Hisui.Graphics.Util.DrawSolidSphere(Hisui.Geom.Sphere3d)">
+            <summary>
+            OpenGLで球を描画します。
+            </summary>
+            <param name="sph">描画する球</param>
+        </member>
+        <member name="M:Hisui.Graphics.Util.DrawSolidCylinder(Hisui.Geom.Line3d,System.Double,System.Double,System.Double)">
+            <summary>
+            OpenGLで円筒面を描画します。（円筒の両端のフタは描画されません）
+            </summary>
+            <param name="axis">円筒の軸</param>
+            <param name="radius">円筒の半径</param>
+            <param name="t1">円筒の終端位置1を表す <paramref name="axis"/> のパラメータ</param>
+            <param name="t2">円筒の終端位置2を表す <paramref name="axis"/> のパラメータ</param>
+        </member>
+        <member name="M:Hisui.Graphics.Util.DrawSolidCone(Hisui.Geom.Line3d,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            OpenGL で円錐面を描画します。
+            </summary>
+            <param name="axis">円錐の軸</param>
+            <param name="radius1">終端1の半径</param>
+            <param name="radius2">終端2の半径</param>
+            <param name="t1">終端1の位置を表す <paramref name="axis"/> のパラメータ</param>
+            <param name="t2">終端2の位置を表す <paramref name="axis"/> のパラメータ</param>
+        </member>
+        <member name="T:Hisui.Graphics.ViewManager">
+            <summary>
+            全ての <see cref="T:Hisui.Graphics.IView"/>（<see cref="T:Hisui.Graphics.GLViewControl"/>）のイベントを集めるクラスです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ViewManager.Events">
+            <summary>
+            全ての <see cref="T:Hisui.Graphics.IView"/>（<see cref="T:Hisui.Graphics.GLViewControl"/>）のイベントを取得します。
+            ここにイベントハンドラを設定すると、全てのビューで発生したイベントをひとつのハンドラで処理出来ます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Graphics.ViewOperations">
+            <summary>
+            ビュー操作の種類を表す列挙型です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.None">
+            <summary>ビュー操作なし、あるいは未定義</summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.Zoom">
+            <summary>ビューの拡大縮小操作</summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.Rotation">
+            <summary>ビューの回転操作</summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.Pan">
+            <summary>ビューのパン（平行移動）操作</summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.Perspective">
+            <summary>ビューのパース強度を変更する操作（透視投影モードのみ）</summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.Focus">
+            <summary>ビューの注視点変更操作</summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperations.Spin">
+            <summary>ビューのスクリーン上における2次元的な回転操作</summary>
+        </member>
+        <member name="T:Hisui.Graphics.ViewOperationBinding">
+            <summary>
+            ビュー操作の種類 <see cref="T:Hisui.Graphics.ViewOperations"/> とマウスボタンや修飾キーを結びつけるクラスです。
+            <see cref="T:Hisui.Graphics.StandardViewOperation"/> クラスで使用されます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Graphics.ViewOperationBinding.Operation">
+            <summary>
+            バインド対象のビュー操作です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperationBinding.#ctor(Hisui.Graphics.ViewOperations,System.Windows.Forms.MouseButtons,System.Windows.Forms.Keys)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="op">バインド対象のビュー操作</param>
+            <param name="button">ビュー操作に割り当てるマウスボタン</param>
+            <param name="modifier">ビュー操作に割り当てる修飾キー</param>
+        </member>
+        <member name="M:Hisui.Graphics.ViewOperationBinding.#ctor(Hisui.Graphics.ViewOperations)">
+            <summary>
+            コンストラクタ。
+            <see cref="P:Hisui.Graphics.ViewOperationBinding.MouseButton"/> は <see cref="F:System.Windows.Forms.MouseButtons.None"/>、
+            <see cref="P:Hisui.Graphics.ViewOperationBinding.KeyModifier"/> は <see cref="F:System.Windows.Forms.Keys.None"/> で初期化されます。
+            </summary>
+            <param name="op">バインド対象のビュー操作</param>
+        </member>
+        <member name="P:Hisui.Graphics.ViewOperationBinding.MouseButton">
+            <summary>
+            ビュー操作 <see cref="F:Hisui.Graphics.ViewOperationBinding.Operation"/> に割り当てるマウスボタンを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Graphics.ViewOperationBinding.KeyModifier">
+            <summary>
+            ビュー操作 <see cref="F:Hisui.Graphics.ViewOperationBinding.Operation"/> に割り当てる修飾キーを set/get します。
+            </summary>
+        </member>
+    </members>
+</doc>

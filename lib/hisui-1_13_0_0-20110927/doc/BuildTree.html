@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; Shift_JIS" />
+		<title>BreathCount とビルドグラフ</title>
+		<link rel="stylesheet" href="hisui.css" type="text/css">
+	</head>
+	<body>
+		<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>
+		<h1>BreathCount とビルドグラフ</h1>
+		
+		<p>ここではHisuiのビルドグラフ（と弊社が勝手に呼んでいるもの）について説明します。
+		ここで説明する構造はHisuiのあらゆる場所で使用されていますので、理解しておくと良いと思います。
+		</p>
+		
+		<h2>makeファイルからの着想</h2>
+		<p>｢ビルド｣と聞くと、プログラマならばmakeファイルによるビルドや統合開発環境によるビルドを連想すると思います。
+		makeファイルやVisualStudioのような統合開発環境を使うと、コンパイルするファイルを必要最小限に抑えてくれます。
+		</p>
+		<p>さて、CADアプリケーションでは、例えばあるエンティティが変更された場合それに合わせて描画も更新しなくてはなりません。
+		つまり、ドキュメントに対して何らかの変更があると、それに合わせてシーングラフも更新する必要があります。
+		しかし、わずかな変更に対してもシーングラフをすべて再構築してしまうと、レスポンスが非常に悪くなってしまいます。
+		この問題を回避するためには、何らかの仕掛けでシーングラフの更新を必要最低限に抑えなくてはなりません。
+		Hisuiではこの仕掛けとしてmakeファイルと同様のアプローチを採用しました。
+		</p>
+		<p>では改めてmakeの仕組みを考えてみましょう。
+		makeファイルには、ソースファイル間の依存関係が記述されています。
+		プログラマがソースファイルを編集すると、そのソースファイルのタイムスタンプが変更されます。
+		makeは、あるターゲットのタイムスタンプがそのソースファイルよりも古い場合に、そのターゲットのコンパイルが必要だと判断します。
+		makeが必要とするのは、タイムスタンプと依存関係です。
+		</p>
+		
+		<h2>breath count ～ 呼吸するシステム</h2>
+		<p>Hisuiでは時刻やタイムスタンプの代わりに breath count という整数値を用います。
+		グローバルな領域には SystemBreathCount という整数値が定義されており、アプリケーション起動時にこの値は0に初期化されます。
+		そして、ユーザーの操作等によってシステムに何らかの変更が加わるたびに、SystemBreathCountは1ずつインクリメントされます
+		（というよりは、そのようにアプリケーションを実装します）。
+		この BreathCount という呼び名は、システムの変更をシステムの呼吸と捉えた呼び名です。
+		何らかの変更があるたびにシステムが一つ呼吸したと考え、トータルの呼吸数である SystemBreathCount がインクリメントされるわけです。
+		このSystemBreathCountが現在の｢時刻（論理時刻）｣となります。
+		</p>
+		<p>Hisui.Coreには次のようなBreath構造体が定義されています。下記はそのstatic部分だけを抜き出したものです。</p>
+		<pre class="hisui">
+namespace Hisui.Core
+{
+  public struct Breath : IBreath
+  {
+    static int _systemBreathCount = 0 ;
+	
+    public static int SystemBreathCount
+    {
+      get { return _systemBreathCount ; }
+    }
+
+    public static void Increment()
+    {
+      ++_systemBreathCount ;
+    }
+    ...
+  }
+}
+</pre>
+<p>以上から分かるように、Hisui.Core.Breath.SystemBreathCount で現在の論理時刻にアクセスできます。
+また、Hisui.Core.Breath.Increment() をコールすることで論理時刻を一つ進めることができます。
+</p>
+<p>では次に、IBreathインターフェイスを見てみましょう。</p>
+<pre class="hisui">
+namespace Hisui.Core 
+{
+  public interface IBreath
+  {
+    int BreathCount { get ; }
+    void Touch() ;
+  }
+}
+</pre>
+<p>これは任意のクラスにタイムスタンプを持たせるインターフェイスです。
+	BreathCountプロパティが自身のタイムスタンプであり、Touch() はタイムスタンプを現在の時刻に更新するメソッドです
+	（Touch() というメソッド名は、UNIXコマンドのtouchに由来しています）。</p>
+	
+<p>Breath 構造体の後半部分では、IBreath インターフェイスを実装しています。</p>
+<pre class="hisui">
+namespace Hisui.Core
+{
+  public struct Breath : IBreath
+  {
+    ...
+
+    public int BreathCount
+    {
+      get { return _breathCount; }
+    }
+
+    public void Touch()
+    {
+      _breathCount = _systemBreathCount;
+    }
+
+    int _breathCount;
+  }
+}
+</pre>
+<p>メンバとして int 型の _breathCount を持ち、Touch() メソッドで BreathCount が SystemBreathCount に更新されるのが分かると思います。</p>
+<p>任意の自作のクラス MyClass に IBreath インターフェイスを実装したい場合には、この Breath 構造体を利用して次のように書くことが出来ます。</p>
+<pre>
+class MyClass : Hisui.Core.IBreath
+{
+  Hisui.Core.Breath _breath;
+	  
+  public int BreathCount
+  {
+    get { return _breath.BreathCount; }
+  }
+
+  public void Touch()
+  {
+    _breath.Touch();
+  }
+}
+</pre>
+<p>あるいは、次の BreathObject クラスを利用することも出来ます。</p>
+<pre class="hisui">
+namespace Hisui.Core
+{
+  public class BreathObject : IBreath
+  {
+    Breath _breath = new Breath();
+
+    public BreathObject()
+    {
+      if ( !(this is IBuild) ) _breath.Touch();
+    }
+
+    public virtual int BreathCount
+    {
+      get { return _breath.BreathCount; }
+    }
+
+    public virtual void Touch()
+    {
+      _breath.Touch();
+    }
+  }
+}
+</pre>
+<p>これを継承するだけで、MyClass に IBreath インターフェイスを実装することが出来ます。</p>
+<pre>
+class MyClass : Hisui.Core.BreathObject {}
+</pre>
+<p>MyClassオブジェクトに何らかの変更があった場合には、その都度 Touch() してタイムスタンプを更新しなくてはなりません。
+例えばプロパティのsetなどではTouch()を呼び出すようにしてください。</p>
+<pre>
+class MyClass : Hisui.Core.BreathObject
+{
+  int _data;
+  
+  public int Data
+  {
+    get { return _data; }
+    set { _data = value; Touch(); }  // Touch() を呼び出してブレスカウントを更新
+  }
+}
+</pre>
+
+
+<h2>IBuild インターフェイスと Builder クラス</h2>
+<p>冒頭のほうでこう書きました。</p>
+<blockquote>
+makeが必要とするのは、タイムスタンプと依存関係です。 
+</blockquote>
+<p>IBreathインターフェイスによって、オブジェクトにタイムスタンプが付けられるようになりました。
+次に必要なのは、依存関係です。以下にこの依存関係を表現する IBuild インターフェイスを示します。</p>
+<pre class="hisui">
+using System.Collections.Generic ;
+namespace Hisui.Core
+{
+  public interface IBuild : IBreath
+  {
+    IEnumerable&lt;IBreath&gt; Sources { get; }
+    void Build();
+  }
+}
+</pre>
+<p>Sourcesプロパティは自分自身が依存するオブジェクト群を返します。依存先の型は IBreath です。
+つまり、ブレスカウント（≒タイムスタンプ）を持っているオブジェクトを依存先として返すのです。
+IBuildインターフェイス自身もIBreathを継承していることに注意してください。SourcesとしてIBuildを返すことも出来ます。</p>
+<p>Build()メソッドは、自分自身をビルドする（更新する）メソッドです。
+Sourcesプロパティの返すオブジェクトを元に、自分自身の状態を更新します。
+逆に言えば、Build()メソッドで用いるオブジェクトは必ず、Sourcesプロパティで返さなくてはなりません。</p>
+<p>このIBuildインターフェイスとIBreathインターフェイスは、次のようなグラフを構成することが出来ます。</p>
+<img src="buildgraph.png"></img>
+<p>このグラフの末端はIBreathです。IBreathに何らかの変更が加わると、そのブレスカウントがインクリメントされます。
+その変更を捉えて、依存するIBuildをすべて更新（=Buildメソッドを呼び出す）すれば良いのです。それには、BuilderクラスのRun()メソッドを呼び出します。</p>
+<pre>
+Hisui.Core.Builder.Run( ルートのIBuildオブジェクト );
+</pre>
+<p>このメソッドは次のように定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Core 
+{
+  public static class Builder
+  {
+    ...
+    public static void Run( IBuild node )
+    {
+      if ( node.BreathCount < Breath.SystemBreathCount ) {
+        int breath = -1 ;
+        foreach ( IBreath src in node.Sources ) {
+          if ( src is IBuild ) Run( (IBuild)src ) ;
+          if ( breath < src.BreathCount ) breath = src.BreathCount ;
+        }
+        if ( node.BreathCount < breath ) {
+          node.Build() ;
+          node.Touch() ;
+        }
+      }
+    }
+    ...
+  }
+}
+</pre>
+
+<h2>メリット、デメリット</h2>
+<p>このような変更に対する更新処理としては、オブザーバーパターンによるイベントハンドリングが一般的です。
+こういった一般的な方法に対するメリットとデメリットについて述べます。</p>
+<h3>メリット： 更新処理を遅延できる</h3>
+<p>イベント処理の場合には、イベントを受け取った時点で即座に更新処理を行うことになります。
+したがって、複数の処理を一度に行うようなバッチ的な処理の場合には、一つのオブジェクトが何度も変更されてしまい、
+その度にイベントが飛んで更新処理が無駄に走ってしまう、ということが起こり得ます。
+しかしビルドグラフではそのようなことは発生しません。
+グラフ末端のIBreathが変更されたとしても、特に何の通知も行われないからです。
+更新処理は、更新が必要になるタイミングまで自然と遅延されます。
+</p>
+<h3>メリット： 複雑な依存グラフを自然に扱える</h3>
+<p>イベント処理による方式では、イベントの発火と処理が複雑に絡み合うとフローや構造が把握しにくくなりがちです。
+しかしビルドグラフでは、複雑な依存グラフもごく自然に扱うことが出来、きれいな設計が可能です。
+</p>
+<h3>デメリット： ビルドのたびにグラフ全体を訪問する</h3>
+<p>ビルドグラフを使うと、確かに Build() メソッドの呼び出しは最低限で済みます。
+しかし、Build() 呼び出しが必要かどうかを判断するためには依存先のブレスカウントをチェックしないといけないので、
+結局グラフ全体のブレスカウントをすべてチェックすることになります。
+グラフがあまりに巨大になると、これがパフォーマンス上のボトルネックになることがあるかもしれません。
+</p>
+<h3>デメリット： 変更の細かい情報が伝えられない</h3>
+<p>イベント処理方式であれば、イベント引数によって細かい情報を伝えることが出来ます。
+しかしビルドグラフ方式では、単にタイムスタンプで変更のある/なしを判断するだけですので、そのような情報を伝えることが出来ません。
+</p>
+
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2006, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

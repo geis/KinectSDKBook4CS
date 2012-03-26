@@ -1,0 +1,13 @@
+﻿<Window x:Class="VoiceUserDirection.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VoiceUserDirection" Height="350" Width="525" Closing="Window_Closing">
+  <Grid>
+    <Image Name="imageRgb" Stretch="Uniform" />
+    <Image Name="imageDepth" Stretch="Uniform" Opacity="0.5" />
+    <Canvas Name="canvasSkeleton" Width="{Binding ElementName=imageRgb, Path=ActualWidth}"
+            Height="{Binding ElementName=imageRgb, Path=ActualHeight}" />
+    <Label Content="" FontSize="18" FontWeight="Bold" Height="38"
+           HorizontalAlignment="Left" HorizontalContentAlignment="Center" Name="labelSoundSource" VerticalAlignment="Top" Width="503" />
+  </Grid>
+</Window>

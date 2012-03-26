@@ -1,0 +1,8 @@
+﻿<Window x:Class="BackgroundMask.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BackgroundMask" Height="350" Width="525" Closing="Window_Closing">
+    <Grid>
+        <Image Name="imageRgb" Stretch="Uniform" />
+    </Grid>
+</Window>

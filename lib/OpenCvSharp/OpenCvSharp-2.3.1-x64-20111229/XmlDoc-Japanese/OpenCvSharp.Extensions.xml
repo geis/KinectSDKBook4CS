@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenCvSharp.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:OpenCvSharp.Extensions.WriteableBitmapConverter">
+            <summary>
+            A static class which provides conversion between System.Windows.Media.Imaging.WriteableBitmap and IplImage
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.GetOptimumDepth(System.Windows.Media.PixelFormat)">
+            <summary>
+            指定したPixelFormatに適合するIplImageのビット深度を返す
+            </summary>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.GetOptimumChannels(System.Windows.Media.PixelFormat)">
+            <summary>
+            指定したPixelFormatに適合するIplImageのチャンネル数を返す
+            </summary>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.ToIplImage(System.Windows.Media.Imaging.WriteableBitmap)">
+            <summary>
+            Converts WriteableBitmap to IplImage
+            </summary>
+            <param name="src">Input WriteableBitmap</param>
+            <returns>IplImage</returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.ToIplImage(System.Windows.Media.Imaging.WriteableBitmap,OpenCvSharp.IplImage)">
+            <summary>
+            Converts WriteableBitmap to IplImage
+            </summary>
+            <param name="src">Input WriteableBitmap</param>
+            <param name="dst">Output IplImage</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.CopyFrom(OpenCvSharp.IplImage,System.Windows.Media.Imaging.WriteableBitmap)">
+            <summary>
+            Copies pixel data from System.Windows.Media.Imaging.WriteableBitmap to this instance
+            </summary>
+            <param name="ipl"></param>
+            <param name="wb"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.GetOptimumPixelFormats(OpenCvSharp.BitDepth,System.Int32)">
+            <summary>
+            指定したIplImageのビット深度・チャンネル数に適合するPixelFormatを返す
+            </summary>
+            <param name="d"></param>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.ToWriteableBitmap(OpenCvSharp.IplImage,System.Double,System.Double,System.Windows.Media.PixelFormat,System.Windows.Media.Imaging.BitmapPalette)">
+            <summary>
+            Converts IplImage to WriteableBitmap.
+            The arguments of this method corresponds the consructor of WriteableBitmap.
+            </summary>
+            <param name="src">Input IplImage</param>
+            <param name="dpiX">Horizontal dots per inch</param>
+            <param name="dpiY">Vertical dots per inch</param>
+            <param name="pf">Pixel format of output WriteableBitmap</param>
+            <param name="bp">Bitmap pallette</param>
+            <returns>WriteableBitmap</returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.ToWriteableBitmap(OpenCvSharp.IplImage,System.Windows.Media.PixelFormat)">
+            <summary>
+            Converts IplImage to WriteableBitmap (dpi=96, BitmapPalette=null)
+            </summary>
+            <param name="src">Input IplImage</param>
+            <param name="pf">Pixel format of output WriteableBitmap</param>
+            <returns>WriteableBitmap</returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.ToWriteableBitmap(OpenCvSharp.IplImage)">
+            <summary>
+            Converts IplImage to WriteableBitmap (dpi=96, BitmapPalette=null)
+            </summary>
+            <param name="src">Input IplImage</param>
+            <returns>WriteableBitmap</returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.WriteableBitmapConverter.ToWriteableBitmap(OpenCvSharp.IplImage,System.Windows.Media.Imaging.WriteableBitmap)">
+            <summary>
+            Converts IplImage to WriteableBitmap.
+            This method is more efficient because new instance of WriteableBitmap is not allocated.
+            </summary>
+            <param name="src">Input IplImage</param>
+            <param name="dst">Output WriteableBitmap</param>
+        </member>
+        <member name="T:OpenCvSharp.Extensions.MyParallel">
+            <summary>
+            Task Parallel Library for .NET 2.0
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.Extensions.MyParallel.NumThread">
+            <summary>
+            Number of Threads
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.MyParallel.For(System.Int32,System.Int32,System.Action{System.Int32})">
+            <summary>
+            Executes a for loop in which iterations may run in parallel.
+            </summary>
+            <param name="fromInclusive">The start index, inclusive.</param>
+            <param name="toExclusive">The end index, exclusive.</param>
+            <param name="body">The delegate that is invoked once per iteration.</param>
+        </member>
+        <member name="T:OpenCvSharp.Extensions.CvExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.CvExtensions.HoughLinesProbabilisticEx(OpenCvSharp.CvArr,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="rho"></param>
+            <param name="theta"></param>
+            <param name="threshold"></param>
+            <param name="minLineLength"></param>
+            <param name="maxLineGap"></param>
+            <param name="thetaMin"></param>
+            <param name="thetaMax"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.Extensions.BitmapSourceConverter">
+            <summary>
+            Static class which provides conversion between System.Windows.Media.Imaging.BitmapSource and IplImage
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.BitmapSourceConverter.DeleteObject(System.IntPtr)">
+            <summary>
+            Delete a GDI object
+            </summary>
+            <param name="hObject">The poniter to the GDI object to be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.BitmapSourceConverter.ToBitmapSource(OpenCvSharp.IplImage)">
+            <summary>
+            Converts IplImage to BitmapSource.
+            </summary>
+            <param name="src">Input IplImage</param>
+            <returns>BitmapSource</returns>
+        </member>
+        <member name="T:OpenCvSharp.Extensions.Binarizer">
+            <summary>
+            Various binarization methods (ATTENTION : The methods of this class is not implemented in OpenCV)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.Niblack(OpenCvSharp.IplImage,OpenCvSharp.IplImage,System.Int32,System.Double)">
+            <summary>
+            Binarizes by Niblack's method
+            </summary>
+            <param name="imgSrc">Input image</param>
+            <param name="imgDst">Output image</param>
+            <param name="kernelSize">Window size</param>
+            <param name="k">Adequate coefficient</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.NiblackFast(OpenCvSharp.IplImage,OpenCvSharp.IplImage,System.Int32,System.Double)">
+            <summary>
+            Binarizes by Niblack's method (This is faster but memory-hogging)
+            </summary>
+            <param name="imgSrc">Input image</param>
+            <param name="imgDst">Output image</param>
+            <param name="kernelSize">Window size</param>
+            <param name="k">Adequate coefficient</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.Sauvola(OpenCvSharp.IplImage,OpenCvSharp.IplImage,System.Int32,System.Double,System.Double)">
+            <summary>
+            Binarizes by Sauvola's method
+            </summary>
+            <param name="imgSrc">Input image</param>
+            <param name="imgDst">Output image</param>
+            <param name="kernelSize">Window size</param>
+            <param name="k">Adequate coefficient</param>
+            <param name="r">Adequate coefficient</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.SauvolaFast(OpenCvSharp.IplImage,OpenCvSharp.IplImage,System.Int32,System.Double,System.Double)">
+            <summary>
+            Binarizes by Sauvola's method (This is faster but memory-hogging)
+            </summary>
+            <param name="imgSrc">Input image</param>
+            <param name="imgDst">Output image</param>
+            <param name="kernelSize">Window size</param>
+            <param name="k">Adequate coefficient</param>
+            <param name="r">Adequate coefficient</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.Bernsen(OpenCvSharp.IplImage,OpenCvSharp.IplImage,System.Int32,System.Byte,System.Byte)">
+            <summary>
+            Binarizes by Bernsen's method
+            </summary>
+            <param name="imgSrc">Input image</param>
+            <param name="imgDst">Output image</param>
+            <param name="kernelSize">Window size</param>
+            <param name="constrastMin">Adequate coefficient</param>
+            <param name="bgThreshold">Adequate coefficient</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.MeanStddev(OpenCvSharp.IplImage,System.Int32,System.Int32,System.Int32,System.Double@,System.Double@)">
+            <summary>
+            注目画素の周辺画素の平均値と標準偏差を求める
+            </summary>
+            <param name="img">画像の画素データ</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="size">周辺画素の探索サイズ。奇数でなければならない</param>
+            <param name="mean">出力される平均</param>
+            <param name="stddev">出力される標準偏差</param>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.Binarizer.MinMax(OpenCvSharp.IplImage,System.Int32,System.Int32,System.Int32,System.Byte@,System.Byte@)">
+            <summary>
+            注目画素の周辺画素の最大値と最小値を求める
+            </summary>
+            <param name="img">画像の画素データ</param>
+            <param name="x">x座標</param>
+            <param name="y">y座標</param>
+            <param name="size">周辺画素の探索サイズ。奇数でなければならない</param>
+            <param name="min">出力される最小値</param>
+            <param name="max">出力される最大値</param>
+        </member>
+        <member name="T:OpenCvSharp.Extensions.BitmapExtension">
+            <summary>
+            static class which provides functions for System.Drawing.Bitmap
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.BitmapExtension.ToIplImage(System.Drawing.Bitmap)">
+            <summary>
+            Converts System.Drawing.Bitmap to IplImage
+            </summary>
+            <param name="src">System.Drawing.Bitmap</param>
+            <returns>IplImage</returns>
+        </member>
+        <member name="M:OpenCvSharp.Extensions.BitmapExtension.ToIplImage(System.Drawing.Bitmap,OpenCvSharp.IplImage)">
+            <summary>
+            Converts System.Drawing.Bitmap to IplImage
+            </summary>
+            <param name="src">System.Drawing.Bitmap</param>
+            <param name="dst">IplImage</param>
+        </member>
+    </members>
+</doc>

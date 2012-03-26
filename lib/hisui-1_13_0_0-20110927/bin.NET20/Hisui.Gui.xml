@@ -1,0 +1,503 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.Gui</name>
+    </assembly>
+    <members>
+        <member name="F:Hisui.Gui.AboutBox.components">
+            <summary>
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.AboutBox.Dispose(System.Boolean)">
+            <summary>
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.AboutBox.InitializeComponent">
+            <summary>
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.ClipDirections">
+            <summary>
+            クリップ平面の方向を表す列挙型です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.ClipPlane">
+            <summary>
+            クリップ平面クラスです。
+            平面の縁をマウスでドラッグすると断面位置を移動することが出来ます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.ClipPlane.ClipPlaneNo">
+            <summary>
+            このクラスが使用する OpenGL のクリップ平面の番号で、5 と定義されています。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ClipPlane.Find(Hisui.Graphics.DocumentViews)">
+            <summary>
+            <see cref="T:Hisui.Graphics.DocumentViews"/> に設定されているクリップ平面を取得します。
+            見つからない場合は null を返します。
+            </summary>
+            <param name="docviews">クリップ平面の探索先</param>
+            <returns>設定されているクリップ平面</returns>
+        </member>
+        <member name="M:Hisui.Gui.ClipPlane.Get(Hisui.Graphics.DocumentViews)">
+            <summary>
+            <see cref="T:Hisui.Graphics.DocumentViews"/> に設定されているクリップ平面を取得します。
+            存在しない場合は、クリップ平面を生成・登録して返します。
+            </summary>
+            <param name="docviews">クリップ平面の登録先</param>
+            <returns>設定されているクリップ平面</returns>
+        </member>
+        <member name="M:Hisui.Gui.ClipPlane.Remove(Hisui.Graphics.DocumentViews)">
+            <summary>
+            クリップ面の設定を解除します。
+            </summary>
+            <param name="docviews">クリップ平面の登録先</param>
+            <returns>もともとクリップ平面が設定されていなかった場合は false</returns>
+        </member>
+        <member name="M:Hisui.Gui.ClipPlane.GetClipDirection(Hisui.Graphics.DocumentViews)">
+            <summary>
+            設定されているクリップ平面の向きを返します。
+            クリップ平面が設定されていない場合は <see cref="F:Hisui.Gui.ClipDirections.None"/> を返します。
+            </summary>
+            <param name="docviews">クリップ平面の探索先</param>
+            <returns>クリップ平面の向き</returns>
+        </member>
+        <member name="M:Hisui.Gui.ClipPlane.SetClipDirection(Hisui.Graphics.DocumentViews,Hisui.Gui.ClipDirections)">
+            <summary>
+            <paramref name="docviews"/> にクリップ平面の向きを設定します。
+            <paramref name="dir"/> に <see cref="F:Hisui.Gui.ClipDirections.None"/> を指定するとクリップ平面が削除されます。
+            </summary>
+            <param name="docviews">クリップ平面の登録先</param>
+            <param name="dir">クリップ平面の向き</param>
+        </member>
+        <member name="P:Hisui.Gui.ClipPlane.Capping">
+            <summary>
+            断面のキャッピング（蓋をした表示）の有効/無効を取得/設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ClipPlane.Position">
+            <summary>
+            クリップ平面の位置を 0～1 の値で取得/設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ClipPlane.Direction">
+            <summary>
+            クリップ平面の向きを取得/設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ClipPlane.DocumentViews">
+            <summary>
+            クリップ平面の登録先を取得/設定します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.EntryPropertyControl.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.EntryPropertyControl.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.EntryPropertyControl.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.EnvInfoDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.EnvInfoDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Hisui.Gui.EnvInfoDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.LightSetting">
+            <summary>
+            光源設定を表すクラスです。
+            <see cref="T:Hisui.Graphics.Light"/> クラスのラッパーです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.LightSetting.#ctor(Hisui.Graphics.Light)">
+            <summary>
+            コンストラクタ。
+            ラップ対象の光源を指定して構築します。
+            </summary>
+            <param name="light">ラップ対象の光源</param>
+        </member>
+        <member name="P:Hisui.Gui.LightSetting.Enabled">
+            <summary>
+            光源のON/OFFを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.LightSetting.IsWorldCoordinate">
+            <summary>
+            光源をワールド座標系に置くかカメラ座標系に置くかを set/get します。
+            <see cref="P:Hisui.Gui.LightSetting.Position"/>プロパティがワールド座標系の座標とみなすか、カメラ座標系の座標とみなすか、が設定できます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.LightSetting.AmbientColor">
+            <summary>
+            環境光を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.LightSetting.DiffuseColor">
+            <summary>
+            拡散光を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.LightSetting.SpecularColor">
+            <summary>
+            反射光を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.LightSetting.Position">
+            <summary>
+            光源の位置を同次座標で set/get します。
+            <c>Position.w == 0</c> の場合は無限遠点に置かれた光源と解釈され、平行光源となります。
+            <c>Position.w != 0</c> の場合は点光源となります。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.LightSettingControl.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.LightSettingControl.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.LightSettingControl.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.MainForm.SetupFormSettings(System.Windows.Forms.Form)">
+            <summary>
+            フォームの位置や大きさの設定ファイルI/Oを設定します。
+            設定ファイルを読み込んで値をフォームに設定し、<see cref="E:System.Windows.Forms.Form.FormClosing"/> イベントで設定値を書き込まれるようにします。
+            </summary>
+            <param name="form"></param>
+        </member>
+        <member name="M:Hisui.Gui.MainForm2.CreateViewPanel">
+            <summary>
+            <see cref="T:Hisui.Gui.SingleViewPanel"/> インスタンスを生成し、<c>SetUp()</c> 関数を引数に
+            <see cref="P:Hisui.SI.DocumentViews"/> を指定して呼び出して初期化し、返します。
+            </summary>
+            <returns>初期化済みの <see cref="T:Hisui.Gui.SingleViewPanel"/> インスタンス</returns>
+        </member>
+        <member name="M:Hisui.Gui.MainForm2.CreateTreePanel">
+            <summary>
+            <see cref="T:Hisui.Gui.TreePanel2"/> インスタンスを生成し、<see cref="M:Hisui.Gui.TreePanel2.SetUp(Hisui.Graphics.DocumentViews)"/> 関数を引数に
+            <see cref="P:Hisui.SI.DocumentViews"/> を指定して呼び出して初期化し、返します。
+            </summary>
+            <returns>初期化済みの <see cref="T:Hisui.Gui.TreePanel2"/> インスタンス</returns>
+        </member>
+        <member name="M:Hisui.Gui.MainForm2.SetupFormSettings(System.Windows.Forms.Form)">
+            <summary>
+            フォームの位置や大きさの設定ファイルI/Oを設定します。
+            設定ファイルを読み込んで値をフォームに設定し、<see cref="E:System.Windows.Forms.Form.FormClosing"/> イベントで設定値を書き込まれるようにします。
+            </summary>
+            <param name="form"></param>
+        </member>
+        <member name="F:Hisui.Gui.MaterialDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.MaterialDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Hisui.Gui.MaterialDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.MaterialPanel.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.MaterialPanel.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.MaterialPanel.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.ProgressDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ProgressDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Hisui.Gui.ProgressDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.Properties.Resources">
+            <summary>
+              ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.Properties.Resources.ResourceManager">
+            <summary>
+              このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.Properties.Resources.Culture">
+            <summary>
+              厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
+              現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.PropertyPanel.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.PropertyPanel.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.PropertyPanel.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.ViewPanel">
+            <summary>
+            ビュー操作用ツールバーと <see cref="T:Hisui.Graphics.IView"/> が載ったコントロールです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewPanel.SetUp(Hisui.Graphics.DocumentViews)">
+            <summary>
+            初期化関数。ビューの表示対象となる <see cref="T:Hisui.Graphics.DocumentViews"/> を指定します。
+            このコントロールが破棄される際に <see cref="P:Hisui.Gui.ViewPanel.ViewSetting"/> が保存されるように設定されます。
+            </summary>
+            <param name="docviews">ビューの表示対象</param>
+        </member>
+        <member name="F:Hisui.Gui.ViewPanel.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewPanel.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.ViewPanel.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ViewPanel.ContextMenuFactory">
+            <summary>
+            右クリックで表示されるコンテキストメニューを生成するファクトリ関数を set/get します。
+            デフォルトでは <see cref="M:Hisui.SI.CreateContextMenu"/> が設定されています。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ViewPanel.ViewSetting">
+            <summary>
+            ビューの設定情報を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ViewPanel.ToolStripVisible">
+            <summary>
+            ツールバーの表示ON/OFF状態を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ViewPanel.DocumentViews">
+            <summary>
+            培土された <see cref="T:Hisui.Graphics.DocumentViews"/> を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.StatusBar">
+            <summary>
+            プログレスバーを表示するステータスバーです。
+            <see cref="E:Hisui.SI.ProgressChanged"/> イベントを受け取ってプログレスバーの表示を更新します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.StoragePropertyControl.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.StoragePropertyControl.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.StoragePropertyControl.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.TreePanel.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.TreePanel.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.TreePanel.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.TreePanel2.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.TreePanel2.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.TreePanel2.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="T:Hisui.Gui.ViewSetting">
+            <summary>
+            ビュー設定を表すクラスです。
+            各種設定をプロパティで set/get 出来るようになっており、
+            <see cref="T:System.Windows.Forms.PropertyGrid"/> で簡便に編集GUIを作ることが出来ます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Get(Hisui.Graphics.DocumentViews)">
+            <summary>
+            指定された <see cref="T:Hisui.Graphics.DocumentViews"/> に対応する設定情報を取得します。
+            未登録の場合はインスタンスを生成・登録して返します。
+            </summary>
+            <param name="docviews"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Save(Hisui.Graphics.DocumentViews)">
+            <summary>
+            <see cref="T:Hisui.Gui.ViewSettingData"/> に <paramref name="docviews"/> の設定値情報をコピーします。
+            </summary>
+            <param name="docviews"></param>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Restore(Hisui.Graphics.DocumentViews)">
+            <summary>
+            <see cref="T:Hisui.Gui.ViewSettingData"/> から設定値情報を取得し <paramref name="docviews"/> に反映します。
+            </summary>
+            <param name="docviews"></param>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Load(Hisui.Graphics.DocumentViews,System.String)">
+            <summary>
+            指定されたフォルダに保存された設定ファイルから値を取得し <paramref name="docviews"/> に反映します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Save">
+            <summary>
+            <see cref="T:Hisui.Gui.ViewSettingData"/> に自身の設定値情報をコピーします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Restore">
+            <summary>
+            <see cref="T:Hisui.Gui.ViewSettingData"/> から設定値情報を取得し自身に反映します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.Load(System.String)">
+            <summary>
+            指定されたフォルダに保存された設定ファイルから値を取得し自身に反映します。
+            </summary>
+            <param name="folderpath">設定ファイルの保存されているフォルダ</param>
+        </member>
+        <member name="M:Hisui.Gui.ViewSetting.CreateViewOperation(System.Func{System.Windows.Forms.ContextMenuStrip})">
+            <summary>
+            <see cref="P:Hisui.Gui.ViewSetting.ViewOperationSetting"/> で設定変更可能な <see cref="T:Hisui.Graphics.ViewOperation"/> を生成します。
+            引数には右クリックで表示されるコンテキストメニューの生成関数を指定します。
+            </summary>
+            <param name="createMenu">右クリックで表示されるコンテキストメニューの生成関数</param>
+            <returns>生成されたビューオペレーション</returns>
+        </member>
+        <member name="P:Hisui.Gui.ViewSetting.Current">
+            <summary>
+            <see cref="P:Hisui.SI.DocumentViews"/> に対応する設定情報を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ViewSetting.Bindings">
+            <summary>
+            ビューオペレーションのキーバインドを取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Gui.ViewSetting.ViewOperationSetting">
+            <summary>
+            ビューオペレーションの設定情報を取得します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Gui.ViewSettingDialog.components">
+            <summary>
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Gui.ViewSettingDialog.Dispose(System.Boolean)">
+            <summary>
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Gui.ViewSettingDialog.InitializeComponent">
+            <summary>
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+    </members>
+</doc>

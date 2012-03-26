@@ -1,0 +1,14 @@
+﻿<Window x:Class="OpticalCamouflage.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="OpticalCamouflage" Height="350" Width="525" Closing="Window_Closing">
+  <Grid>
+    <Image Name="imageRgb" Stretch="Uniform" />
+    <RadioButton Content="光学迷彩" Height="16" HorizontalAlignment="Left"
+                 Margin="147,12,0,0" Name="radioButtonOpticalCamouflage"
+                 VerticalAlignment="Top" IsChecked="True" GroupName="view" />
+    <RadioButton Content="背景マスク" Height="16" HorizontalAlignment="Left"
+                 Margin="247,12,0,0" Name="radioButton2" VerticalAlignment="Top"
+                 GroupName="view" />
+  </Grid>
+</Window>

@@ -1,0 +1,16 @@
+﻿<Window x:Class="KinectMeetsNXT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KinectMeetsNXT" Height="600" Width="800" Closing="Window_Closing"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+    <Image Height="480" HorizontalAlignment="Left" Name="imageRgb" Stretch="Fill" VerticalAlignment="Top" Width="640" />
+    <Canvas Height="480" HorizontalAlignment="Left" Name="canvasSkeleton" VerticalAlignment="Top" Width="640" />
+    <ComboBox Height="24" HorizontalAlignment="Left" Margin="646,12,0,0" Name="comboBoxPort"
+              VerticalAlignment="Top" Width="130" ItemsSource="{Binding}" DataContext="{Binding}" />
+    <Button Content="接続" Height="23" HorizontalAlignment="Left" Margin="646,53,0,0"
+            Name="buttonConnect" VerticalAlignment="Top" Width="130" Click="buttonConnect_Click" />
+    <Button Content="切断" Height="23" HorizontalAlignment="Left" Margin="646,82,0,0"
+            Name="buttonDisconnect" VerticalAlignment="Top" Width="130" Click="buttonDisconnect_Click" />
+  </Grid>
+</Window>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	
+	<title>ヒスイをポリゴン（STL/obj）のビューアとして使う</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+
+<p align="right"><a href="../index.html#howtouse">戻る</a></p>	
+<h1>ヒスイをポリゴン（STL/obj）のビューアとして使う</h1>
+		<p>ヒスイは基本的にはアプリケーション開発のプラットフォームですが、
+		Ver1.1から標準プラグインとしてある程度の機能が用意されていますので、そのままツールとして利用することも出来ます。
+		標準で次の機能が備わっています。
+		<ul>
+			<li>STLファイルのインポート/エクスポート</li>
+			<li>wavefront obj ファイルのインポート/エクスポート</li>
+			<li>STL ⇔ obj の相互変換</li>
+			<li>STL や obj を hix形式（ヒスイのファイル形式）で保存</li>
+		</ul>
+
+<h2>ヒスイの基本操作</h2>
+<p>bin/hisui.exe をダブルクリックして起動します。</p>
+<img src="howtouse_hisui.png" alt="起動画面">
+
+<h3>マウスによるビュー操作</h3>
+<table>
+  <tr><td>回転</td><td>マウス右ボタンでビューをドラッグします</td></tr>
+  <tr><td>パン</td><td>Shift+マウス右ボタンでビューをドラッグします</td></tr>
+  <tr><td>ズーム</td><td>3つの方法があります。
+  	<br>(a). Ctrl+マウス右ボタンでビューをドラッグします
+	<br>(b). マウスホイールでズームが出来ます
+	<br>(c). マウス中ボタンをドラッグして矩形を描くと、その矩形領域にズームします</td></tr>
+  <tr><td>注視点移動</td><td>マウス中ボタンでオブジェクトをクリックすると、その位置に注視点が移動します。
+  	<br>この操作により、ビューの回転中心を制御することが出来ます。
+	<br>なお、ズーム操作(c)においても注視点（回転中心）はズーム先に設定されます。
+  </td></tr>
+</table>
+
+
+<h2>インポート</h2>
+
+<h3>対応しているフォーマット</h3>
+<p><table>
+	<tr>
+		<th>拡張子</th><th>説明</th>
+	</tr><tr>
+		<td>asc</td><td>点群の X, Y, Z 座標をカンマまたはスペース区切りで列挙したもの</td>
+	</tr><tr>
+		<td>obj</td><td>Wavefront obj 形式（テクスチャには未対応）</td>
+	</tr><tr>
+		<td>stl</td><td>STereo-Lithography 形式</td>
+	</tr><tr>
+		<td>ply</td><td>スタンフォード大学などで使用されているポリゴンフォーマット</td>
+	</tr>
+</table>
+
+<p>下図はスタンフォード大学のウサギ（stanford bunny; *.ply 形式）を読み込んだ様子です。<br>
+(このデータは次のURLから入手できます。
+<a href="http://graphics.stanford.edu/data/3Dscanrep/">http://graphics.stanford.edu/data/3Dscanrep/</a>)</p>
+<p><img src="howtouse_bunny.png"></p>
+
+<h3>ドラッグ＆ドロップによるインポート</h3>
+<p>ファイルをビューにドロップすると、そのファイルがインポートされます。</p>
+
+<h3>ツールバーからインポート</h3>
+<p>下図のツールボタンからインポートするファイルの種類を選びます。</p>
+<img src="howtouse_import2.png">
+
+<h3>ツリービューからインポート</h3>
+<p>まずツリービューの DOCUMENT ノードを右クリックし、[モデルの新規作成] メニューを選択します。</p>
+<img src="howtouse_newmodel.png" alt="モデルの新規作成">
+
+<p>次にDOCUMENTの下に生成されたModelノードを右クリックし、[インポート] メニューを選択します。</p>
+<img src="howtouse_import.png" alt="インポート">
+
+<h2>データ型（クラス）</h2>
+<p>上のウサギのデータを読み込んだ画面のツリービューを見ると、"PolygonMesh" と書かれたノードがあることが分かります。
+これは、PLYファイルを読み込むとヒスイ内部では PolygonMesh というデータ型で格納されていることを示しています。</p>
+<p>下記に各ファイルを読み込んだときのデータ型を示します。</p>
+<p><table>
+	<tr><th>拡張子</th><th>データ型（クラス）</th></tr>
+	<tr><td>*.obj, *.ply</td><td>PolygonMesh</td></tr>
+	<tr><td>*.stl</td><td>TriangleSoup</td></tr>
+</table>
+<p>ツリービューの下にはプロパティウィンドウがあります。</p>
+<p><table border="0">
+	<tr><th>PolygonMesh</th><th>TriangleSoup</th></tr>
+	<tr><td><img src="howtouse_polygonmesh.png"></td>
+	<td><img src="howtouse_trianglesoup.png"></td></tr>
+</table></p>
+<p>調べる機会が多いのは Count プロパティです。
+左のPolygonMeshではファセット数が69451、頂点数が35947であることが分かります。
+同様に右のTriangleSoupでは、三角形の数が69451であることが分かります。</p>
+
+<h2>データ変換</h2>
+<p>PolygonMesh と TriangleSoup は相互にデータ変換を行うことが可能です。</p>
+<p>PolygonMesh から TriangleSoup へ変換する場合：<br><img src="howtouse_mesh2soup.png"></p>
+<p>TriangleSoup から PolygonMesh へ変換する場合：<br><img src="howtouse_soup2mesh.png"></p>
+<p>なお、データの品質次第では、TriangleSoup から PolygonMesh への変換は失敗する場合があります。</p>
+
+<h2>エクスポート</h2>
+<p>PolygonMeshは*objまたは*.plyへ、TriangleSoupは*.stlへエクスポートすることが出来ます。
+例えばPolygonMeshを*.objにエクスポートするには下図のように操作を行います。</p>
+<p><img src="howtouse_export.png"></p>
+
+<h2>HiX形式で保存</h2>
+<p>ヒスイは HiX 形式という独自のファイルフォーマットをサポートしています。
+PolygonMesh や TriangleSoup を HiX 形式で保存することも可能です。</p>
+<p><img src="howtouse_save.png"></p>
+
+
+<hr><p align="center"><a href="../index.html#howtouse">戻る</a></p>
+<p align="right">Copyright &copy; 2007, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

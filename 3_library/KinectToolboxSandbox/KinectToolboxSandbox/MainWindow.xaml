@@ -1,0 +1,11 @@
+﻿<Window x:Class="KinectToolboxSandbox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="584" Width="664" Closing="Window_Closing">
+    <Grid>
+    <Image Name="imageRgb" Stretch="Uniform" Width="640" Height="480" Margin="0,65,2,0" />
+    <Canvas Name="canvasTrack" Margin="0,65,0,0" />
+    <TextBlock FontSize="26" Height="39" Name="textBlockPose" Text="ポーズ" Margin="346,16,0,490" />
+    <TextBlock FontSize="26" Height="39" Name="textBlockGesture" Text="ジェスチャー" Width="165" Margin="38,0,458,474" />
+  </Grid>
+</Window>

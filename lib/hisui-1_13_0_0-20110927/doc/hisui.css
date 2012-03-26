@@ -1,0 +1,58 @@
+body {
+  margin: 6em;
+}
+h1 {
+  color: #334438;
+}
+h2 {
+  margin-top: 4em;
+  padding: 4px;
+  border-bottom-width: thick;
+  border-bottom-style: solid;
+  //border-color: #069;
+  color: #095c31;
+  //border-color: #63c0ab;
+  border-color: #e69623;
+}
+h3 {
+  margin-top: 3em;
+  padding-left: 8px;
+  border-left-width: 1em;
+  border-left-style: solid;
+  //border-color: #f88;
+  border-color: #63c0ab;
+  //border-color: #e69623;
+  color: #095c31;
+}
+pre {
+  background-color: #adc;
+  margin-left: 2em;
+  margin-right: 2em;
+  padding: 1em;
+}
+pre.hisui {
+  background-color: #acd;
+  margin-left: 2em;
+  margin-right: 2em;
+  padding: 1em;
+}
+table {
+  background-color: #069;
+}
+table.noborder {
+  background-color: white;
+}
+td {
+  background-color: white;
+  padding: 4px;
+}
+th {
+	background-color: #38c;
+	color: white;
+}
+strong {
+  color: #BF1E33;
+}
+a {
+  color: #095c31;
+}

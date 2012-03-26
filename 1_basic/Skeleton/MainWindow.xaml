@@ -1,0 +1,16 @@
+﻿<Window x:Class="SkeletonTracking.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Skeleton" Height="350" Width="525"
+        HorizontalContentAlignment="Center" Closing="Window_Closing">
+  <Grid>
+    <Image Name="imageRgb" Stretch="Uniform" />
+    <Image Name="imageDepth" Stretch="Uniform" Opacity="0.5" />
+    <Canvas Name="canvasSkeleton"
+            Width="{Binding ElementName=imageRgb, Path=ActualWidth}"
+            Height="{Binding ElementName=imageRgb, Path=ActualHeight}" />
+    <ComboBox Height="24" HorizontalAlignment="Left" Name="comboBoxRange"
+              VerticalAlignment="Top" Width="120"
+              SelectionChanged="comboBoxRange_SelectionChanged" />
+  </Grid>
+</Window>

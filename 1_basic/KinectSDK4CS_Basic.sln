@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RgbCamera", "RgbCamera\RgbCamera.csproj", "{CC451B09-066B-4343-88B5-FE950604C4F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepthCamera", "DepthCamera\DepthCamera.csproj", "{10CA340C-8291-42E2-94D6-297097FECEE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User", "User\User.csproj", "{77B74465-0E18-4F38-9E59-A3A9D50CC6EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skeleton", "Skeleton\Skeleton.csproj", "{53E6AC56-516B-481C-ACAD-1509B97EC800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "WindowsForms\WindowsForms.csproj", "{570C2187-C9FF-45CC-AF3C-D9B891B3B2F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioOutput", "AudioOutput\AudioOutput.csproj", "{DC3DC5CA-6314-410D-A56D-0055A0C3211C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioSource", "AudioSource\AudioSource.csproj", "{23260CAF-D75A-4060-A933-1988B8CC5C21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiltMotor", "TiltMotor\TiltMotor.csproj", "{DD5B913E-E5A5-4374-9584-40832DE08536}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectInOut", "KinectInOut\KinectInOut.csproj", "{28410B34-B595-49C2-A1B1-E01A7F890283}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiKinect", "MultiKinect\MultiKinect.csproj", "{854CBA8A-B7B1-454C-A94E-AEBB52602492}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC451B09-066B-4343-88B5-FE950604C4F5}.Debug|x86.ActiveCfg = Debug|x86
+		{CC451B09-066B-4343-88B5-FE950604C4F5}.Debug|x86.Build.0 = Debug|x86
+		{CC451B09-066B-4343-88B5-FE950604C4F5}.Release|x86.ActiveCfg = Release|x86
+		{CC451B09-066B-4343-88B5-FE950604C4F5}.Release|x86.Build.0 = Release|x86
+		{10CA340C-8291-42E2-94D6-297097FECEE2}.Debug|x86.ActiveCfg = Debug|x86
+		{10CA340C-8291-42E2-94D6-297097FECEE2}.Debug|x86.Build.0 = Debug|x86
+		{10CA340C-8291-42E2-94D6-297097FECEE2}.Release|x86.ActiveCfg = Release|x86
+		{10CA340C-8291-42E2-94D6-297097FECEE2}.Release|x86.Build.0 = Release|x86
+		{77B74465-0E18-4F38-9E59-A3A9D50CC6EA}.Debug|x86.ActiveCfg = Debug|x86
+		{77B74465-0E18-4F38-9E59-A3A9D50CC6EA}.Debug|x86.Build.0 = Debug|x86
+		{77B74465-0E18-4F38-9E59-A3A9D50CC6EA}.Release|x86.ActiveCfg = Release|x86
+		{77B74465-0E18-4F38-9E59-A3A9D50CC6EA}.Release|x86.Build.0 = Release|x86
+		{53E6AC56-516B-481C-ACAD-1509B97EC800}.Debug|x86.ActiveCfg = Debug|x86
+		{53E6AC56-516B-481C-ACAD-1509B97EC800}.Debug|x86.Build.0 = Debug|x86
+		{53E6AC56-516B-481C-ACAD-1509B97EC800}.Release|x86.ActiveCfg = Release|x86
+		{53E6AC56-516B-481C-ACAD-1509B97EC800}.Release|x86.Build.0 = Release|x86
+		{570C2187-C9FF-45CC-AF3C-D9B891B3B2F6}.Debug|x86.ActiveCfg = Debug|x86
+		{570C2187-C9FF-45CC-AF3C-D9B891B3B2F6}.Debug|x86.Build.0 = Debug|x86
+		{570C2187-C9FF-45CC-AF3C-D9B891B3B2F6}.Release|x86.ActiveCfg = Release|x86
+		{570C2187-C9FF-45CC-AF3C-D9B891B3B2F6}.Release|x86.Build.0 = Release|x86
+		{DC3DC5CA-6314-410D-A56D-0055A0C3211C}.Debug|x86.ActiveCfg = Debug|x86
+		{DC3DC5CA-6314-410D-A56D-0055A0C3211C}.Debug|x86.Build.0 = Debug|x86
+		{DC3DC5CA-6314-410D-A56D-0055A0C3211C}.Release|x86.ActiveCfg = Release|x86
+		{DC3DC5CA-6314-410D-A56D-0055A0C3211C}.Release|x86.Build.0 = Release|x86
+		{23260CAF-D75A-4060-A933-1988B8CC5C21}.Debug|x86.ActiveCfg = Debug|x86
+		{23260CAF-D75A-4060-A933-1988B8CC5C21}.Debug|x86.Build.0 = Debug|x86
+		{23260CAF-D75A-4060-A933-1988B8CC5C21}.Release|x86.ActiveCfg = Release|x86
+		{23260CAF-D75A-4060-A933-1988B8CC5C21}.Release|x86.Build.0 = Release|x86
+		{DD5B913E-E5A5-4374-9584-40832DE08536}.Debug|x86.ActiveCfg = Debug|x86
+		{DD5B913E-E5A5-4374-9584-40832DE08536}.Debug|x86.Build.0 = Debug|x86
+		{DD5B913E-E5A5-4374-9584-40832DE08536}.Release|x86.ActiveCfg = Release|x86
+		{DD5B913E-E5A5-4374-9584-40832DE08536}.Release|x86.Build.0 = Release|x86
+		{28410B34-B595-49C2-A1B1-E01A7F890283}.Debug|x86.ActiveCfg = Debug|x86
+		{28410B34-B595-49C2-A1B1-E01A7F890283}.Debug|x86.Build.0 = Debug|x86
+		{28410B34-B595-49C2-A1B1-E01A7F890283}.Release|x86.ActiveCfg = Release|x86
+		{28410B34-B595-49C2-A1B1-E01A7F890283}.Release|x86.Build.0 = Release|x86
+		{854CBA8A-B7B1-454C-A94E-AEBB52602492}.Debug|x86.ActiveCfg = Debug|x86
+		{854CBA8A-B7B1-454C-A94E-AEBB52602492}.Debug|x86.Build.0 = Debug|x86
+		{854CBA8A-B7B1-454C-A94E-AEBB52602492}.Release|x86.ActiveCfg = Release|x86
+		{854CBA8A-B7B1-454C-A94E-AEBB52602492}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
