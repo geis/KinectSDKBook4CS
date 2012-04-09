@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <META http-equiv="Content-Style-Type" content="text/css">
+		<title>ヒスイ = C# で OpenGL するフリーの Framework</title>
+		<link rel="stylesheet" href="doc/hisui.css" type="text/css">
+		
+	</head>
+	<body>
+	
+	<div style="float: left; width:200px;"><a name="goTop"><img src="doc/HisuiLogoSmall.png" /></a></div>
+	<h1>ヒスイ 1.13<br>～ C# で OpenGL するフリーの Framework</h1>
+	<p align="right">Copyright &copy; 2010, 株式会社カタッチ
+	<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+	<div style="clear: left"></div>
+	
+    <div style="margin-left: 3em">
+		<p>ダウンロード：
+    <a href="http://www.quatouch.com/dcnt/dcnt.cgi?n=8">hisui-1_13_0_0-20110927.zip</a>
+		</p>
+		<ul>
+			<li>本ソフトウェア（ヒスイ）は商用/非商用に関わらず無償で使用できます。</li>
+			<li>ヒスイの使用によるいかなる結果についても、弊社は一切の責任を負いません。</li>
+			<li>ヒスイのモジュールは一切改変しないでください。</li>
+		</ul>
+    <p><a href="doc/changelog.html">更新履歴</a> <!--<small><strong>重要な変更があります！</strong></small>-->
+    </div>
+
+		<h3>目次</h3>
+		<ol>
+			<li><a href="#hisui">ヒスイは C# + OpenGL でポリゴンを扱う Framework です</a></li>
+		  <li><a href="#howtouse">ヒスイをポリゴン（STL/obj）のビューアとして使う</a></li>
+			<li><a href="#tutorial">開発チュートリアル</a></li>
+      <ol>
+        <li>Hello World を作ってみよう</li>
+        <li>OpenGL命令で直線を描画してみよう</li>
+        <li>直線作図機能を作ってみよう (1)</li>
+        <li>直線作図機能を作ってみよう (2)</li>
+        <li>ポリゴンデータを操作してみよう</li>
+        <li>直線エンティティを自作してみよう (1)</li>
+        <li>直線エンティティを自作してみよう (2)</li>
+        <li>自作のフォームにヒスイのビューを取り込もう</li>
+      </ol>
+			<li><a href="#sdkdocuments">SDKドキュメント</a></li>
+      <ol>
+  			<li>主な機能一覧</li>
+  			<li>パッケージ構成</li>
+  			<li>Hisui.Spatial: ヒスイでポリゴンデータをラクラク操作</li>
+  			<li>ヒスイで IronPython を動かそう</li>
+  			<li>BreathCount とビルドグラフ</li>
+  			<li>ドキュメント構造</li>
+  			<li>シーングラフ</li>
+  			<LI>カメラ</LI>
+  			<li>OperationDriver によるプル型イベントハンドリング</li>
+      </ol>
+		</ol>
+		
+		<h2><a name="hisui">ヒスイは C# + OpenGL でポリゴンを扱う Framework です</a></h2>
+		<div align="right"><a href="#goTop">目次へ</a></div>
+		<a href="doc/hisui.png"><img src="doc/hisui.png" alt="ヒスイ" width="128" style="border:0"></a>
+		<p>ヒスイは C# で書かれた OpenGL アプリケーションのプラットフォームです。
+		ヒスイを用いることにより</p>
+		<ul>
+			<li>OpenGLによる3次元グラフィックアプリケーションが容易に開発できます。</li>
+			<li>STL ファイルや obj ファイルなどのポリゴンデータを操作、入出力することが出来ます。</li>
+			<li>Plug-inモジュールが容易に開発できます。</li>
+			<li>ヒスイ上で開発されたアプリケーションやモジュール間で連携が出来ます。</li>
+		</ul>
+		<p>ヒスイによって OpenGL アプリケーションの開発が容易になり、3次元技術の裾野が広がることを願っています。</p>
+		
+
+		<h3>名前の由来</h3>
+		<p>ヒスイ（翡翠）は5月の誕生石となっている石です。弊社 株式会社カタッチ は2006年5月に登記されました。</p>
+		<p>また、スクリプト言語には Perl や Ruby など宝石の名前を持つものが存在します。
+		これらのスクリプト言語の「やりたいことを素早く簡単に美しく実現する」コンセプトに感銘を受けたため、
+		これにあやかりたいという思いから宝石の名前を付けました。</p>
+		
+		<h3>GLUTよりも便利に</h3>
+		<p>気軽にOpenGLアプリを作りたい。その場合、有名なのはGLUTです。
+		<p>でも、GLUTでは Projection Matrix の設定やマウスによるビューの回転操作など、全て自分で作り込まなくてはなりません。
+		ヒスイは完成されたビューを持っているため、Projection Matrix やマウス操作を自分で作る必要はありません。
+		だからといってプログラマから自由を奪うことはなく、OpenGLのコードを自由にシーン中に埋め込むことが出来ます。
+		また、ポリゴンのデータ構造も持っていますので、ポリゴンのデータを扱うのにも便利です。
+		<p>ヒスイは C# により .NET Framework 上に構築されています。つまり、.NET Framework のパワーをフルに活かした
+		本格的なアプリケーションの開発にも使用することが出来ます。GLUTは本格的なアプリケーションには向きませんが、
+		ヒスイならばそれが可能です。
+		<p>ヒスイは、GLUT以上の気軽さで、より本格的なOpenGLアプリケーションの開発を支援します。
+		
+
+		<h2><a name="howtouse" href="doc/howtouse.html">ヒスイをポリゴン（STL/obj）のビューアとして使う</a></h2>
+		<div align="right"><a href="#goTop">目次へ</a></div>
+		<p>ヒスイは基本的にはアプリケーション開発のプラットフォームですが、
+		Ver1.1から標準プラグインとしてある程度の機能が用意されていますので、そのままツールとして利用することも出来ます。
+		標準で次の機能が備わっています。
+		<ul>
+			<li>STLファイルのインポート/エクスポート</li>
+			<li>wavefront obj ファイルのインポート/エクスポート</li>
+			<li>STL ⇔ obj の相互変換</li>
+			<li>STL や obj を hix形式（ヒスイのファイル形式）で保存</li>
+		</ul>
+
+
+		<h2><a name="tutorial">開発チュートリアル</a></h2>
+		<div align="right"><a href="#goTop">目次へ</a></div>
+
+    <h3><a href="doc/tutorial/helloworld.html">Hello World を作ってみよう</a></h3>
+    <p>メッセージボックスで "Hello World" を表示するコマンドを作成します。
+    <ul>
+      <li>開発環境（プロジェクト）の設定
+      <li>Hello World コマンドの作成
+      <li>メニューの日本語化
+    </ul>
+
+    <h3><a href="doc/tutorial/opengl.html">OpenGL命令で直線を描画してみよう</a></h3>
+    <p>OpenGL の命令を用いて直線を描画してみます。
+    <ul>
+      <li>匿名メソッド（delegate）による描画
+      <li>シーンクラスの作成
+      <li>ビューへのフィット
+    </ul>
+
+    <h3><a href="doc/tutorial/putline.html">直線作図機能を作ってみよう (1)</a></h3>
+    <p>Hisui.Spatial.IPolyline エンティティを利用して、直線を作図する機能を作成します。
+    エンティティの登録方法や、ビューのクリックイベントの取得方法などが分かります。
+    <ul>
+      <li>IPolyline エンティティのインスタンス生成
+      <li>エンティティのドキュメントへの登録
+      <li>マウスで２点クリックによる直線作図
+    </ul>
+
+    <h3><a href="doc/tutorial/putline2.html">直線作図機能を作ってみよう (2)</a></h3>
+    <p>上の「直線作図機能を作ってみよう (1)」の続きです。
+    <ul>
+      <li>ラバーバンド表示
+      <li>ツールバーの作成
+      <li>コンテキストメニュー
+      <li>端点移動
+    </ul>
+
+    <h3><a href="doc/tutorial/polygon.html">ポリゴンデータを操作してみよう</a></h3>
+    <p>ポリゴンデータに関する簡単なサンプルコードを幾つか列挙します。
+    詳細はSDKドキュメント<a href="doc/spatial.html">「Spatial: ヒスイでポリゴンデータをラクラク操作」</a>を参照してください。
+
+    <h3><a href="doc/tutorial/entity.html">直線エンティティを自作してみよう (1)</a></h3>
+    <p>直線を例にとってエンティティクラスを自作方法を学びます。
+    <ul>
+      <li>直線エンティティの作成
+      <li>直線エンティティを描画するシーンの作成
+      <li>直線エンティティを保存するシリアライザの作成
+    </ul>
+
+    <h3><a href="doc/tutorial/entity2.html">直線エンティティを自作してみよう (2)</a></h3>
+    <p>上の「直線エンティティを自作してみよう (1)」の続きです。
+    <ul>
+      <li>選択時のハイライト表示のカスタマイズ
+      <li>直線の端点移動
+      <li>Undo/Redo 対応
+    </ul>
+
+    <h3><a href="doc/tutorial/form.html">自作のフォームにヒスイのビューを取り込もう</a></h3>
+    <p>Hisui.Gui.MainForm を使用しないで、自分でフォームをデザインし、そこにヒスイのビューを貼り付けます。
+
+    <h3><a href="doc/tutorial/tutorial.html">（旧チュートリアル）直線作図機能を作ってみよう</a></h3>
+    <p>これは ver1.3 までのドキュメントに含まれていたチュートリアルです。
+    このチュートリアルの内容は上記のチュートリアルに全て含まれていますが、記録として残してあります。
+		<ol>
+			<li>直線シーンの追加</li>
+			<li>直線エンティティの作成</li>
+			<li>作図コマンドの作成</li>
+			<li>Undo/Redo対応</li>
+			<li>直線のシリアライズ</li>
+		</ol>
+		
+
+		<h2><a name="sdkdocuments">SDKドキュメント</a></h2>
+		<div align="right"><a href="#goTop">目次へ</a></div>
+
+		<h3>主な機能一覧</h3>
+		<ul>
+			<li>3次元幾何演算向けのベクトル・行列演算ライブラリ</li>
+			<li>幾何要素などのエンティティを保持するドキュメント構造</li>
+			<li>ドキュメントからシーングラフの生成</li>
+			<li>OpenGLによる描画コンポーネント</li>
+			<li>XML形式によるシリアライズ機構</li>
+			<li>複数回Undo/Redo</li>
+			<li>マウス操作によるオペレーションコマンドの作成支援</li>
+			<li>エンティティのPlug-in機構</li>
+			<li>ポリゴンスープやポリゴンメッシュのエンティティ（描画、シリアライズを含む）</li>
+		</ul>
+
+		<h3>パッケージ構成</h3>
+		<a href="doc/packages.png"><img src="doc/packages.png" width="25%"></a>
+
+		<h3><a href="doc/spatial.html">Hisui.Spatial: ヒスイでポリゴンデータをラクラク操作</a></h3>
+		<p>Hisui.Spatial.dll にはポリゴンスープやポリゴンメッシュなどのエンティティが定義されています。
+		これらのエンティティの使い方を解説します。</p>
+
+		<h3><a href="doc/python.html">ヒスイで IronPython を動かそう</a></h3>
+		<p>IronPython とは .NET Framework 上で動作する python スクリプトです。
+		ヒスイには IronPython との連携が用意されており、例えば python でコマンドを作成することが出来ます。</p>
+
+		<h3><a href="doc/BuildTree.html">BreathCount とビルドグラフ</a></h3>
+		<p>Hisuiの構造を根底で支えるビルドグラフについての説明です。Hisui.Core.IBreath インターフェイスや Hisui.Core.IBuild インターフェイスについて説明します。</p>
+
+		<h3><a href="doc/document.html">ドキュメント構造</a></h3>
+		<p>Hisuiのドキュメント構造についての説明です。Hisui.Core.Document クラスや Hisui.Core.IEntry インターフェイスなどについて説明します。</p>
+
+		<h3><a href="doc/scenegraph.html">シーングラフ</a></h3>
+		<p>Hisuiのシーングラフについての説明です。Hisui.Graphics.IScene インターフェイスなどが構成するシーングラフについて説明します。</p>
+
+		<h3><a href="doc/camera.html">カメラ</a></h3>
+		<p>Hisuiのビューに組み込まれているカメラについての説明です。Hisui.Graphics.ICameraについての説明となります。</p>
+
+		<h3><a href="doc/operationdriver.html">OperationDriver によるプル型イベントハンドリング</a></h3>
+		<p>Hisuiではユーザーのオペレーションをプル型イベントハンドリングによって記述できます。Hisui.Ctrl.OperationDriverなどについての説明となります。</p>
+
+		<hr><p align="right">Copyright &copy; 2010, 株式会社カタッチ
+		<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+	</body>
+</html>

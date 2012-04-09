@@ -1,0 +1,1279 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NxtNet.DesktopLib</name>
+    </assembly>
+    <members>
+        <member name="T:NxtNet.TouchSensor">
+            <summary>
+            The class that is responsible for managing a touch (pressure) sensor.
+            The touch sensor is usually connected to port 1.
+            </summary>
+        </member>
+        <member name="T:NxtNet.Sensor">
+            <summary>
+            Base class for common sensor features.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Sensor._port">
+            <summary>
+            Private store for the <see cref="P:NxtNet.Sensor.Port"/> property.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Sensor.Init">
+            <summary>
+            Connects the sensor to the specified port.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Sensor.Poll">
+            <summary>
+            Reads the current value of the sensor and raises the <see cref="E:NxtNet.Sensor.Polled"/> event when the new value is avaiable.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            If the <see cref="P:NxtNet.Sensor.Nxt"/> property is not initialized or the <see cref="P:NxtNet.Sensor.Port"/> is not set.
+            </exception>
+        </member>
+        <member name="P:NxtNet.Sensor.Nxt">
+            <summary>
+            The <see cref="P:NxtNet.Sensor.Nxt"/> object that is responsible for managing all communication with the NXT.
+            </summary>
+        </member>
+        <member name="P:NxtNet.Sensor.Port">
+            <summary>
+            The port to which the sensor is currently connected.
+            </summary>
+        </member>
+        <member name="P:NxtNet.Sensor.Type">
+            <summary>
+            The type of the sensor. The default is <see cref="F:NxtNet.SensorType.NoSensor"/>.
+            </summary>
+        </member>
+        <member name="P:NxtNet.Sensor.Mode">
+            <summary>
+            The mode in which the sensor operates. The default is <see cref="F:NxtNet.SensorMode.Raw"/>.
+            </summary>
+        </member>
+        <member name="P:NxtNet.Sensor.State">
+            <summary>
+            The current state of the sensor, including the value of the sensor.
+            </summary>
+        </member>
+        <member name="E:NxtNet.Sensor.Polled">
+            <summary>
+            Event that is raised when the value of the sensor is read.
+            </summary>
+        </member>
+        <member name="P:NxtNet.TouchSensor.Mode">
+            <summary>
+            The touch sensor always operates in <see cref="F:NxtNet.SensorMode.Boolean"/> mode.
+            </summary>
+        </member>
+        <member name="P:NxtNet.TouchSensor.Type">
+            <summary>
+            The type of the touch sensor is <see cref="F:NxtNet.SensorType.Switch"/>.
+            </summary>
+        </member>
+        <member name="P:NxtNet.TouchSensor.IsPressed">
+            <summary>
+            Returns <c>true</c> if the touch sensor was pressed when the sensor was last read.
+            </summary>
+        </member>
+        <member name="T:NxtNet.MotorRunState">
+            <summary>
+            Available motor run states.
+            </summary>
+            <remarks>
+            <see cref="F:NxtNet.MotorRunState.Running"/> is the most common setting. Use <see cref="F:NxtNet.MotorRunState.Running"/> to enable power to any
+            output device connected to the specified port(s).
+            
+            <see cref="F:NxtNet.MotorRunState.RampUp"/> enables automatic ramping to a new speed set-point that is greater 
+            than the current speed set-point. When you use <see cref="F:NxtNet.MotorRunState.RampUp"/> in conjunction with appropriate
+            <c>tachoLimit</c> and <c>power</c> values, the NXT firmware attempts to increase the actual power 
+            smoothly to the speed set-point over the number of degrees specified by <c>tachoLimit</c>.
+            
+            <see cref="F:NxtNet.MotorRunState.RampDown"/> enables automatic ramping to a new speed set-point that is less than the
+            current speed set-point. When you use <see cref="F:NxtNet.MotorRunState.RampDown"/> in conjunction with appropriate
+            <c>tachoLimit</c> and <c>power</c> values, the NXT firmware attempts to smoothly decrease the actual power 
+            to the speed set-point over the number of degrees specified by <c>tachoLimit</c>.
+            </remarks>
+        </member>
+        <member name="F:NxtNet.MotorRunState.Idle">
+            <summary>
+            Disables power to the specified port, output will be idle.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorRunState.RampUp">
+            <summary>
+            Output will ramp-up to the speed set-point.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorRunState.Running">
+            <summary>
+            Output will be running.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorRunState.RampDown">
+            <summary>
+            Output will ramp-down to the speed set-point.
+            </summary>
+        </member>
+        <member name="T:NxtNet.SensorState">
+            <summary>
+            Structure that describes the current state and value of a sensor.
+            </summary>
+        </member>
+        <member name="M:NxtNet.SensorState.ToString">
+            <summary>
+            Returns the complete sensor state in string format.
+            </summary>
+            <returns>All details of the current state of the sensor in string format.</returns>
+        </member>
+        <member name="P:NxtNet.SensorState.Valid">
+            <summary>
+            <c>True</c>, if new data value should be seen as valid data.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorState.Calibrated">
+            <summary>
+            <c>True</c>, if calibration file found and used for <see cref="P:NxtNet.SensorState.CalibratedValue"/> field.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorState.Type">
+            <summary>
+            The type of the sensor.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorState.Mode">
+            <summary>
+            The mode in which the sensor currently operates.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorState.RawValue">
+            <summary>
+            Raw A/D value of the sensor. (UWORD, device dependent)
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorState.NormalizedValue">
+            <summary>
+            Normalized A/D value of the sensor. (UWORD, type dependent, Range: 0-1023)
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorState.ScaledValue">
+            <summary>
+            Scaled value. (SWORD, mode dependent)
+            The sensor mode affects the scaled value, which the NXT firmware calculates 
+            depending on the sensor type and sensor mode.
+            </summary>
+            <remarks>
+            The legal value range depends on <see cref="T:NxtNet.SensorMode"/>, as listed below:
+            Raw: [0, 1023]
+            Boolean: [0, 1]
+            TransitionCount: [0, 65535]
+            PeriodCounter: [0, 65535]
+            FullScale: [0, 100]
+            Celsius: [-200, 700] (readings in 10th of a degree Celsius)
+            Fahrenheit: [-400, 1580] (readings in 10th of a degree Fahrenheit)
+            AngleStep: [0, 65535]
+            </remarks>
+        </member>
+        <member name="P:NxtNet.SensorState.CalibratedValue">
+            <summary>
+            Value scaled according to calibration (SWORD, currently unused by the NXT)
+            </summary>
+        </member>
+        <member name="T:NxtNet.CommandType">
+            <summary>
+            Possible command types.
+            </summary>
+        </member>
+        <member name="F:NxtNet.CommandType.DirectCommandWithResponse">
+            <summary>
+            Direct command with a response from the NXT (0x00).
+            </summary>
+        </member>
+        <member name="F:NxtNet.CommandType.DirectCommandWithoutResponse">
+            <summary>
+            Direct command without a response from the NXT (0x80).
+            </summary>
+        </member>
+        <member name="F:NxtNet.CommandType.Reply">
+            <summary>
+            Reply command. (Command type for response packages, 0x02.)
+            </summary>
+        </member>
+        <member name="F:NxtNet.CommandType.SystemCommandWithResponse">
+            <summary>
+            System command with a response from the NXT (0x01).
+            </summary>
+        </member>
+        <member name="F:NxtNet.CommandType.SystemCommandWithoutResponse">
+            <summary>
+            System command without a response from the NXT (0x81).
+            </summary>
+        </member>
+        <member name="T:NxtNet.SensorMode">
+            <summary>
+            Available sensor modes. The sensor mode affects the scaled value, 
+            which the NXT firmware calculates depending on the sensor type and sensor mode.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.Raw">
+            <summary>
+            Reports scaled value equal to raw value.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.Boolean">
+            <summary>
+            Report scaled value as 1 (true) or 0 (false). 
+            Readings are FALSE if raw value exceeds 55% of total range; 
+            readings are TRUE if raw value is less than 45% of total range.
+            </summary>
+            <remarks>
+            The firmware uses inverse Boolean logic to match the physical characteristics of NXT sensors.
+            </remarks>
+        </member>
+        <member name="F:NxtNet.SensorMode.TransitionCount">
+            <summary>
+            Report scaled value as number of transitions between true and false.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.PeriodCounter">
+            <summary>
+            Report scaled value as number of transitions from false to true, then back to false.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.FullScale">
+            <summary>
+            Report scaled value as % of full scale reading for configured sensor type.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.Celsius">
+            <summary>
+            Scale TEMPERATURE reading to degrees Celsius.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.Fahrenheit">
+            <summary>
+            Scale TEMPERATURE reading to degrees Fahrenheit.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.AngleStep">
+            <summary>
+            Report scaled value as count of ticks on RCX-style rotation sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.SlopeMask">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorMode.ModeMask">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="T:NxtNet.MotorRegulationMode">
+            <summary>
+            Available motor regulation modes.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorRegulationMode.Idle">
+            <summary>
+            No regulation will be enabled.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorRegulationMode.Speed">
+            <summary>
+            Power control will be enabled on the specified output.
+            </summary>
+            <remarks>
+            Speed regulation means that the NXT firmware attempts to 
+            maintain a certain speed according to the <c>power</c> set-point
+            To accomplish this, the NXT firmware automatically adjusts the actual 
+            PWM duty cycle if the motor is affected by a physical load.
+            </remarks>
+        </member>
+        <member name="F:NxtNet.MotorRegulationMode.Sync">
+            <summary>
+            Synchronization will be enabled (needs enabled on two output).
+            </summary>
+            <remarks>
+            Synchronization means that the firmware attempts keep any two motors in synch 
+            regardless of varying physical loads. You typically use this mode is to maintain 
+            a straight path for a vehicle robot automatically. You also can use this mode with 
+            the <c>turnRatio</c> parameter property to provide proportional turning. 
+            You must set <c>Sync</c> on at least two motor ports to have the desired affect. 
+            If <c>Sync</c> is set on all three motor ports, only the first two (A and B) are synchronized.
+            </remarks>
+        </member>
+        <member name="T:NxtNet.SoundSensor">
+            <summary>
+            The class that is responsible for managing a sound sensor.
+            The sound sensor is usually connected to port 2.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SoundSensor.Mode">
+            <summary>
+            The sound sensor always operates in <see cref="F:NxtNet.SensorMode.FullScale"/> mode.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SoundSensor.Type">
+            <summary>
+            The type of the sound sensor is <see cref="F:NxtNet.SensorType.SoundDba"/>
+            or <see cref="F:NxtNet.SensorType.SoundDB"/> depending on the value of <see cref="P:NxtNet.SoundSensor.AdjustForHumanEar"/>.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SoundSensor.AdjustForHumanEar">
+            <summary>
+            <c>True</c> if the sensor should compensate for the sensitivity
+            of the human ear, <c>false</c> otherwise.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SoundSensor.Value">
+            <summary>
+            The current value of the sound sensor.
+            </summary>
+            <remarks>
+            Returns <c>this.State.ScaledValue</c>.
+            </remarks>
+        </member>
+        <member name="T:NxtNet.SensorPort">
+            <summary>
+            Available sensor ports.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorPort.Port1">
+            <summary>
+            First sensor port, default port for the touch sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorPort.Port2">
+            <summary>
+            Second sensor port, default port for the sound sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorPort.Port3">
+            <summary>
+            Third sensor port, default port for the light sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorPort.Port4">
+            <summary>
+            Fourth sensor port, default port for the ultrasonic sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorPort.None">
+            <summary>
+            None of the available sensor ports.
+            </summary>
+        </member>
+        <member name="T:NxtNet.Version">
+            <summary>
+            The current protocol and firmware version running on the NXT.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Version.ToString">
+            <summary>
+            Gets the string representation of both version numbers.
+            </summary>
+            <returns>Firmware and protocol numbers in a single string.</returns>
+            <remarks>The format is the following: "Firmware: {0}, Protocol: {1}", this.Firmware, this.Protocol</remarks>
+        </member>
+        <member name="P:NxtNet.Version.Firmware">
+            <summary>
+            The version of the firmware loaded to the NXT.
+            </summary>
+        </member>
+        <member name="P:NxtNet.Version.Protocol">
+            <summary>
+            The version of the protocol used by the NXT.
+            </summary>
+        </member>
+        <member name="T:NxtNet.MotorModes">
+            <summary>
+            Available motor modes. This property is a bitfield that can include any combination of the flag bits.
+            </summary>
+            <remarks>
+            Plural naming follows the .NET naming guideline: 
+            Do use a plural name for enumerations with bit fields as values, also called flags enumerations.
+            </remarks>
+        </member>
+        <member name="F:NxtNet.MotorModes.Coast">
+            <summary>
+            Motors connected to the specified port(s) will rotate freely.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorModes.On">
+            <summary>
+            Turns on the specified motor. Enables pulse-width modulation (PWM) power to port(s) 
+            according to the specified power value.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorModes.Brake">
+            <summary>
+            Break the motor after the action is completed. Applies electronic braking to port(s).
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorModes.Regulated">
+            <summary>
+            Turns on regulation.
+            </summary>
+        </member>
+        <member name="T:NxtNet.MotorPort">
+            <summary>
+            Available motor ports.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorPort.PortA">
+            <summary>
+            Motor connected to port A.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorPort.PortB">
+            <summary>
+            Motor connected to port B.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorPort.PortC">
+            <summary>
+            Motor connected to port C.
+            </summary>
+        </member>
+        <member name="F:NxtNet.MotorPort.All">
+            <summary>
+            All motors connected to A, B and C ports.
+            </summary>
+        </member>
+        <member name="T:NxtNet.SensorType">
+            <summary>
+            Available sensor types.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.NoSensor">
+            <summary>
+            No sensor connected to the port.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.Switch">
+            <summary>
+            NXT or RCX touch sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.Temperature">
+            <summary>
+            RCX temperature sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.Reflection">
+            <summary>
+            RCX light sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.Angle">
+            <summary>
+            RCX rotation sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.LightActive">
+            <summary>
+            NXT light sensor with floodlight enabled.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.LightInactive">
+            <summary>
+            NXT light sensor detecting ambient light (floodlight disabled).
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.SoundDB">
+            <summary>
+            NXT sound sensor, decibel scaling.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.SoundDba">
+            <summary>
+            NXT sound sensor, dBA scaling (decibel adjusted for the human ear).
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.Custom">
+            <summary>
+            Custom sensor, unused in NXT programs.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.LowSpeed">
+            <summary>
+            Low speed (I2C digital) sensor.
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.LowSpeed9V">
+            <summary>
+            Low speed (I2C digital) sensor, 9V power (like the ultrasonic sensor).
+            </summary>
+        </member>
+        <member name="F:NxtNet.SensorType.NoneOfSensorTypes">
+            <summary>
+            None of the specified sensor types. High speed. Unused in NXT programs.
+            </summary>
+        </member>
+        <member name="T:NxtNet.LightSensor">
+            <summary>
+            The class that is responsible for managing a light sensor.
+            The light sensor is usually connected to port 3.
+            </summary>
+        </member>
+        <member name="P:NxtNet.LightSensor.Mode">
+            <summary>
+            The light sensor always operates in <see cref="F:NxtNet.SensorMode.FullScale"/> mode.
+            </summary>
+        </member>
+        <member name="P:NxtNet.LightSensor.Type">
+            <summary>
+            The type of the touch sensor is <see cref="F:NxtNet.SensorType.LightActive"/> or 
+            <see cref="F:NxtNet.SensorType.LightInactive"/> depending on the value of <see cref="P:NxtNet.LightSensor.LightActive"/>.
+            </summary>
+        </member>
+        <member name="P:NxtNet.LightSensor.LightActive">
+            <summary>
+            Returns <c>true</c> if the light sensor has its light turned on 
+            or <c>false</c> if the sensor measures ambient light.
+            </summary>
+        </member>
+        <member name="P:NxtNet.LightSensor.Value">
+            <summary>
+            The current value of the light sensor.
+            </summary>
+            <remarks>
+            Returns <c>this.State.ScaledValue</c>.
+            </remarks>
+        </member>
+        <member name="T:NxtNet.SensorEventArgs">
+            <summary>
+            Event parameters for sensor related events.
+            </summary>
+        </member>
+        <member name="M:NxtNet.SensorEventArgs.#ctor(NxtNet.Sensor)">
+            <summary>
+            Creates a new <see cref="T:NxtNet.SensorEventArgs"/> instance using the specified <see cref="P:NxtNet.SensorEventArgs.Sensor"/>.
+            </summary>
+            <param name="sensor">The sensor that raised the event.</param>
+        </member>
+        <member name="P:NxtNet.SensorEventArgs.Sensor">
+            <summary>
+            The sensor that raised the event
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorEventArgs.RawValue">
+            <summary>
+            The current raw value of the sensor that raised the event.
+            </summary>
+        </member>
+        <member name="P:NxtNet.SensorEventArgs.State">
+            <summary>
+            The current state of the sensor that raised the event.
+            </summary>
+        </member>
+        <member name="T:NxtNet.MotorState">
+            <summary>
+            Structure that describes the current state of a motor.
+            </summary>
+        </member>
+        <member name="P:NxtNet.MotorState.Power">
+            <summary>
+            Power (also referred as speed) set point. Range: -100-100.
+            </summary>
+            <remarks>
+            The absolute value of <see cref="P:NxtNet.MotorState.Power"/> is used as a percentage of the full power capabilities of the motor.
+            The sign of <see cref="P:NxtNet.MotorState.Power"/> specifies rotation direction. 
+            Positive values for <see cref="P:NxtNet.MotorState.Power"/> instruct the firmware to turn the motor forward, 
+            while negative values instruct the firmware to turn the motor backward. 
+            "Forward" and "backward" are relative to a standard orientation for a particular type of motor.
+            Note that direction is not a meaningful concept for outputs like lamps. 
+            Lamps are affected only by the absolute value of <see cref="P:NxtNet.MotorState.Power"/>.
+            </remarks>
+        </member>
+        <member name="P:NxtNet.MotorState.Mode">
+            <summary>
+            Motor mode. (Bit-field.)
+            </summary>
+        </member>
+        <member name="P:NxtNet.MotorState.Regulation">
+            <summary>
+            Motor regulation mode.
+            </summary>
+        </member>
+        <member name="P:NxtNet.MotorState.TurnRatio">
+            <summary>
+            This property specifies the proportional turning ratio for synchronized turning using two motors. Range: -100-100.
+            </summary>
+            <remarks>
+            Negative <paramref name="turnRatio"/> values shift power towards the left motor, 
+            whereas positive <paramref name="turnRatio"/> values shift power towards the right motor. 
+            In both cases, the actual power applied is proportional to the <paramref name="power"/> set-point, 
+            such that an absolute value of 50% for <paramref name="turnRatio"/> normally results in one motor stopping,
+            and an absolute value of 100% for <paramref name="turnRatio"/> normally results in the two motors 
+            turning in opposite directions at equal power.
+            </remarks>
+        </member>
+        <member name="P:NxtNet.MotorState.RunState">
+            <summary>
+            Motor run state.
+            </summary>
+        </member>
+        <member name="P:NxtNet.MotorState.TachoLimit">
+            <summary>
+            Current limit on a movement in progress, if any.
+            </summary>
+            <remarks>
+            This property specifies the rotational distance in 
+            degrees that you want to turn the motor. Range: 0-4294967295, O: run forever.
+            The sign of the <see cref="P:NxtNet.MotorState.Power"/> property specifies the direction of rotation.
+            </remarks>
+        </member>
+        <member name="P:NxtNet.MotorState.TachoCount">
+            <summary>
+            Internal count. Number of counts since last reset of the motor counter.
+            </summary>
+            <remarks>
+            This property returns the internal position counter value for the specified port.
+            The sign of <see cref="P:NxtNet.MotorState.TachoCount"/> specifies rotation direction. 
+            Positive values correspond to forward rotation while negative values correspond to backward rotation. 
+            "Forward" and "backward" are relative to a standard orientation for a particular type of motor.
+            </remarks>
+        </member>
+        <member name="P:NxtNet.MotorState.BlockTachoCount">
+            <summary>
+            Current position relative to last programmed movement. Range: -2147483648-2147483647.
+            </summary>
+            <remarks>
+            This property reports the block-relative position counter value for the specified port.
+            The sign of <see cref="P:NxtNet.MotorState.BlockTachoCount"/> specifies the rotation direction. Positive values correspond to forward
+            rotation while negative values correspond to backward rotation. "Forward" and "backward" are relative to
+            a standard orientation for a particular type of motor.
+            </remarks>
+        </member>
+        <member name="P:NxtNet.MotorState.RotationCount">
+            <summary>
+            Current position relative to last reset of the rotation sensor for this motor. Range: -2147483648-2147483647.
+            </summary>
+            <remarks>
+            This property returns the program-relative position counter value for the specified port.
+            The sign of <see cref="P:NxtNet.MotorState.RotationCount"/> specifies rotation direction. Positive values correspond to forward rotation
+            while negative values correspond to backward rotation. 
+            "Forward" and "backward" are relative to a standard orientation for a particular type of motor.
+            </remarks>
+        </member>
+        <member name="T:NxtNet.Command">
+            <summary>
+            Available commands recognized by the NXT.
+            </summary>
+        </member>
+        <member name="T:NxtNet.Nxt">
+            <summary>
+            The class that is responsible for managing the communication with the NXT.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Nxt._isDisposed">
+            <summary>
+            <c>True</c>, if the class is already disposed and should not be used any more.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.Dispose(System.Boolean)">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <param name="disposing">
+            <c>True</c>, if the method is called directly from user code or
+            <c>false</c>, if the method is called from inside the finalizer.
+            </param>
+            <remarks>
+            This method executes in two distinct scenarios. 
+            If <paramref name="disposing"/> equals <c>true</c>, the method has been called 
+            directly or indirectly by a user's code. 
+            Managed and unmanaged resources can be disposed.
+            If <paramref name="disposing"/> equals <c>false</c>, the method has been called 
+            by the runtime from inside the finalizer and you should not reference other objects. 
+            Only unmanaged resources can be disposed.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <remarks>
+            Closes the serial port and disposes the channel used for communication with the NXT.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.Finalize">
+            <summary>
+            Finalizer.
+            </summary>
+            <remarks>
+            Forwards the call to the <see cref="M:NxtNet.Nxt.Dispose(System.Boolean)"/> method the clean up resources.
+            </remarks>
+        </member>
+        <member name="F:NxtNet.Nxt._port">
+            <summary>
+            The serial port used for Bluetooth communication.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Nxt._mre">
+            <summary>
+            Flag to help waiting for responses.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Nxt._lastCommandSent">
+            <summary>
+            The last command sent to the NXT.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.Connect(System.String)">
+            <summary>
+            Connects the the specified port.
+            </summary>
+            <param name="portName">
+            The name of the port for communication (eg. "COM8"), including but not limited to all available COM ports.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            If the port is already open. Please call <see cref="M:NxtNet.Nxt.Disconnect"/> first.
+            </exception>
+        </member>
+        <member name="M:NxtNet.Nxt.Disconnect">
+            <summary>
+            Disconnects from the connected port.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.InitializeData(NxtNet.Command,NxtNet.CommandType,System.Int32)">
+            <summary>
+            Initializes the header of the command to be sent to the NXT.
+            Byte 0 will contain the command type and byte 1 the command code.
+            </summary>
+            <param name="command">The command to be sent to the NXT.</param>
+            <param name="type">The type of the command.</param>
+            <param name="dataLength">The length of the complete message in bytes.</param>
+            <returns>
+            A byte array with the length of the complete message,
+            initialized with the command and command type.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">If the <paramref name="dataLength"/> is less than 2.</exception>
+        </member>
+        <member name="M:NxtNet.Nxt.OnErrorReceived(System.Object,System.IO.Ports.SerialErrorReceivedEventArgs)">
+            <summary>
+            Callback method that is called by the runtime when an error occurs in the serial port communication.
+            </summary>
+            <param name="sender">Sender.</param>
+            <param name="e">Event parameters.</param>
+            <exception cref="T:System.IO.IOException">This method throws <see cref="T:System.IO.IOException"/> to signal the error to the host.</exception>
+            <remarks>
+            This method is responsible for managing errors in the serial port communication.
+            This method will be called asynchronously by the .NET runtime on a separate thread
+            and should never be called directly from any user code.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.OnDataReceived(System.Object,System.IO.Ports.SerialDataReceivedEventArgs)">
+            <summary>
+            Callback method that is called by the runtime when data is received on the serial port.
+            </summary>
+            <param name="sender">Sender.</param>
+            <param name="e">Event parameters.</param>
+            <exception cref="T:System.IO.InvalidDataException">If the reponse message type, command or size is invalid.</exception>
+            <remarks>
+            This method is responsible for parsing the incoming messages from the NXT.
+            This method will be called asynchronously by the .NET runtime on a separate thread
+            and should never be called directly from any user code.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.Transmit(System.Byte[])">
+            <summary>
+            Transmits the specified data to the NXT.
+            </summary>
+            <param name="data">The data to be sent to the NXT.</param>
+        </member>
+        <member name="M:NxtNet.Nxt.Transmit(System.Byte[],System.Int32)">
+            <summary>
+            Transmits the specified data to the NXT without blocking the current thread.
+            </summary>
+            <param name="data">The data to be sent to the NXT.</param>
+            <param name="responseLength">Number of bytes the response should contain.</param>
+            <exception cref="T:System.InvalidOperationException">If the port is not open or the previous transmit not completed.</exception>
+            <exception cref="T:System.Exception">If a transmit error occurs.</exception>
+            <exception cref="T:System.ObjectDisposedException">If the Nxt object is already disposed.</exception>
+            <remarks>
+            This method is responsible for transmitting messages to the NXT.
+            The transmission is always asynchronous, responses are handled by the <see cref="M:NxtNet.Nxt.OnDataReceived(System.Object,System.IO.Ports.SerialDataReceivedEventArgs)"/> event handler.
+            This method performs object dispose check to throw <see cref="T:System.ObjectDisposedException"/> 
+            if the current object (this) is already disposed.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.TransmitAndWait(System.Byte[],System.Int32)">
+            <summary>
+            Transmits the message to the NXT, blocks the current thread for the specified milliseconds
+            and validates the length and the status byte in the response package.
+            </summary>
+            <param name="data">The data to be sent to the NXT.</param>
+            <param name="responseLength">Number of bytes the response should contain.</param>
+            <remarks>
+            After this method returns, the response is available and valid in the <see cref="P:NxtNet.Nxt.LastResponse"/> property.
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">
+            If the status byte is not <see cref="F:NxtNet.Error.Success"/> or if the 
+            length of the response differ from the expected response length specified in <paramref name="responseLength"/>.
+            </exception>
+        </member>
+        <member name="M:NxtNet.Nxt.ClearReadBuffer">
+            <summary>
+            Reads all data from the read buffer then throws them away.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.GetVersion">
+            <summary>
+            Returns the current version of the firmware and the protocol used by the NXT.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.SetBrickName(System.String)">
+            <summary>
+            Sets the NXT brick name to the specified value.
+            </summary>
+            <param name="name">The new name of the brick to set. Maximum 14 characters.</param>
+            <exception cref="T:System.ArgumentNullException">If the <paramref name="name"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If the <paramref name="name"/> is longer than 14 characters.</exception>
+            <remarks>
+            This is a system command and waits for the response packet with blocking the current thread.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.GetDeviceInfo">
+            <summary>
+            Returns general info about the NXT.
+            </summary>
+            <returns>A <see cref="T:NxtNet.DeviceInfo"/> that contains general parameters of the NXT.</returns>
+            <remarks>
+            This is a system command and waits for the response packet with blocking the current thread.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.GetBatteryLevel">
+            <summary>
+            Reads the battery level of the NXT.
+            </summary>
+            <returns>The battery level in millivolts.</returns>
+        </member>
+        <member name="M:NxtNet.Nxt.KeepAlive">
+            <summary>
+            Resets the sleep timer and returns the current sleep time limit.
+            </summary>
+            <remarks>
+            This syscall method resets the NXT brick's internal sleep timer and returns the current time limit, 
+            in milliseconds, until the next automatic sleep. Use this method to keep the NXT brick from automatically
+            turning off. Use the NXT brick's UI menu to configure the sleep time limit.
+            </remarks>
+            <returns>The currently set sleep time limit in milliseconds.</returns>
+        </member>
+        <member name="M:NxtNet.Nxt.PlayTone(System.Int32,System.Int32)">
+            <summary>
+            Plays a tone on the NXT with the specified frequency for the specified duration.
+            </summary>
+            <param name="frequency">Frequency for the tone in Hz. Range: 200-14000 Hz</param>
+            <param name="duration">Duration of the tone in ms.</param>
+        </member>
+        <member name="M:NxtNet.Nxt.PlaySoundFile(System.String,System.Boolean)">
+            <summary>
+            Plays the specified sound file on the NXT.
+            </summary>
+            <param name="fileName">
+            The name of the file to play. ASCIIZ-string with maximum size 15.3 characters, the default extension is .rso.
+            </param>
+            <param name="loop"><c>True</c> to loop indefinitely or <c>false</c> to play the file only once.</param>
+        </member>
+        <member name="M:NxtNet.Nxt.StopSoundPlayback">
+            <summary>
+            Stops playing the current sound on the NXT.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.StartProgram(System.String)">
+            <summary>
+            Starts the specified program on the NXT.
+            </summary>
+            <param name="fileName">The name of the file to start. ASCIIZ-string with maximum size 15.3 characters, the default extension is .rxe .</param>
+        </member>
+        <member name="M:NxtNet.Nxt.StopProgram">
+            <summary>
+            Stops the currently running program on the NXT.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Nxt.GetCurrentProgramName">
+            <summary>
+            Returns the name of the program currently running on the NXT.
+            </summary>
+            <returns>
+            The name of the file currently executing or <c>null</c> if no program is currently running. 
+            Format: ASCIIZ-string with maximum 15.3 characters.
+            </returns>
+        </member>
+        <member name="M:NxtNet.Nxt.SetInputMode(NxtNet.SensorPort,NxtNet.SensorType,NxtNet.SensorMode)">
+            <summary>
+            Configures a sensor on the specified port.
+            </summary>
+            <param name="port">The port the sensor is connected to.</param>
+            <param name="type">The type of the sensor connected to the port.</param>
+            <param name="mode">
+            The mode in which the sensor operates. The sensor mode affects the scaled value, 
+            which the NXT firmware calculates depending on the sensor type and sensor mode.
+            </param>
+        </member>
+        <member name="M:NxtNet.Nxt.GetInputValues(NxtNet.SensorPort)">
+            <summary>
+            Reads the current state of the sensor connected to the specified port.
+            </summary>
+            <param name="port">The port to which the sensor is connected.</param>
+            <returns>A <see cref="T:NxtNet.SensorState"/> instance that describes the current state and value of the sensor.</returns>
+        </member>
+        <member name="M:NxtNet.Nxt.ResetInputScaledValue(NxtNet.SensorPort)">
+            <summary>
+            Resets the value of the sensor connected to the specified port.
+            </summary>
+            <param name="port">The port to which the sensor is connected.</param>
+        </member>
+        <member name="M:NxtNet.Nxt.ResetMotorPosition(NxtNet.MotorPort,System.Boolean)">
+            <summary>
+            Resets the motor position on the specified motor port.
+            </summary>
+            <param name="motorPort">The motor to reset.</param>
+            <param name="relative"><c>True</c>, if position relative to last movement, <c>false</c> for absolute position.</param>
+        </member>
+        <member name="M:NxtNet.Nxt.SetOutputState(NxtNet.MotorPort,System.SByte,NxtNet.MotorModes,NxtNet.MotorRegulationMode,System.SByte,NxtNet.MotorRunState,System.UInt32)">
+            <summary>
+            Sends a command to the motor connected to the specified port.
+            </summary>
+            <param name="motorPort">The port where the motor is connected to.</param>
+            <param name="power">
+            Power (also referred as speed) set point. Range: -100-100.
+            The absolute value of <paramref name="power"/> is used as a percentage of the full power capabilities of the motor.
+            The sign of <paramref name="power"/> specifies rotation direction. 
+            Positive values for <paramref name="power"/> instruct the firmware to turn the motor forward, 
+            while negative values instruct the firmware to turn the motor backward. 
+            "Forward" and "backward" are relative to a standard orientation for a particular type of motor.
+            Note that direction is not a meaningful concept for outputs like lamps. 
+            Lamps are affected only by the absolute value of <paramref name="power"/>.
+            </param>
+            <param name="mode">Motor mode (bit-field).</param>
+            <param name="regulation">Regulation mode.</param>
+            <param name="turnRatio">
+            This property specifies the proportional turning ratio for synchronized turning using two motors. Range: -100-100.
+            <remarks>
+            Negative <paramref name="turnRatio"/> values shift power towards the left motor, 
+            whereas positive <paramref name="turnRatio"/> values shift power towards the right motor. 
+            In both cases, the actual power applied is proportional to the <paramref name="power"/> set-point, 
+            such that an absolute value of 50% for <paramref name="turnRatio"/> normally results in one motor stopping,
+            and an absolute value of 100% for <paramref name="turnRatio"/> normally results in the two motors 
+            turning in opposite directions at equal power.
+            </remarks>
+            </param>
+            <param name="runState">Motor run state.</param>
+            <param name="tachoLimit">
+            Tacho limit. This property specifies the rotational distance in 
+            degrees that you want to turn the motor. Range: 0-4294967295, O: run forever.
+            The sign of the <paramref name="power"/> property specifies the direction of rotation.
+            </param>
+        </member>
+        <member name="M:NxtNet.Nxt.GetOutputState(NxtNet.MotorPort)">
+            <summary>
+            Returns the current state of the specified motor.
+            </summary>
+            <param name="motorPort">The port where the motor is connected.</param>
+            <returns>The current state of the specified motor.</returns>
+        </member>
+        <member name="M:NxtNet.Nxt.LowSpeedGetStatus(NxtNet.SensorPort)">
+            <summary>
+            Returns the number of available bytes to read on the specified port.
+            </summary>
+            <param name="port">The sensor port to read.</param>
+            <returns>The number of available bytes to read.</returns>
+        </member>
+        <member name="M:NxtNet.Nxt.LowSpeedRead(NxtNet.SensorPort)">
+            <summary>
+            Performs a low speed read on the specified sensor port.
+            </summary>
+            <param name="port">The sensor port to read.</param>
+            <returns>The received data, maximum 16 bytes.</returns>
+            <remarks>
+            For low speed communication on the NXT, data lengths are limited to 16 bytes per command.
+            Furthermore, this protocol does not support variable-length return packages, so the
+            response will always contain 16 data bytes, with invalid data bytes padded with zeroes.
+            </remarks>
+        </member>
+        <member name="M:NxtNet.Nxt.LowSpeedWrite(NxtNet.SensorPort,System.Byte[],System.Int32)">
+            <summary>
+            Writes the specified message to the specified sensor port.
+            </summary>
+            <param name="port">The sensor port to write to.</param>
+            <param name="message">The message to write to the sensor port.</param>
+            <param name="responseLength">The length of the expected response message.</param>
+            <remarks>
+            For low speed communication on the NXT, data lengths are limites to 16 bytes per command.
+            Response data length must be specified in the write command since reading from the 
+            device is done on a master-slave basis.
+            </remarks>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <paramref name="message"/> length is not between 1 and 16 bytes.
+            </exception>
+        </member>
+        <member name="M:NxtNet.Nxt.MessageWrite(System.Byte,System.Byte[])">
+            <summary>
+            Writes the specified <paramref name="message"/> to the specified <paramref name="inboxNumber"/>.
+            </summary>
+            <param name="inboxNumber">The inbox number (0-9).</param>
+            <param name="message">The message to write. Cannot be longer than 58 bytes to be legal on USB.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <paramref name="inboxNumber"/> is not between 0 and 9 or <paramref name="message"/> is longer than 58 bytes.
+            </exception>
+        </member>
+        <member name="M:NxtNet.Nxt.MessageRead(System.Byte,System.Byte,System.Boolean)">
+            <summary>
+            Reads a message from the specified local inbox.
+            </summary>
+            <param name="remoteInboxNumber">Remote inbox number (0-19). </param>
+            <param name="localInboxNumber">Local inbox number (0-9).</param>
+            <param name="removeFromRemoteInbox"><c>True</c> to clear the message from the remote inbox, <c>false</c> otherwise.</param>
+            <returns>The incoming message including null termination byte.</returns>
+            <remarks>
+            Remote inbox number may specify a value of 0-19, while all other mailbox numbers should remain below 9.
+            This is due to the master-slave relationship between the connected NXT bricks.
+            Slave devices may not initiate communication transactions with their masters,
+            so they store outgoing messages in the upper 10 mailboxes (indices 10-19).
+            Use the MessageRead command from the master device to retrieve these messages.
+            </remarks>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If <paramref name="remoteInboxNumber"/> not between 0 and 19 or 
+            <paramref name="localInboxNumber"/> not between 0 and 9.
+            </exception>
+        </member>
+        <member name="P:NxtNet.Nxt.LastError">
+            <summary>
+            The error code related to the last operation.
+            </summary>
+        </member>
+        <member name="P:NxtNet.Nxt.LastResponse">
+            <summary>
+            The detailed content of the last response message from the NXT.
+            </summary>
+        </member>
+        <member name="T:NxtNet.DeviceInfo">
+            <summary>
+            The structure that describes the NXT brick.
+            </summary>
+        </member>
+        <member name="M:NxtNet.DeviceInfo.ToString">
+            <summary>
+            Gets the string representation of all device information data..
+            </summary>
+            <returns>All <see cref="T:NxtNet.DeviceInfo"/> property values in a single string.</returns>
+            <remarks>The format is the following: "Name: {0}, BluetoothAddress: {1}, SignalStrength: {2}, FreeUserFlash: {3}"</remarks>
+        </member>
+        <member name="P:NxtNet.DeviceInfo.Name">
+            <summary>
+            The name of the NXT brick. Maximum 14 characters.
+            </summary>
+        </member>
+        <member name="P:NxtNet.DeviceInfo.BluetoothAddress">
+            <summary>
+            The Bluetooth address of the NXT.
+            </summary>
+        </member>
+        <member name="P:NxtNet.DeviceInfo.SignalStrength">
+            <summary>
+            Bluetooth signal strength.
+            </summary>
+        </member>
+        <member name="P:NxtNet.DeviceInfo.FreeUserFlash">
+            <summary>
+            Available memory for user applications in bytes.
+            </summary>
+        </member>
+        <member name="T:NxtNet.Extensions">
+            <summary>
+            This class contains extension methods to make type conversion easier.
+            </summary>
+        </member>
+        <member name="M:NxtNet.Extensions.ToUpperByte(System.Int32)">
+            <summary>
+            TODO
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToLowerByte(System.Int32)">
+            <summary>
+            TODO
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NxtNet.Extensions.Copy(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Returns bytes from the current byte array from the specified <paramref name="sourceStartIndex"/> in the specified <paramref name="length"/>.
+            </summary>
+            <param name="sourceBuffer">The current byte array that contains the bytes to copy.</param>
+            <param name="sourceStartIndex">The index of the first byte in the current byte array that should be copied.</param>
+            <param name="length">The number of bytes that should be copied.</param>
+            <returns>A sub-array from the current byte array with the specified <paramref name="length"/>.</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToUInt32(System.Byte[],System.Int32)">
+            <summary>
+            Converts four bytes from the specified buffer starting from the specified index to uint (32-bit unsigned integer).
+            </summary>
+            <param name="buffer">The byte array that contains the values to convert.</param>
+            <param name="startIndex">The index from where the conversion should start.</param>
+            <returns>The value of four bytes converted to uint (32-bit unsigned integer).</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToInt32(System.Byte[],System.Int32)">
+            <summary>
+            Converts four bytes from the specified buffer starting from the specified index to int (32-bit integer).
+            </summary>
+            <param name="buffer">The byte array that contains the values to convert.</param>
+            <param name="startIndex">The index from where the conversion should start.</param>
+            <returns>The value of four bytes converted to int (32-bit integer).</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToUInt16(System.Byte[],System.Int32)">
+            <summary>
+            Converts two bytes from the specified buffer starting from the specified index to ushort (16-bit unsigned integer).
+            </summary>
+            <param name="buffer">The byte array that contains the values to convert.</param>
+            <param name="startIndex">The index from where the conversion should start.</param>
+            <returns>The value of two bytes converted to ushort (16-bit unsigned integer).</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If the <paramref name="startIndex"/> is greater than <paramref name="buffer"/>.Length - 1.
+            </exception>
+        </member>
+        <member name="M:NxtNet.Extensions.ToInt16(System.Byte[],System.Int32)">
+            <summary>
+            Converts two bytes from the specified buffer starting from the specified index to short (16-bit integer).
+            </summary>
+            <param name="buffer">The byte array that contains the values to convert.</param>
+            <param name="startIndex">The index from where the conversion should start.</param>
+            <returns>The value of two bytes converted to short (16-bit integer).</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToAsciiBytes(System.String)">
+            <summary>
+            Converts the specified string to a byte array using ASCII encoding.
+            </summary>
+            <param name="value">The string to convert.</param>
+            <returns>The string converted to a byte array using ASCII encoding.</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToAsciiString(System.Byte[],System.Int32)">
+            <summary>
+            Converts bytes starting from the specified start index in the buffer to an ASCII encoded string.
+            </summary>
+            <param name="buffer">The buffer that contains the values to convert.</param>
+            <param name="startIndex">The index from where the conversion should start.</param>
+            <returns>The value of the buffer converted to string using ASCII encoding.</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToAsciiString(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Converts bytes starting from the specified start index in the buffer to an ASCII encoded string.
+            </summary>
+            <param name="buffer">The buffer that contains the values to convert.</param>
+            <param name="startIndex">The index from where the conversion should start.</param>
+            <param name="length">The number of bytes in the buffer that contains the string to convert.</param>
+            <returns>The value of the buffer converted to string.</returns>
+        </member>
+        <member name="M:NxtNet.Extensions.ToHexString(System.Byte[])">
+            <summary>
+            Converts the byte array to a readable string with hexadecimal values.
+            </summary>
+            <param name="value">The byte array to convert.</param>
+            <returns>A human readable format of the specified byte array.</returns>
+        </member>
+        <member name="T:NxtNet.Error">
+            <summary>
+            Possible error codes sent by the NXT.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.Success">
+            <summary>
+            Successful communication, no error.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.PendingTransactionInProgress">
+            <summary>
+            Pending communication transaction in progress.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.SpecifiedMailboxQueueEmpty">
+            <summary>
+            Specified mailbox queue is empty.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.RequestFailed">
+            <summary>
+            Request failed (i.e. specified file not found).
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.UnknownCommandOpcode">
+            <summary>
+            Unknown command opcode.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.InsanePacket">
+            <summary>
+            Insane packet.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.OutOfRangeValues">
+            <summary>
+            Data contains out-of-range values.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.CommunicationBusError">
+            <summary>
+            Communication bus error.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.NoFreeMemoryInComBuffer">
+            <summary>
+            No free memory in communication buffer.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.SpecifiedChannelIsNotValid">
+            <summary>
+            Specified channel/connection is not valid.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.SpecifiedChannelNotConfiguredOrBusy">
+            <summary>
+            Specified channel/connection not configured or busy.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.NoActiveProgram">
+            <summary>
+            No active program.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.IllegalSizeSpecified">
+            <summary>
+            Illegal size specified.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.IllegalMailboxQueueId">
+            <summary>
+            Illegal mailbox queue ID specified.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.InvalidFieldAccess">
+            <summary>
+            Attempted to access invalid field of a structure.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.BadInputOrOutput">
+            <summary>
+            Bad input or output specified.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.InsufficientMemoryAvailable">
+            <summary>
+            Insufficient memory available.
+            </summary>
+        </member>
+        <member name="F:NxtNet.Error.BadArguments">
+            <summary>
+            Bad arguments.
+            </summary>
+        </member>
+    </members>
+</doc>

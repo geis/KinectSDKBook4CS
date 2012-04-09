@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / 自作のフォームにヒスイのビューを取り込もう</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>自作のフォームにヒスイのビューを取り込もう</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+<p>2007年09月 作成
+<br>2010年12月 修正
+<br>2011年09月 修正
+</center>
+
+<h2>Introduction</h2>
+<h3>MyForm クラスを定義しよう</h3>
+<p>今までのチュートリアルで作成してきたプログラムのメイン関数を見てみてください。
+<pre>
+  static void Main()
+  {
+    ...
+    Application.Run( new Hisui.Gui.MainForm() );
+  }
+</pre>
+<p>このように、フォームは Hisui.Gui.dll に定義済みの MainForm クラスを利用していました。このチュートリアルでは、定義済みの MainForm を利用しないで自分でフォームを定義していきます。つまり、次のようにフォームクラスを自作し、
+<pre>
+using System.Windows.Forms;
+class <strong>MyForm</strong> : Form { ... }
+</pre>
+メイン関数を次のように書き換えます。
+<pre>
+  static void Main()
+  {
+    ...
+    Application.Run( new <strong>MyForm()</strong> );
+  }
+</pre>
+
+<h3>メインメニューを作成</h3>
+<p>フォームにヒスイのビューを組み込む前に、メインメニューを作成しておきましょう。
+<pre>
+class MyForm : Form
+{
+  public MyForm()
+  {
+    <strong>this.Controls.Add( Hisui.SI.CreateMainMenu() );</strong>
+  }
+}
+</pre>
+<p>CreateMainMenu() 関数により、プラグインされたコマンド群からメインメニューが自動生成されます。
+
+
+<h2>ViewPanel の利用</h2>
+<h3>ViewPanel をフォームに配置</h3>
+<p>Hisui.Gui.dll をオブジェクトブラウザで見ると、ViewPanel や SingleViewPanel といったコントロールが定義されていることが分かります。ViewPanel がベースクラスで、その派生として SingleViewPanel と QuadViewPanel が定義されています。Hisui.Gui.MainForm のビュー部分はこの ViewPanel クラスが担っています。まずは ViewPanel コントロールを利用して MyForm を定義していきましょう。
+<p>次のように SingleViewPanel コントロールを MyForm に配置します。
+<pre>
+class MyForm : Form
+{
+  <strong>Hisui.Gui.ViewPanel _view = new Hisui.Gui.SingleViewPanel();</strong>
+
+  public MyForm()
+  {
+    this.Controls.Add( Hisui.SI.CreateMainMenu() );
+
+    <strong>_view.SetUp( Hisui.SI.DocumentViews );
+    _view.Dock = DockStyle.Fill;
+    this.Controls.Add( _view );</strong>
+  }
+}
+</pre>
+<p>あるいは、フォームデザイナで ViewPanel コントロールを MyForm に貼り付けることも可能です。
+<p>その場合には、まず VisualStudio のツールボックスにヒスイのコントロールを登録する必要があります。ツールボックス上で右クリックしてコンテキストメニューを表示し、「アイテムの選択」をクリックします。すると次のようなダイアログが表示されます。
+<p><img src="toolboxitem.png" alt="ツールボックス アイテムの選択 ダイアログ">
+<p>右下の「参照」ボタンをクリックして、Hisui.Gui.dll を登録しましょう。合わせて Hisui.Graphics.dll も登録しておくと良いでしょう。
+<p>以上の操作により、ViewPanel コントロールがツールボックスに表示されたはずです。その ViewPanel コントロールを MyForm に貼り付ければ OK です。
+
+
+<h3>ビルドグラフに ViewPanel を登録</h3>
+<p>次に、ビルドグラフのルートノードとして ViewPanel コントロールを登録します。ViewPanel コントロールは Hisui.Core.IBuild インターフェイスを実装しているのです。ViewPanel をビルドグラフに組み込むことにより、ビルドグラフの更新のたびに表示要素（シーン）などが適切に更新されるようになります。
+<pre>
+  public MyForm()
+  {
+    this.Controls.Add( Hisui.SI.CreateMainMenu() );
+
+    _view.Dock = DockStyle.Fill;
+    this.Controls.Add( _view );
+    <strong>
+    Hisui.SI.Tasks.Add( _view );  // ビルドグラフに登録
+    Hisui.SI.Rebuild();           // ビルドグラフを更新</strong>
+  }
+</pre>
+
+<h3>ESC キーでオペレーションから離脱</h3>
+<p>ヒスイでは、例えば直線作図などのオペレーションの最中に ESC キーを押すとそのオペレーションから離脱することが出来ます。これを実現するためには、次のように KeyDown イベントのハンドラを記述する必要があります。
+<pre>
+  public MyForm()
+  {
+    ...<strong>
+    Hisui.Graphics.ViewManager.Events.KeyDown +=
+      delegate( object sender, KeyEventArgs e )
+      {
+        if ( e.KeyCode == Keys.Escape &amp;&amp; Hisui.SI.Driver.IsActive ) {
+          Hisui.SI.Driver.Abort();
+          Hisui.SI.Document.SelectedEntry = null;
+          if ( Hisui.SI.Document.History.CanCancel )
+            Hisui.SI.Document.History.Cancel();
+          else
+            Hisui.SI.Build();
+          Hisui.SI.View.Invalidate();
+        }
+      };</strong>
+  }
+</pre>
+<p>このコードを書く代わりに、Hisui.SI.SetupEscapeKeyCancelation() を利用することも出来ます。
+<pre>
+  public MyForm()
+  {
+    ...<strong>
+    Hisui.SI.SetupEscapeKeyCancelation();</strong>
+  }
+</pre>
+
+<h3>Hisui.SI.SetupMainForm()</h3>
+<p>実は、この辺りのもろもろの処理を行う Hisui.SI.SetupMainForm() という関数が用意してあります。次のように使用すればOKです。
+<pre>
+  public MyForm()
+  {
+    ...<strong>
+    Hisui.SI.SetupMainForm( this, "タイトル文字列" );</strong>
+  }
+</pre>
+<p>この関数は、下記の初期化を行います。
+<ul>
+  <li>タイトルバーの文字列の設定
+  <li>ファイルの Drag &amp; Drop の設定
+  <li>ESCキーによるアボート処理の設定
+  <li>フォームを閉じる前に、ファイルを保存するか確認するダイアログの設定
+  <li>ビルドグラフのリビルド
+  <li>メニューやツールバーの初期化
+</ul>
+
+<h2>GLViewControl を直接利用</h2>
+<p>上の例では MainForm クラスこそ利用していませんが、結局は Hisui.Gui.dll に定義済みの ViewPanel を利用しています。ここでは Hisui.Gui.dll は一切使用しないで、Hisui.Graphics.dll に定義された GLViewControl を直接利用する方法を説明します。
+
+<h3>GLViewControl をフォームに配置</h3>
+<p>Hisui.Graphics.GLViewControl を次のように MyForm に配置すればOKです。
+<pre>
+class MyForm : Form
+{
+  <strong>Hisui.Graphics.GLViewControl
+    _view = new Hisui.Graphics.GLViewControl();</strong>
+
+  public MyForm()
+  {
+    ...
+    
+    <strong>// ビューをフォームに配置
+    _view.Dock = DockStyle.Fill;
+    this.Controls.Add( _view );
+    
+    // ビューを DocumentViews に設定し、ビルドグラフに組み込む
+    Hisui.SI.DocumentViews.AddView( _view );
+    Hisui.SI.Tasks.Add( Hisui.SI.DocumentViews );</strong>
+    
+    this.Controls.Add( Hisui.SI.CreateMainMenu() );
+  }
+}
+</pre>
+
+<h3>座標軸など</h3>
+<p>必要ならば座標軸のシーンをシーングラフに追加してください。
+<pre>
+  public MyForm()
+  {
+    ...
+    <strong>
+    // 座標軸
+    _view.SceneGraph.WorldScenes.Add( new Hisui.Graphics.Scenes.AxisScene() );</strong>
+  }
+</pre>
+
+
+<h2>更に深く使いこなすためには</h2>
+<p>上記の内容では説明し切れていない部分がたくさんあります。
+<p>ヒスイ1.4より、Hisui.Gui.dll のソースコードを公開することにしました。更に深く理解したい方は、src/Hisui.Gui/ 以下のソースコードを読み解いてみてください。
+
+
+
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2010, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>

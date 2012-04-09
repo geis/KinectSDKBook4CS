@@ -1,0 +1,1160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<center>
+<h1>直線作図機能を作ってみよう</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+<p>for ヒスイ ver 1.3</p>
+<p>2007年6月25日
+</center>
+
+<h2>１．始める前に確認しておこう</h2>
+
+<h3>前提とする条件</h3>
+<ul>
+  <li>Visual C# 2005 Express Edition 以上がインストールされていること
+  <li>C# や .NET 開発についてある程度知っていること
+</ul>
+
+<h3>ディレクトリ構成</h3>
+<ul>
+  <li>Hisui/
+  <ul>
+    <li>index.html
+    <li>bin/
+    <ul>
+      <li>(実行モジュール群)
+    </ul>
+    <li>doc/
+    <ul>
+      <li>tutorial/
+      <ul>
+        <li>tutorial.html ... このドキュメント
+      </ul>
+    </ul>
+    <li>Tutorial/
+    <ul>
+      <li>Tutorial.sln
+      <li>Tutorial.csproj
+      <li>Program.cs
+      <li>bin/
+      <ul>
+        <li>Debug/
+        <ul>
+          <li>csgl.native.dll
+          <li>GLUT.dll
+		  <li>config.xml</li>
+        </ul>
+        <li>Release/
+        <ul>
+          <li>csgl.native.dll
+          <li>GLUT.dll
+		  <li>config.xml</li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<h3>bin/ の各種ファイルの説明</h3>
+<p><table>
+  <tr>
+    <td>hisui.exe</td>
+    <td>メインプログラム</td></tr>
+  <tr>
+    <td>
+      Hisui.Core.dll<br>
+      Hisui.Ctrl.dll<br>
+      Hisui.Geom.dll<br>
+      Hisui.Graphics.dll<br>
+      Hisui.Gui.dll<br>
+      Hisui.Hix.dll<br>
+      Hisui.SI.dll</td>
+    <td>Hisui本体のアセンブリモジュール</td></tr>
+  <tr>
+	<td>
+		Hisui.Std.dll<br>
+		Hisui.Spatial.dll<br>
+		Hisui.Spatial.Formats.dll<br>
+		Hisui.Spatial.Commands.dll</td>
+	<td>Hisuiの標準プラグイン</td></tr>
+  <tr>
+  	<td>
+  		IronMath.dll<br>
+		IronPython.dll</td>
+  	<td>IronPython(.NET上で動作するPython)</td></tr>
+  <tr>
+  	<td>Naga.dll</td>
+	<td>IronPython 用のコンソールGUIツール</td>
+  </tr>
+  <tr>
+    <td>csgl.dll, csgl.native.dll</td>
+    <td>OpenGLをC#で使用するためのライブラリ
+      <br><a href="http://csgl.sourceforge.net/">http://csgl.sourceforge.net/</a></td></tr>
+</table>
+
+
+
+<h2>２．まずは環境設定から</h2>
+<h3>参照設定</h3>
+<ol>
+  <li>Tutorial\Tutorial.sln を開きます
+  <li>以下のモジュールを Tutorial プロジェクトの参照設定に追加します。
+  <br>（このチュートリアルでは Hisui.Spatial.* は使用しないので、参照設定に追加しなくても結構です。）
+  <ul>
+    <li>Hisui.Core.dll
+    <li>Hisui.Geom.dll
+    <li>Hisui.Ctrl.dll
+    <li>Hisui.Graphics.dll
+    <li>Hisui.Hix.dll
+    <li>Hisui.Gui.dll
+    <li>Hisui.SI.dll
+	<li>Hisui.Std.dll</li>
+	<li>Hisui.Spatial.dll</li>
+	<li>Hisui.Spatial.Formats.dll</li>
+	<li>Hisui.Spatial.Commands.dll</li>
+    <li>csgl.dll
+  </ul>
+  <li>F5キーを押してデバッグ実行します
+</ol>
+次のようにヒスイが起動すれば成功です。
+<p><img src="fig02_01.png" alt="[図02-01:起動画面]"></img>
+
+<h3>ビュー操作を確認しておこう</h3>
+<table>
+  <tr><td>回転</td><td>マウス右ボタン</td></tr>
+  <tr><td>パン</td><td>Shift+マウス右ボタン</td></tr>
+  <tr><td>ズーム</td><td>Ctrl+マウス右ボタン<br>ホイール</td></tr>
+</table>
+
+<h3>設定ファイルの編集</h3>
+次に示すのは Main 関数が定義されている Program.cs です。
+<pre>
+static class Program
+{
+  [System.STAThread]
+  static void Main()
+  {
+    <strong>Hisui.SI.SetUp( "config.xml" );</strong>
+    System.Windows.Forms.Application.Run( new Hisui.Gui.MainForm() );
+  }
+}
+</pre>
+設定ファイルとして config.xml を読み込んでいる部分が強調表示されています。
+この config.xml は exe と同じフォルダに置く必要がありますので、bin/Debug と bin/Release の2箇所に配置されています。
+では config.xml の中を見てみましょう。
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;Shift_JIS&quot;?&gt;
+&lt;config&gt;
+  &lt;plugin&gt;
+    &lt;include name=&quot;Hisui.Std.dll&quot;/&gt;
+    &lt;include name=&quot;Hisui.Spatial.dll&quot;/&gt;
+    &lt;include name=&quot;Hisui.Spatial.Commands.dll&quot;/&gt;
+  &lt;/plugin&gt;
+  &lt;command&gt;
+    ...
+  &lt;/command&gt;
+&lt;/config&gt;
+</pre>
+プラグインとしてロードするモジュールを指定していることが分かります。
+これからチュートリアルで開発する Tutorial.exe をここに書き加えておきましょう。
+config.xml は bin/Debug/ と bin/Release/ の2箇所にありますのでお忘れなく。
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;Shift_JIS&quot;?&gt;
+&lt;config&gt;
+  &lt;plugin&gt;
+    ...
+    <strong>&lt;include name=&quot;Tutorial.exe&quot;/&gt;</strong>
+  &lt;/plugin&gt;
+  ...
+&lt;/config&gt;
+</pre>
+
+
+
+<h2>３．Hello World を作ろう</h2>
+<h3>手順</h3>
+[プロジェクト | クラスの追加] メニューでクラスを新規作成し、次のようにソースを書き足します。
+<pre>
+namespace Tutorial
+{
+    [Hisui.Ctrl.Command]
+    public class Class1 // ← このクラス名は何でも良い
+    {
+        [Hisui.Ctrl.Command]
+        class Tutorial
+        {
+            [Hisui.Ctrl.Command]
+            static void HelloWorld()
+            {
+                System.Windows.Forms.MessageBox.Show("Hello, World");
+            }
+        }
+    }
+}
+</pre>
+
+<h3>ビルドしてみる</h3>
+<p>次のようなメニューが出るはずです。クリックしてメッセージボックスが表示されれば成功です。
+<p><img src="fig03_01.png" alt="[図03-01: Hello World]"></img>
+
+<h3>解説</h3>
+<p>この辺でプラグインの仕組みを簡単に解説します。肝は、クラスや関数に付与されている Hisui.Ctrl.Command 属性です。ヒスイはプラグインを読み込むと、各クラスの属性を調べます。Hisui.Ctrl.Command 属性が付いたクラスや関数はコマンドであると認識して、その関数をメニューに割り当てるのです。
+<p>ここでは Class1 に Command 属性が付いていますから、ヒスイは Class1 のメンバにコマンドがあるかもしれないと認識します。Class1 は単なるコマンドの「入れ物」に過ぎませんので、Class1 という名前は無視されます。また、Class1 がインスタンス化されることはなく、Class1 は static class でも構いません。
+<p>次に Tutorial クラスが読み込まれます。このように入れ子になったクラスは、サブメニューを保持するメニュー項目として処理されます。したがって、メインメニューには Tutorial という名前のメニューが作られ、そのサブメニューとして HelloWorld メニューが作られます。
+<p>最後に HelloWorld() 関数が処理されます。Command属性の付いた関数はメニュー項目と結び付けられ、メニュークリック時のイベントハンドラとしてその関数が登録されます。重要な注意点として、このようなコマンド関数は static である必要があります。
+
+<h3>要するに・・・</h3>
+<ul>
+  <li>コマンドを定義するクラスには Hisui.Ctrl.Command 属性を付ける
+  <li>コマンド関数は static とし、同様に Hisui.Ctrl.Command 属性を付ける
+  <li>サブメニューにしたいならクラスを入れ子にする
+</ul>
+これだけでコマンドが作れます。
+
+
+
+<h2>４．メニュー名を日本語にしたい</h2>
+Command 属性の引数に、下記のように日本語を設定すれば、それがメニュー名となります。
+<pre>
+  ...
+  [Hisui.Ctrl.Command("チュートリアル")]
+  class Tutorial
+  {
+      [Hisui.Ctrl.Command("こんにちは")]
+      static void HelloWorld()
+      {
+        ...
+</pre>
+<br><img src="fig04_01.png" alt="[図04-01: メニューの日本語化]"></img>
+
+<p>メニュー名は設定ファイルでも変更できます。
+上記修正の代わりに、下記のように config.xml を書き加えてください。
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;Shift_JIS&quot;?&gt;
+&lt;config&gt;
+  &lt;plugin&gt;
+    ...
+  &lt;/plugin&gt;
+  &lt;command&gt;
+    ...
+    <strong>&lt;caption name=&quot;Tutorial&quot;&gt;チュートリアル&lt;/caption&gt;</strong>
+    <strong>&lt;caption name=&quot;Tutorial.HelloWorld&quot;&gt;こんにちは&lt;/caption&gt;</strong>
+  &lt;/command&gt;
+&lt;/config&gt;
+</pre>
+
+<h2>５．直線を描画しよう</h2>
+<h3>まずは直線作図メニューを作成</h3>
+<pre>
+  [Hisui.Ctrl.Command("直線作図")]
+  static void DrawLine()
+  {
+  }
+</pre>
+
+<h3>引数でコンテキスト情報を受け取る</h3>
+下記のように、Hisui.Ctrl.IContext を引数で受け取るようにします。
+<pre>
+  [Hisui.Ctrl.Command("直線作図")]
+  static void DrawLine( Hisui.Ctrl.IContext con )
+  {
+  }
+</pre>
+コンテキスト情報からは View オブジェクトを取得することが出来ます。その View に直線シーンを追加したいのです。
+
+<h3>直線の描画</h3>
+<p>ではいよいよ直線を描画してみましょう。ここでは原点から (1, 1, 1) までの直線を描画することにします。
+<p>描画には OpenGL を用います。ヒスイでは OpenGL を C# で利用するためのライブラリとして CsGL（<a href="http://csgl.sourceforge.net/">http://csgl.sourceforge.net/</a>）を利用しています。ファイルの先頭で using CsGL.OpenGL ; と記述してください。
+<p>次のように、con.View.SceneGraph.WorldScenes に直線を描画する匿名メソッド（delegate）を追加します。なお、匿名メソッドの引数 ISceneContext はここでは使いませんので、今は気にしないでください。
+<pre>
+using CsGL.OpenGL ;
+...
+  [Hisui.Ctrl.Command("直線作図")]
+  static void DrawLine( Hisui.Ctrl.IContext con )
+  {
+      con.View.SceneGraph.WorldScenes.Add(
+          delegate(Hisui.Graphics.ISceneContext sc)
+          {
+              GL.glBegin(GL.GL_LINES);
+              GL.glVertex3d(0, 0, 0);
+              GL.glVertex3d(1, 1, 1);
+              GL.glEnd();
+          }
+      );
+  }
+</pre>
+<img src="fig05_01.png" alt="[図05-01:直線]"></img>
+<p>直線が表示されたら、ビューを回転したり拡大したりして遊んでみましょう(^^;
+
+<h3>LineSceneクラスの作成</h3>
+<p>匿名メソッドでも描画できるのですが、今後の拡張のためにキチンとSceneクラスを作ることにしましょう。Sceneクラスは Hisui.Graphics.IScene インターフェイスを実装することで作ることが出来ます。IScene インターフェイスは次のように定義されています。
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface IScene
+  {
+    void Draw( ISceneContext context ) ;
+  }
+}
+</pre>
+<p>シンプルですね。Draw()メソッドがひとつあるだけです。これを実装するとこうなります。
+<pre>
+class LineScene : Hisui.Graphics.IScene
+{
+    public void Draw(Hisui.Graphics.ISceneContext sc)
+    {
+        GL.glBegin(GL.GL_LINES);
+        GL.glVertex3d(0, 0, 0);
+        GL.glVertex3d(1, 1, 1);
+        GL.glEnd();
+    }
+}
+</pre>
+DrawLine() コマンドを次のように書き換えます。
+<pre>
+    con.View.SceneGraph.WorldScenes.Add(new LineScene());
+</pre>
+
+<h3>始点、終点を設定できるように</h3>
+<p>直線の始点、終点がハードコーディングされているのはカッコ悪いので、次のように修正しておきましょう。
+<pre>
+class LineScene : Hisui.Graphics.IScene
+{
+    Hisui.Geom.Point3d _p1;
+    Hisui.Geom.Point3d _p2;
+
+    public LineScene(Hisui.Geom.Point3d p1, Hisui.Geom.Point3d p2)
+    {
+        _p1 = p1;
+        _p2 = p2;
+    }
+
+    public void Draw(Hisui.Graphics.ISceneContext sc)
+    {
+        GL.glBegin(GL.GL_LINES);
+        GL.glVertex3d(_p1.x, _p1.y, _p1.z);
+        GL.glVertex3d(_p2.x, _p2.y, _p2.z);
+        GL.glEnd();
+    }
+}
+</pre>
+DrawLine() コマンドは次のようになります。
+<pre>
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d(0, 0, 0);
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d(1, 1, 1);
+    con.View.SceneGraph.WorldScenes.Add(new LineScene(p1, p2));
+</pre>
+
+
+
+<h2>６．画面フィット</h2>
+
+<h3>フィットさせてみよう</h3>
+<p>ツールバーにこんなアイコン <img src="fit.png"></img> があります。これはビューの拡大率などをオブジェクトにフィットさせるコマンドです。試しに、ビューを拡大・縮小してからこのボタンをクリックしてみてください。
+ 
+<h3>直線を長ーくすると・・・</h3>
+<p>DrawLine() を次のように書き換えて、長ーい直線にしてみてください。
+<pre>
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d(0, 0, 0);
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d(100, 100, 100);
+    con.View.SceneGraph.WorldScenes.Add(new LineScene(p1, p2));
+</pre>
+<p>これでフィットボタンを押しても、画面が長い直線にフィットしません。それどころか、長い直線が途中で切れてしまい、直線全体が描画できていないことが分かります。これは少しビューを回転してみると良く分かると思います。
+
+<h3>なぜフィットが失敗する？</h3>
+<p>フィットさせるためには、描画しているオブジェクトの「大きさ」をフレームワーク側に伝える必要があります。正確にはオブジェクトの境界ボックスや境界球が必要です。オブジェクトの大きさが分からないと、画面フィットをしようにも情報が足らないのです。
+
+<h3>Hisui.Geom.IBoundary3d インターフェイスを実装しよう</h3>
+<p>LineScene の境界情報を伝えるためには、LineScene に Hisui.Geom.IBoundary3d インターフェイスを実装します。IBoundary3d インターフェイスは次のように定義されています。
+<pre class="hisui">
+namespace Hisui.Geom
+{
+  public interface IBoundary3d
+  {
+    Box3d    BoundingBox     { get ; }  // 境界ボックスを返す
+    Sphere3d BoundingSphere  { get ; }  // 境界球を返す
+  }
+}
+</pre>
+これを実装すると、LineScene はこうなります。
+<pre>
+class LineScene : Hisui.Graphics.IScene, Hisui.Geom.IBoundary3d
+{
+    Hisui.Geom.Point3d _p1;
+    Hisui.Geom.Point3d _p2;
+
+    ...
+
+    public Hisui.Geom.Box3d BoundingBox
+    {
+        get { return new Hisui.Geom.Box3d(_p1, _p2); }
+    }
+
+    public Hisui.Geom.Sphere3d BoundingSphere
+    {
+        get
+        {
+            return new Hisui.Geom.Sphere3d(
+                Hisui.Geom.Point3d.Interpolate(_p1, _p2),
+                0.5 * (_p2 - _p1).Length
+            );
+        }
+    }
+}
+</pre>
+<p>これでもう一度フィットボタンを押してみましょう。きちんとフィットされましたか？
+
+
+
+<h2>７．直線エンティティの作成</h2>
+<h3>ツリービューに登録されていない</h3>
+<p>画面右のツリービューを見て下さい。DOCUMENT と書かれたノードがあるかと思います。そうです、ここにドキュメントのツリー構造が表示されるのです。
+<p>しかし、今までに作った直線描画コマンドを動かしても、DOCUMENTツリーは空のままです。というのは、今まで作ってきたのはあくまでシーンの登録に過ぎないわけで、直線エンティティがドキュメントに登録されているわけではないからなのです。
+
+<h3>直線エンティティを作る</h3>
+<p>特にエンティティだからといって何か特別なクラスを継承する必要ありません。フツーに直線クラスを定義します。つまり PONO (Plain Old .NET Object; POJO の .NET 版) で良いのです。
+<pre>
+class Line
+{
+    Hisui.Geom.Point3d _p1;
+    Hisui.Geom.Point3d _p2;
+
+    public Hisui.Geom.Point3d P1
+    {
+        get { return _p1; }
+        set { _p1 = value; }
+    }
+
+    public Hisui.Geom.Point3d P2
+    {
+        get { return _p2; }
+        set { _p2 = value; }
+    }
+
+    public Line(Hisui.Geom.Point3d p1, Hisui.Geom.Point3d p2)
+    {
+        _p1 = p1;
+        _p2 = p2;
+    }
+}
+</pre>
+<p>これをドキュメントに登録しましょう。DrawLine()コマンドを次のように書き換えます。
+<pre>
+[Hisui.Ctrl.Command("直線作図")]
+static void DrawLine(Hisui.Ctrl.IContext con)
+{
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d(0, 0, 0);
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d(100, 100, 100);
+    con.Document.Entries.Put(new Line(p1, p2));
+    // con.View.SceneGraph.WorldScenes.Add(new LineScene(p1, p2));
+}
+</pre>
+コマンドを起動してください。次のようにツリービューに登録されたら成功です。
+<p><img src="fig07_01.png" alt="[図07-01: ツリービュー]"></img>
+<p>でも、肝心の描画が消えてしまいました。これではビューには何も描画されません。次は Line エンティティが描画されるように LineScene クラスを書き換えていくことにします。
+
+<h3>LineScene再び</h3>
+<p>LineScene クラスを書き換えましょう。一番重要なことは、Hisui.Graphics.Scene属性を付けることです。
+<pre>
+[Hisui.Graphics.Scene(typeof(Line))]
+class LineScene : Hisui.Graphics.IScene, Hisui.Geom.IBoundary3d
+{
+    ...
+}
+</pre>
+このように、typeof(Line) を引数に渡して Scene 属性をつけます。こうすることで LineScene クラスが Line エンティティに対応するシーンとしてバインドされます。
+<p>次に、メンバ変数として両端点 _p1, _p2 の代わりに、描画対象の Line エンティティを参照するようにします。
+<pre>
+[Hisui.Graphics.Scene(typeof(Line))]
+class LineScene : Hisui.Graphics.IScene, Hisui.Geom.IBoundary3d
+{
+    Line _line;
+
+    public LineScene(Line line)
+    {
+        _line = line;
+    }
+
+    ...
+}
+</pre>
+これに合わせて、メソッドの実装も書き換えてください。たとえば Draw() メソッドはこうなります。
+<pre>
+    public void Draw(Hisui.Graphics.ISceneContext sc)
+    {
+        GL.glBegin(GL.GL_LINES);
+        GL.glVertex3d(_line.P1.x, _line.P1.y, _line.P1.z);
+        GL.glVertex3d(_line.P2.x, _line.P2.y, _line.P2.z);
+        GL.glEnd();
+    }
+</pre>
+これでコマンドを実行してみましょう。直線が描画されるはずです。
+
+<h3>エンティティに IBoundary3d を実装</h3>
+<p>今のところ IBoundary3d は LineScene に実装されています。しかし、IBoundary3d は Line が実装するほうがより自然だと思いませんか。というわけで、IBoundary3d の実装は LineScene から Line に移してしまいましょう。それでも画面フィットは正しく動作しますから大丈夫です。
+<pre>
+class Line : Hisui.Geom.IBoundary3d
+{
+    ...
+
+    public Hisui.Geom.Box3d BoundingBox
+    {
+        get { return new Hisui.Geom.Box3d(P1, P2); }
+    }
+
+    public Hisui.Geom.Sphere3d BoundingSphere
+    {
+        get
+        {
+            return new Hisui.Geom.Sphere3d(
+                Hisui.Geom.Point3d.Interpolate(P1, P2),
+                0.5 * (P2 - P1).Length
+            );
+        }
+    }
+}
+</pre>
+
+<h3>一旦まとめ</h3>
+<p>MVCパターンというアーキテクチャパターンがあります。アプリケーションを作るときには
+<ul>
+  <li>Model ... アプリケーションが扱う本質的なデータモデル部分
+  <li>View ... Model をユーザーに見せるプレゼンテーション部分
+  <li>Controller ... イベントやユーザー操作を制御する部分
+</ul>
+の３つに分けて作るとうまくいく、という経験則です。ヒスイもこのMVCアーキテクチャを意識して設計されています。この例題では
+<ul>
+  <li>Line エンティティが Model
+  <li>LineScene シーンが View
+  <li>DrawLine() コマンドが Controller
+</ul>
+に相当しています。
+
+
+
+<h2>８．マウスオペレーションで作図</h2>
+<p>直線は作成できるようになりましたが、両端点の座標は決め打ちされています。マウスで自由に作図できるようにコマンドを修正しましょう。具体的には、マウスで２点をクリックするとその２点間に直線が作成される作図コマンドを作ります。
+
+<h3>状態遷移モデル</h3>
+この作図コマンドのオペレーションは次のような状態遷移図で表せます。この状態遷移図を元にプログラミングを進めます。
+<p><img src="fig08_01.png" alt="[図08-01:状態遷移図]"></img>
+<p>ヒスイでは、この状態遷移を IEnumerator を用いて次のようにあらわします。
+<pre>
+  IEnumerator&lt;状態&gt;
+</pre>
+IEnumerator&lt;&gt; は System.Collections.Generic に用意されているイテレータです。IEnumerator&lt;状態&gt;.Current は現在の状態を返し、IEnumerator&lt;状態&gt;.MoveNext() で次の状態への遷移を表すのです。これを用いて、直線作図コマンド DrawLine() は次のように表せます。
+<pre>
+static IEnumerator&lt;状態&gt; DrawLine(Hisui.Ctrl.IContext con)
+{
+  yield return クリック待ち状態 ; // １点目
+  yield return クリック待ち状態 ; // ２点目
+  直線の作成 ;
+}
+</pre>
+なお、yield return は C#2.0 で新たに加わった新機能です。これを使うと IEnumerator オブジェクトが簡単に作成できます。ご存じない方はインターネットで "C# yield" などを検索してみてください。多くの解説ページが見つかると思います。
+
+<h3>プログラミング開始</h3>
+<p>DrawLine() コマンドを次のように書き換えます。
+<pre>
+[Hisui.Ctrl.Command("直線作図")]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; DrawLine(Hisui.Ctrl.IContext con)
+{
+    Hisui.Ctrl.LButtonClick click1 = new Hisui.Ctrl.LButtonClick(con.View.Events);
+    Hisui.Ctrl.LButtonClick click2 = new Hisui.Ctrl.LButtonClick(con.View.Events);
+    yield return click1;
+    yield return click2;
+    
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d(0, 0, 0);
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d(100, 100, 100);
+    con.Document.Entries.Put(new Line(p1, p2));
+}
+</pre>
+<p>Hisui.Ctrl.IOperation がオペレーションの状態を表すインターフェイスです。この IEnumerator を返すことで作図コマンドの状態遷移を表します。
+<p>Hisui.Ctrl.LButtonClick はマウス左ボタンのクリック待ち状態を表すクラスです。click1 が1点目、click2 が2点目のクリックです。
+<p>では早速起動してみましょう。コマンドを起動しても、すぐには直線が描画されません。ここでビュー上で適当に２回クリックすると、直線が作図されると思います。
+
+<h3>クリック位置から直線の始終点を決める</h3>
+<p>現状では、マウスのクリック位置とは無関係な直線が作図されてしまいます。ちゃんとクリック位置を使って直線を作図するように修正しましょう。
+<p>まずマウスのクリック位置を取得します。
+<pre>
+    System.Drawing.Point pt1 = click1.EventArgs.Location;
+    System.Drawing.Point pt2 = click2.EventArgs.Location;
+</pre>
+<p>pt1, pt2 はスクリーン座標の点ですから、これをワールド座標に変換する必要があります。これには con.View.Camera オブジェクトを使います。Camera にはワールド座標をどのような向きからどのような大きさで「撮影」しているかを表す情報が格納されています。次のコードでスクリーン座標をワールド座標に変換することができます。
+<pre>
+    Hisui.Geom.Point3d p1 = con.View.Camera.ScreenToWorld(pt1);
+    Hisui.Geom.Point3d p2 = con.View.Camera.ScreenToWorld(pt2);
+</pre>
+<p>この p1, p2 を元に Line オブジェクトを new すればOKです。以下に DrawLine() コマンド全体を載せておきます。
+<pre>
+[Hisui.Ctrl.Command("直線作図")]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; DrawLine(Hisui.Ctrl.IContext con)
+{
+    Hisui.Ctrl.LButtonClick click1 = new Hisui.Ctrl.LButtonClick(con.View.Events);
+    Hisui.Ctrl.LButtonClick click2 = new Hisui.Ctrl.LButtonClick(con.View.Events);
+    yield return click1;
+    yield return click2;
+
+    System.Drawing.Point pt1 = click1.EventArgs.Location;
+    System.Drawing.Point pt2 = click2.EventArgs.Location;
+
+    Hisui.Geom.Point3d p1 = con.View.Camera.ScreenToWorld(pt1);
+    Hisui.Geom.Point3d p2 = con.View.Camera.ScreenToWorld(pt2);
+
+    con.Document.Entries.Put(new Line(p1, p2));
+}
+</pre>
+
+
+
+<h2>９．ラバーバンド</h2>
+<p>ユーザーインターフェイスを考えると、2点目のクリック待ちのときには直線のプレビュー表示（ラバーバンド）が欲しいものです。これを考慮すると、状態遷移図は次のように書き直されます。
+<p><img src="fig09_01.png" alt="[図09-01: 状態遷移図]"></img>
+<p>これにしたがってコードを書き換えると、次のようになります。
+<pre>
+using System.Windows.Forms;
+
+[Hisui.Ctrl.Command("直線作図")]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; DrawLine(Hisui.Ctrl.IContext con)
+{
+    Hisui.Ctrl.LButtonClick click1 = new Hisui.Ctrl.LButtonClick(con.View.Events);
+    Hisui.Ctrl.LButtonClick click2 = new Hisui.Ctrl.LButtonClick(con.View.Events);
+    
+    yield return click1;
+
+    // ① 直線を作成
+    System.Drawing.Point pt1 = click1.EventArgs.Location;
+    Hisui.Geom.Point3d p1 = con.View.Camera.ScreenToWorld(pt1);
+    Line line = new Line(p1, p1);
+
+    // ② ラバーバンド用のシーンを登録
+    con.WorldScenes.Add( new LineScene( line ) ) ;
+
+    // ③ MouseMove で直線を更新
+    click2.MouseMove +=
+        delegate(object sender, MouseEventArgs e)
+        {
+            line.P2 = con.View.Camera.ScreenToWorld(e.Location);
+            con.View.Refresh();
+        };
+
+    yield return click2;
+
+    con.Document.Entries.Put(line);
+}
+</pre>
+以下、順に解説していきます。
+
+<h3>① 直線を作成</h3>
+<p>1点目のクリックが終わった時点で Line エンティティを作成してしまいます。この時点では2点目の座標は得られていないので、始点・終点共に p1 の直線オブジェクトを作ります。
+
+<h3>② ラバーバンド用のシーンを登録</h3>
+<p>ラバーバンド用のシーンとして LineScene を登録します。ここで登録先が con.View.SceneGraph.WorldScenes ではなく、con.WorldScenes であることに注意してください。con.WorldScenes はこのコマンド実行中のコンテキストでのみ有効なシーンです。このコマンドから抜ける時点で con.WorldScenes は自動的にクリアされます。
+
+<h3>③ MouseMove で直線を更新</h3>
+<p>2点目のクリック待ちでは、マウスの動きに合わせて直線を更新する必要があります。そのためには、click2.MouseMove イベントにイベントハンドラを登録します。このイベントはクリック待ち状態でのみ有効で、クリックが終わった時点でこのハンドラも解除されます。
+<p>中の処理は簡単で、現在のマウス位置からワールド座標に変換し、直線の終点座標を更新します。
+
+
+
+<h2>１０．端点の移動コマンド</h2>
+<h3>コンテキストメニューを作ってみよう</h3>
+<p>作図した直線をクリックすると、コンテキストメニューが表示されます。このコンテキストメニューに独自のコマンドを追加してみましょう。次のようなコマンド関数を作成します。
+<pre>
+[Hisui.Ctrl.Command]
+public class Class1
+{
+    [Hisui.Ctrl.Command("端点の移動")]
+    static void MovePointOfLine(Line self, Hisui.Ctrl.IContext con)
+    {
+        MessageBox.Show("コンテキストメニュー");
+    }
+}
+</pre>
+<p>コマンド関数の第一引数として Line エンティティを受けているところに注目してください。ヒスイはコマンド関数の第一引数をチェックし、このコマンド関数を Line エンティティのコンテキストメニューに自動的にバインドします。起動してみて、コンテキストメニューを確認してください。
+
+<h3>端点のドラッグ</h3>
+<p>端点移動のオペレーションを作成します。仕様は、端点位置でマウス左ボタンを押し、そのままマウスをドラッグさせてボタンを離した位置に端点を移動するものとします。状態遷移図は次のようになります。
+<p><img src="fig10_01.png" alt="[図10-01:状態遷移図]"></img>
+<p>まずはラバーバンドは考慮しないで作っていきましょう。
+<pre>
+[Hisui.Ctrl.Command("端点の移動")]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; 
+    MovePointOfLine(Line self, Hisui.Ctrl.IContext con)
+{
+    Hisui.Ctrl.LButtonDown down = new Hisui.Ctrl.LButtonDown(con.View.Events);
+    Hisui.Ctrl.LButtonUp up = new Hisui.Ctrl.LButtonUp(con.View.Events);
+    yield return down;
+    yield return up;
+
+    Hisui.Geom.Point2i pt1 = new Hisui.Geom.Point2i(down.EventArgs.Location);
+    Hisui.Geom.Point2i pt2 = new Hisui.Geom.Point2i(up.EventArgs.Location);
+
+    Hisui.Graphics.ICamera camera = con.View.Camera;
+    Hisui.Geom.Line3d eyeshot = camera.GetEyeshotLine(pt1);
+    if (eyeshot.Distance(self.P1) &lt; 8 * camera.LengthPerPixel)
+    {
+        self.P1 += camera.ScreenToWorld(pt2 - pt1);
+    }
+    else if (eyeshot.Distance(self.P2) &lt; 8 * camera.LengthPerPixel)
+    {
+        self.P2 += camera.ScreenToWorld(pt2 - pt1);
+    }
+}
+</pre>
+<p>camera.GetEyeshotLine(pt1) は pt1 を通過する視線を返します。また、camera.LengthPerPixel は１ピクセルあたりのワールド座標系での長さを返します。
+
+<h3>ラバーバンド</h3>
+<p>以下のコードで、ラバーバンド（端点移動のプレビュー表示）が有効になります。
+<pre>
+[Hisui.Ctrl.Command("端点の移動")]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; 
+    MovePointOfLine(Line self, Hisui.Ctrl.IContext con)
+{
+    Hisui.Ctrl.LButtonDown down = new Hisui.Ctrl.LButtonDown(con.View.Events);
+    Hisui.Ctrl.LButtonUp up = new Hisui.Ctrl.LButtonUp(con.View.Events);
+    yield return down;
+
+    Hisui.Geom.Point2i pt1 = new Hisui.Geom.Point2i(down.EventArgs.Location);
+    Hisui.Graphics.ICamera camera = con.View.Camera;
+    Hisui.Geom.Line3d eyeshot = camera.GetEyeshotLine(pt1);
+    if (eyeshot.Distance(self.P1) &lt; 8 * camera.LengthPerPixel)
+    {
+        Hisui.Geom.Point3d p1 = self.P1;
+        up.MouseMove +=
+            delegate(object sender, MouseEventArgs e)
+            {
+                Hisui.Geom.Point2i pt2 = new Hisui.Geom.Point2i(e.Location);
+                self.P1 = p1 + camera.ScreenToWorld(pt2 - pt1);
+                con.View.Refresh();
+            };
+        yield return up;
+    }
+    else if (eyeshot.Distance(self.P2) &lt; 8 * camera.LengthPerPixel)
+    {
+        Hisui.Geom.Point3d p2 = self.P2;
+        up.MouseMove +=
+            delegate(object sender, MouseEventArgs e)
+            {
+                Hisui.Geom.Point2i pt2 = new Hisui.Geom.Point2i(e.Location);
+                self.P2 = p2 + camera.ScreenToWorld(pt2 - pt1);
+                con.View.Refresh();
+            };
+        yield return up;
+    }
+}
+</pre>
+<p>上記のコードに新しい知識はありません。今までの知識で理解できるはずですので、読み解いてみてください。
+
+<h3>繰り返しコマンド</h3>
+<p>このコマンドでは、端点を連続して移動することができません。一度端点を移動したら、次は再びコマンドを起動しなおす必要があります。しかし、コマンドによっては連続してオペレーションを繰り返したい場合もあるでしょう。そのためには、Command 属性を次のようにします。
+<pre>
+[Hisui.Ctrl.Command("端点の移動",true)]
+</pre>
+<p>第２引数は iterative かどうかを指定する引数で、true を指定すると繰り返しコマンドになります。連続して移動操作ができることを確認してみてください。なお、コマンドから抜けるには ESC キーを押します。
+
+
+
+<h2>１１．ツールバーの作成</h2>
+<p>では直線を作図するコマンドをツールバーから起動できるようにしましょう。まずプロジェクトに「新しい項目の追加」でユーザーコントロールを追加します。そして、下図のように ToolStrip コンポーネントを配置し、ボタンをひとつ追加します。
+<p><img src="fig11_01.png" alt="[図11-01:ユーザーコントロール]"></img>
+<p>次に、追加したボタンの Tag プロパティに "Tutorial.DrawLine" と入力します。
+<p><img src="fig11_02.png" alt="[図11-01:Tagプロパティ]"></img>
+<p>最後に、このユーザーコントロールに ToolStrip 属性を付けます。
+<pre>
+[Hisui.Ctrl.ToolStrip]
+public partial class UserControl1 : UserControl
+{
+  ...
+</pre>
+以上でツールバーが追加され、ボタンに DrawLine コマンドがバインドされます。
+
+
+
+<h2>１２．Undo/Redo への対応</h2>
+<h3>Undo, Redo してみよう</h3>
+<p>Undo、Redo は次のボタンで操作できます。
+<ul>
+  <li><img src="undo.png" alt="undo"> ... Undo
+  <li><img src="redo.png" alt="redo"> ... Redo
+</ul>
+<p>では直線を作図して、Undo や Redo を試してみましょう。Undo すると作図した直線が削除され、Redo で復活することが分かると思います。
+
+<h3>「端点の移動」コマンドの Undo/Redo</h3>
+<p>では「端点の移動」コマンドは Undo/Redo できるでしょうか。残念ながらこのままでは Undo/Redo できません。Line クラスに Undo/Redo 用の細工が必要です。
+
+<h3>IMemorable インターフェイス</h3>
+<p>Undo/Redo のためには Line クラスが Hisui.Core.IMemorable インターフェイスを実装する必要があります。まずはインターフェイスの定義を見てみましょう。
+<pre class="hisui">
+namespace Hisui.Core
+{
+  public interface IMemorable
+  {
+    void AddRef() ;
+    void Release() ;
+  }
+}
+</pre>
+<p>メソッドの名前から類推できると思いますが、IMemorable はリファレンスカウンタのインターフェイスです。エンティティをドキュメントに追加すると AddRef() が呼ばれ、参照カウンタがインクリメントされます。逆にエンティティがドキュメントから削除されると、参照カウンタがデクリメントされます。参照カウンタが１以上の状態が memorable （忘れられない、記憶すべき）な状態、すなわち変更履歴が記憶される状態です。参照カウンタ方式を採用したのは、１つのエンティティが重複してドキュメントに登録される可能性を考慮したためです。
+
+<h3>Undo 処理の流れ</h3>
+<p>具体的な実装に入る前に、直線の端点移動を例に Undo 処理の概略を説明しておきます。
+<ol>
+  <li>直線を作図すると、Line エンティティがドキュメントに Put され、IMemorable.AddRef() が呼ばれます。つまり、Line エンティティが memorable 状態になります。
+  <li>端点移動を実行すると、Line エンティティの値が変更されます。具体的には、P1 プロパティや P2 プロパティに値が代入されます。このとき、エンティティはドキュメントの履歴オブジェクト内に Memento オブジェクトを生成し、変更の履歴を記録します。
+  <li>コマンド処理が終了すると、変更履歴が Commit されます。
+  <li>Undo が呼ばれると、履歴中の Memento オブジェクトを走査し、処理をロールバックします。
+</ol>
+<p>重要なのは、Memento が生成されるのは
+<blockquote>
+  エンティティがドキュメントに登録されている場合<br>
+  かつ<br>
+  エンティティが変更された場合
+</blockquote>
+ということです。したがって
+<ul>
+  <li>ドキュメントに登録されていないオブジェクトまで履歴に記録されてしまうことはありません
+  <li>何も変更されていないエンティティの履歴が生成されることはありません
+</ul>
+
+<h3>実装手順</h3>
+実装手順は以下のとおりです。
+<ol>
+  <li>Memento クラスを定義する
+  <li>Hisui.Core.Memorable&lt;TMemento&gt; に委譲して IMemorable インターフェイスを実装する
+  <li>エンティティの変更履歴を Memento に書き込む
+</ol>
+<p>しかし、今回の例題では Memento クラスとして MementoByBackup&lt;TBackup&gt; という既に用意されているクラスを使うことにしましょう。これを使うと、実装手順は次のようになります。
+<ol>
+  <li>Backup クラスを定義する
+  <li>Hisui.Core.Memorable&lt;Hisui.Core.MementoByBackup&lt;Backup&gt;&gt; に委譲して IMemorable インターフェイスを実装する
+  <li>エンティティの変更を通知する
+</ol>
+
+<h3>partial class を作成</h3>
+<p>ではいよいよ実装を開始しましょう。Undo/Redo の実装はエンティティ本体とは concern が異なりますので、partial class を作ってそちらに実装することにします。
+
+<pre>
+// こちらがエンティティ本体
+partial class Line : Hisui.Geom.IBoundary3d
+{
+  ...
+}
+
+// こちらが Undo/Redo 用のコード
+partial class Line : Hisui.Core.IMemorable
+{
+    void Hisui.Core.IMemorable.AddRef()
+    {
+    }
+
+    void Hisui.Core.IMemorable.Release()
+    {
+    }
+}
+</pre>
+
+<h3>Backup クラスの作成</h3>
+<p>次のように Backup クラスを定義します。直線の端点座標をバックアップ/リカバリするコードを記述します。
+<pre>
+partial class Line : Hisui.Core.IMemorable
+{
+    class Backup : Hisui.Core.Backup&lt;Line&gt;
+    {
+        Hisui.Geom.Point3d _p1;
+        Hisui.Geom.Point3d _p2;
+
+        protected override void BackupFrom(Line src)
+        {
+            _p1 = src._p1;
+            _p2 = src._p2;
+        }
+
+        protected override void RecoveryTo(Line dst)
+        {
+            dst._p1 = _p1;
+            dst._p2 = _p2;
+        }
+    }
+    
+    ...
+}
+</pre>
+<p>注意事項です。RecoveryTo() 関数では、<strong>dst のプライベートフィールド _p1, _p2 に直接代入</strong>する必要があります（※ Backup は Line のインナークラスであるため、Line のプライベートフィールドにアクセス可能です）。<strong>パブリックプロパティ P1, P2 を介して代入してはいけません。</strong>その理由は２つ下の項目「エンティティの変更を通知」で説明します。
+
+
+<h3>IMemorable インターフェイスの実装</h3>
+<p>次のように Memorable&lt;MementoByBackup&lt;Backup&gt;&gt; を利用して IMemorable インターフェイスを実装します。
+<pre>
+partial class Line : Hisui.Core.IMemorable
+{
+    class Backup : Hisui.Core.Backup&lt;Line&gt;
+    {
+        ...
+    }
+
+    Hisui.Core.Memorable&lt;Hisui.Core.MementoByBackup&lt;Backup&gt;&gt; _memorable;
+
+    void Hisui.Core.IMemorable.AddRef()
+    {
+        _memorable.AddRef();
+    }
+
+    void Hisui.Core.IMemorable.Release()
+    {
+        _memorable.Release();
+    }
+}
+</pre>
+
+<h3>エンティティの変更を通知</h3>
+<p>端点座標が変更される直前に、次のような変更通知のコードを挿入します。
+<pre>
+partial class Line : Hisui.Geom.IBoundary3d
+{
+    ...
+
+    public Hisui.Geom.Point3d P1
+    {
+        get { return _p1; }
+        set {
+            _memorable.StartEdit(this); // 変更の通知
+            _p1 = value;
+        }
+    }
+
+    public Hisui.Geom.Point3d P2
+    {
+        get { return _p2; }
+        set {
+            _memorable.StartEdit(this); // 変更の通知
+            _p2 = value;
+        }
+    }
+
+    ...
+}
+</pre>
+<p>このように、プロパティ P1, P2 への代入時には変更の通知が行われます。これが「Backupクラスの作成」で「RecoveryTo() では P1, P2 を介して代入してはいけない」と書いた理由です。RecoveryTo() は Undo/Redo 時に動作する関数であり、Undo/Redo 時に変更の通知が行われてしまうと履歴が壊れてしまうのです。
+
+<h3>試してみよう</h3>
+<p>以上で Undo/Redo の実装は終了です。早速起動して、端点移動が Undo/Redo できるか試してみましょう。
+
+
+
+<h2>１３．シリアライズ</h2>
+
+<h3>概要</h3>
+<p>ヒスイは、ドキュメントを XML 形式で保存する機能を備えています。このファイル形式を HiX (Hisui XML) と呼びます。HiX ではシリアライズ機能を各エンティティごとにプラグインできるようになっています。準備として、各プロジェクトの参照設定で Hisui.Hix.dll を登録しておいてください。
+<p>エンティティのシリアライズ方法には次の3つがあります。
+<ul>
+  <li>System.Xml.Serialization.XmlSerializer による自動シリアライズ（デフォルト）
+  <li>System.Runtime.Serialization.Formatters.Soap.SoapFormatter による SOAP 形式のシリアライズ
+  <li>Hisui.Hix.ISerializer の実装をプラグイン（推奨）
+</ul>
+<p>では上から順に見ていくことにしましょう。
+
+<h3>デフォルトの自動シリアライズ</h3>
+XmlSerializer によるデフォルトの自動シリアライズには、次の制約があります。
+<ul>
+  <li>public class でなくてはならない
+  <li>引数なしのデフォルトコンストラクタがなくてはならない
+  <li>public なフィールドやプロパティのみがシリアライズの対象となる
+</ul>
+<p>上の2つの条件を満たすように、Line クラスを public にして引数なしのコンストラクタも加えておきましょう。
+<pre>
+    public partial class Line : Hisui.Geom.IBoundary3d
+    {
+        ...
+        public Line() {}
+        ...
+    }
+</pre>
+<p>必要な作業はこれだけです。[File | Save] メニューかツールバーの <img src="save.png" alt="[save]"></img> で早速保存してみましょう。次のような XML ファイルが出力されるはずです。
+
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;document&gt;
+  &lt;index&gt;
+    &lt;entry id=&quot;1&quot; ref=&quot;1&quot; /&gt;
+  &lt;/index&gt;
+  &lt;body&gt;
+    &lt;object
+      name=&quot;1&quot; 
+      type=&quot;Tutorial.Line, Tutorial, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;&gt;
+      &lt;Line
+        xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+        xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        &lt;P1&gt;
+          &lt;x&gt;-0.49006622516556292&lt;/x&gt;
+          &lt;y&gt;0.73841059602649006&lt;/y&gt;
+          &lt;z&gt;0&lt;/z&gt;
+        &lt;/P1&gt;
+        &lt;P2&gt;
+          &lt;x&gt;0.51655629139072845&lt;/x&gt;
+          &lt;y&gt;0.28807947019867547&lt;/y&gt;
+          &lt;z&gt;0&lt;/z&gt;
+        &lt;/P2&gt;
+      &lt;/Line&gt;
+    &lt;/object&gt;
+  &lt;/body&gt;
+&lt;/document&gt;
+</pre>
+<p>Line オブジェクトは &lt;object name="1" ...&gt; ～ &lt;/object&gt; に埋め込まれています。
+
+<h3>SOAP 形式のシリアライズ</h3>
+<p>この場合は、シリアル化のコードと逆シリアル化のコードを書く必要があります。言い換えれば、そのコーディングによってシリアライズ方法を制御することができます。
+<p>まずはシリアル化から。次のように [Serializable] 属性を付け、ISerializable インターフェイスを実装します。
+<pre>
+using System.Runtime.Serialization;
+...
+
+[System.Serializable]
+partial class Line : ISerializable
+{
+    ...
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        info.AddValue("x1", _p1.x);
+        info.AddValue("y1", _p1.y);
+        info.AddValue("z1", _p1.z);
+
+        info.AddValue("x2", _p2.x);
+        info.AddValue("y2", _p2.y);
+        info.AddValue("z2", _p2.z);
+    }
+}
+</pre>
+<p>続いて逆シリアル化。次のようなコンストラクタを用意します。
+<pre>
+[System.Serializable]
+partial class Line : ISerializable
+{
+    Line(SerializationInfo info, StreamingContext context)
+    {
+        _p1.x = info.GetDouble("x1");
+        _p1.y = info.GetDouble("y1");
+        _p1.z = info.GetDouble("z1");
+
+        _p2.x = info.GetDouble("x2");
+        _p2.y = info.GetDouble("y2");
+        _p2.z = info.GetDouble("z2");
+    }
+    ...
+}
+</pre>
+<p>保存すると、Line オブジェクトは次のように出力されます。
+<pre>
+&lt;SOAP-ENV:Envelope
+  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; 
+  xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; 
+  xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; 
+  xmlns:clr=&quot;http://schemas.microsoft.com/soap/encoding/clr/1.0&quot; 
+  SOAP-ENV:encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;&gt;
+&lt;SOAP-ENV:Body&gt;
+&lt;a1:Line
+  id=&quot;ref-1&quot; 
+  xmlns:a1=&quot;http://schemas.microsoft.com/clr/nsassem/Tutorial/Tutorial
+    %2C%20Version%3D1.0.0.0%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull&quot;&gt;
+&lt;x1&gt;-0.48675496688741721&lt;/x1&gt;
+&lt;y1&gt;0.609271523178808&lt;/y1&gt;
+&lt;z1&gt;0&lt;/z1&gt;
+&lt;x2&gt;0.54635761589403975&lt;/x2&gt;
+&lt;y2&gt;0.26821192052980131&lt;/y2&gt;
+&lt;z2&gt;0&lt;/z2&gt;
+&lt;/a1:Line&gt;
+&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</pre>
+
+
+<h3>Hisui.Hix.ISerializer の実装によるシリアライズ</h3>
+<p>ではいよいよ、Hisui.Hix.ISerializer インターフェイスを実装する方法を解説します。この方法では、 Line エンティティとは別に Serializer クラスを用意し、プラグインすることができます。上記の２つと比べて若干手間はかかりますが、もっとも自由にシリアライズ方法を制御できる方法です。
+<p>やりかたは Scene クラスの作成と似ています。次のコードが Serializer クラスの雛形となります。
+<pre>
+using System.Xml;
+...
+    [Hisui.Hix.Serializer(typeof(Line))]
+    class LineSerializer : Hisui.Hix.ISerializer
+    {
+        Line _line;
+
+        public object Target
+        {
+            get { return _line; }
+            set { _line = (Line)value; }
+        }
+
+        public IEnumerable&lt;object&gt; References
+        {
+            get { yield break; }
+        }
+
+        public void Write(XmlWriter writer, Hisui.Hix.INameResolver names)
+        {
+        }
+
+        public void Read(XmlReader reader, Hisui.Hix.IReferenceResolver refs)
+        {
+        }
+    }
+</pre>
+<p>XMLにシリアライズするコードを Write() に、XML からデシリアライズするコードを Read() に記述します。まずは Write() のコードを見ていきます。
+<pre>
+    ...
+    public void Write(XmlWriter writer, Hisui.Hix.INameResolver names)
+    {
+        writer.WriteStartElement("p1");
+        Hisui.Hix.Util.Write(writer, _line.P1);
+        writer.WriteEndElement();
+
+        writer.WriteStartElement("p2");
+        Hisui.Hix.Util.Write(writer, _line.P2);
+        writer.WriteEndElement();
+    }
+    ...
+</pre>
+<p>このコードで使用している Hisui.Hix.Util.Write() という関数は、ヒスイで用意しているシリアライズ用のユーティリティです。Hisui.Hix.Util にはプリミティブなデータのシリアライズ関数がいくつか用意されています。
+<p>出力の形式には特に決まりはないので、自由にXMLのフォーマットを設計して出力してください。上記のコードでは次のようなシンプルですっきりとした出力結果が得られます。
+<pre>
+  &lt;object name=&quot;1&quot; type=&quot;Tutorial.Line&quot;&gt;
+    &lt;p1&gt;-0.443708609271523 0.76158940397351 0&lt;/p1&gt;
+    &lt;p2&gt;0.622516556291391 0.271523178807947 0&lt;/p2&gt;
+  &lt;/object&gt;
+</pre>
+
+<p>次に読み込み側 Read() を作ります。
+<pre>
+    public void Read(XmlReader reader, Hisui.Hix.IReferenceResolver refs)
+    {
+        Hisui.Geom.Point3d p1, p2;
+
+        reader.ReadToFollowing("p1");
+        Hisui.Hix.Util.Read(reader, out p1);
+
+        reader.ReadToFollowing("p2");
+        Hisui.Hix.Util.Read(reader, out p2);
+
+        _line = new Line(p1, p2);
+    }
+</pre>
+<p>書き出し及び読み込みを確認してみてください。
+
+
+
+<hr><p align="right">Copyright &copy; 2006, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>
+

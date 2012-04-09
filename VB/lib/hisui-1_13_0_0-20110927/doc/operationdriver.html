@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<title>OperationDriver によるプル型イベント処理</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+	
+<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>
+<h1>OperationDriver によるプル型イベント処理</h1>
+<p>ヒスイのコマンドではプル型イベント処理によるマウスオペレーションが記述できます。
+このページの説明は<a href="tutorial/tutorial.html">チュートリアル</a>の内容を前提としていますので、
+まずはチュートリアルをやってからお読みください。
+</p>
+
+<h2>プッシュ型の問題</h2>
+<p>.NET Framework で使用される通常のイベント処理は「プッシュ型イベント」と言えます。
+何故なら、イベントの発火側が一方的にイベントをプッシュする方式であり、必要なイベントを選別する責務はイベントの受け取り側にあるからです。
+</p>
+<p>このプッシュ型イベント処理は、CADの作図コマンドのような複雑なマウスオペレーションを扱うには不便です。
+例えばマウスの2点クリックで直線を作図するコマンドを考えてみましょう。
+</p>
+<ol>
+	<li>1回目のMouseClickイベントで直線作図開始</li>
+	<li>MouseMoveイベントの度に直線をプレビュー表示（ラバーバンド表示）</li>
+	<li>2回目のMouseClickイベントで直線作図が完了し、直線エンティティをドキュメントに登録</li>
+</ol>
+<p>このように、直線を作図するだけでも3つのイベントハンドラが必要ですし、直線作図モードかどうかを区別するフラグも必要です。
+つまり「直線を作図する」という一つの関心事が、3つのイベントハンドラ関数と1つのフラグに分散してしまうことになります。
+これでは、コマンドの数が増えるとコードの管理は非常に厄介になってしまいます。</p>
+<img src="tutorial/fig09_01.png"></img>
+
+<h2>プル型イベント処理</h2>
+<p>このような作図コマンドは、次のように1つの関数内に素直にフローを記述したいものです。</p>
+<pre>
+直線作図()
+{
+  1回目のMouseClickを取得;
+  2回目のMouseClickを取得;
+  直線エンティティを作成して登録;
+}
+</pre>
+<p>チュートリアルをやれば分かるように、ヒスイではこのように素直にオペレーションのフローを記述することが出来ます。
+これはコマンド側が必要なイベントを要求する形式なので、プル型のイベント処理と言えます。
+このプル型イベント処理を実現するのが、次で説明する OperationDriver クラスです。
+</p>
+
+<h2>OperationDriver</h2>
+<h3>使い方</h3>
+<p>OperationDriverを利用する場合には、直線を作図するコマンドを次のような関数で定義します。</p>
+<pre>
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; DrawLine(...)
+{
+  System.Windows.Forms.Control ctrl = ...; // クリックイベントを受け取るコントロール
+  Hisui.Ctrl.LButtonClick click1 = new Hisui.Ctrl.LButtonClick( ctrl );
+  Hisui.Ctrl.LButtonClick click2 = new Hisui.Ctrl.LButtonClick( ctrl );
+  
+  yield return click1;
+  yield return click2;
+  
+  System.Drawing.Point pt1 = click1.EventArgs.Location; // 1点目のクリック位置
+  System.Drawing.Point pt2 = click2.EventArgs.Location; // 2点目のクリック位置
+  直線を作図;
+}
+</pre>
+<p>この関数を呼び出して、OperationDriverに次のように渡します。</p>
+<pre>
+Hisui.Ctrl.OperationDriver driver = new Hisui.Ctrl.OperationDriver();
+...
+driver.Run( DrawLine(...) );
+</pre>
+
+<h3>IOperationインターフェイス</h3>
+<p>DrawLine() 関数では IOperation のイテレータを戻り値として返しています。
+IOperationインターフェイスは次のように定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Ctrl
+{
+  public delegate void TerminationHandler() ;
+
+  public interface IOperation
+  {
+    void Run( TerminationHandler terminate ) ;
+    void Abort() ;
+    void Suspend() ;
+    void Resume() ;
+  }
+}
+</pre>
+<p>このインターフェイスをユーザーが実装する機会はあまりないでしょう。
+ヒスイには IOperation を実装したマウスオペレーションが既に定義されています。以下に代表的なものを示します。
+</p>
+<ul>
+	<li>MouseMove</li>
+	<li>MouseWheel</li>
+	<li>LButtonClick, RButtonClick, MButtonClick</li>
+	<li>LButtonDown, RButtonDown, MButtonDown</li>
+	<li>LButtonUp, RButtonUp, MButtonUp</li>
+</ul>
+<p>マウスオペレーションによるコマンドは、これらマウスオペレーションの列として表すことが出来ます。
+したがって、OperationDriver にはオペレーション列 IEnumerator&lt;IOperation&gt; を渡す仕様となっています。
+これはコマンドの状態遷移を素直に表現したイテレータとなっています。</p>
+
+<h3>グローバルな OperationDriver</h3>
+<p>ヒスイは次のようにグローバルな OperationDriver インスタンスを一つ定義しています。</p>
+<pre class="hisui">
+namespace Hisui.Ctrl
+{
+  public static class Current
+  {
+    ...
+    static OperationDriver _driver = new OperationDriver();
+    ...
+    public static OperationDriver Driver
+    {
+      get { return _driver; }
+    }
+    ...
+  }
+}
+</pre>
+<p>チュートリアルで作成した直線作図のようなコマンドは、このグローバルな OperationDriver を利用して実行されます。</p>
+
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2006, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

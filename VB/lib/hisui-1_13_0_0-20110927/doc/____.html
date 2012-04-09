@@ -1,0 +1,918 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	
+	<title>ヒスイ更新履歴</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+
+<p align="right"><a href="../index.html">戻る</a></p>	
+<h1>ヒスイ更新履歴</h1>
+		<ul>
+      <li><a href="#113">from 1.12 to 1.13 [2011.09.27]</a></li>
+      <li><a href="#112">from 1.11 to 1.12 [2010.12.14]</a></li>
+      <li><a href="#111">from 1.10 to 1.11 [2010.04.13]</a></li>
+      <li><a href="#110">from 1.9 to 1.10 [2009.05.26]</a></li>
+      <li><a href="#19">from 1.8 to 1.9 [2008.10.24]</a></li>
+      <li><a href="#18">from 1.7 to 1.8 [2008.08.11]</a></li>
+      <li><a href="#17">from 1.6 to 1.7 [2008.05.30]</a></li>
+      <li><a href="#16">from 1.5 to 1.6 [2008.04.23]</a></li>
+      <li><a href="#15">from 1.4 to 1.5 [2008.02.04]</a></li>
+      <li><a href="#14">from 1.3 to 1.4 [2007.09.12]</a></li>
+      <li><a href="#13">from 1.2 to 1.3 [2007.06.25]</a></li>
+		</ul>
+
+<h2><a name="113">from 1.12 to 1.13 [2011.09.27]</a></h2>
+
+<h3>XMLドキュメントコメント追加</h3>
+<ul>
+<li>XMLドキュメントコメント Hisui.*.xml を追加した。</li>
+<li>Sandcastle によって生成されたヘルプ HisuiHelp.chm を追加した。</li>
+</ul>
+
+<h3>機能追加</h3>
+<ul>
+<li>ViewSetting に AxisScene プロパティを追加し、アプリ側から座標軸のシーンを設定可能にした。</li>
+<li>Hisui.Wpf に CaptionBinding を追加。</li>
+<li>Hisui.OpenGL.HiGL のテクスチャ関係の機能を強化。</li>
+<li>Hisui.Graphics.StandardViewOperation にZ軸が傾かない回転操作を実装（ZKeptRotation プロパティ）。</li>
+<li>カメラ（Hisui.Graphics.ICamera etc）の透視投影対応。</li>
+<li>Hisui.HixUT を拡張しバイナリデータや画像データをシリアライズ可能にした。</li>
+<li>Hisui.Graphics に IBoundedScene, IVertexArrayScene インターフェイスを追加し、GraphicsUT.CreateScene() などが生成するシーンは IVertexArrayScene 型に変更した。</li>
+<li>GraphicsUT.CreateCompositeScene() 追加。</li>
+<li>Hisui.Spatial.ISceneBuilder を追加し、頂点配列によるシーン生成が簡単に出来るようにした。</li>
+<li>OBJインポート：行末に￥がある場合は次の行と連結するようにした。</li>
+<li>OBJインポート：マテリアルファイル（*.MTL）に対応。</li>
+<li>STLインポート：新たに追加した Hisui.Spatial.ISceneTriangleSoup 型にインポートするようにして高速化＆省メモリ化。</li>
+<li>PLYインポート：頂点カラー対応。</li>
+</ul>
+
+<h3>仕様変更</h3>
+<ul>
+<li>Hisui.Core.IDependent インターフェイスを追加。（後述）</li>
+<li>Hisui.OpenGL.HiGL のテクスチャ生成関数の仕様を変更。TEXURE_2D をデフォルトとし、画像サイズが
+2のベキ乗かどうかで GL_TEXTURE_RECTANGLE_NV に切りかえる処理を廃止した。</li>
+<li>Hisui.Graphics.Material に AmbientColor と DiffuseColor を別々に設定可能にした（今まではColorプロパティに統一されていた）。</li>
+</ul>
+<h4>IDependent インターフェイスについて</h4>
+<p>従来：IBuild は IBreath を直接継承していた。</p>
+<pre>
+namespace Hisui.Core {
+  public interface IBreath { ... }
+  public interface IBuild : IBreath { IEnumerable&lt;IBreath&gt; Sources { get; } void Build(); }
+}
+</pre>
+<p>修正後：継承関係の間に IDependent が挿入された。</p>
+<pre>
+namespace Hisui.Core {
+  public interface IBreath { ... }
+  public interface IDependent : IBreath { IEnumerable&lt;IBreath&gt; Sources { get; } }
+  public interface IBuild : IDependent { void Build(); }
+}
+</pre>
+<p>IDependent は依存関係（Sources）だけを持っていてビルド処理（Build()）は持っていないインターフェイス。
+下記のインターフェイスは IBuild の代わりに IDependent を継承するものとして定義が変更された。</p>
+<ul>
+<li>Hisui.Spatial.ICurve</li>
+<li>Hisui.Spatial.ISurface</li>
+<li>...</li>
+</ul>
+
+<h3>バグ修正</h3>
+<ul>
+<li>Hisui.Graphics.Scenes.GridPlaneScene のバグ修正。CodSysが有効になっていなかった。</li>
+<li>IContext.Termination イベントで処理された内容も Commit されるように修正。</li>
+<li>GLViewControl.GetImage() に base.GrabContext() を追加（マルチビューでバグ発生）</li>
+<li>64bit 対応のため HWND, HDC などを uint ではなく IntPtr で扱うように修正。</li>
+<li>エントリの削除がビューのフィット操作に反映されないバグを修正。</li>
+<li>SI.SetUp() 関数で CurrentCulture.NumberFormat を en-US のものに設定するようにし、小数点にカンマを用いる非英語圏のロケールでも正しくSTL等がインポート出来るようにした。</li>
+</ul>
+
+
+<h2><a name="112">from 1.11 to 1.12 [2010.12.14]</a></h2>
+
+<h3>機能追加</h3>
+<ul>
+<li>Wavefront OBJ フォーマットの読み込み処理において、頂点番号に負の値が設定されている形式に対応した。</li>
+<li>Hisui.Spatial.ISceneTriangleMesh 等を修正しシリアライズや Undo/Redo を可能にした</li>
+<li>Hisui.Spatial.IPolygonShell の CollapseTriangleEdge() メソッドが境界エッジに対しても正しく動作するようにした</li>
+<li>ビュー設定ダイアログなどの英語対応</li>
+<li>Hisui.Gui.ViewSetting に ViewOperationSetting プロパティを追加し、外部からビュー操作設定にアクセスできるようにした。</li>
+<li>Geometry Shader に対応した。</li>
+<li>Hisui.Geomの構造体の幾つかにTypeConverterを定義し、PropertyGrid で編集できるようにした。</li>
+<li>Hisui.Graphics.IViewEvents に PreviewKeyDown イベントを追加した。</li>
+<li>Hisui.Graphics.Camera に IBreath を実装し、カメラの変更をビルドグラフで検出できるようにした。</li>
+<li>Hisui.Core.HistoryにイベントUndone/Redone/Committed/Canceledを追加</li>
+<li>Hisui.OpenGL.HiGL.CreateTexture3DObject() などを追加し、3Dテクスチャに対応した。</li>
+</ul>
+
+<h3>仕様変更</h3>
+<ul>
+<li>Hisui.Spatial.SceneTriangleMesh は VBO を使用しないで頂点配列で描画するように変更</li>
+<li>Hisui.Gui.dll のツリービューのビルドを高速化</li>
+<li>ビルドグラフが巨大（大量のノードがある）場合の Hisui.Core.Builder.Build()/Hisui.SI.Build() の高速化。ノードの重複した訪問を除去した。</li>
+<li>Hisui.SI.ContainsCommand() を仕様変更し、メインメニューのコマンドだけでなく右クリックメニューのコマンドもすべてチェックするようにした。
+	代わりに Hisui.SI.ContainsGlobalCommand() を追加し、こちらは従来の ContainsCommand() と同様のメインメニューのコマンドのみをチェックする仕様とした。</li>
+<li>ヒスイ本体から IronPython への依存を除去した。IronPython に関する機能は Hisui.Python.dll モジュールへ移動した。</li>
+</ul>
+
+
+<h3>バグ修正</h3>
+<ul>
+<li>アスキーフォーマットのSTL読込において、STLファイルに多少の誤り（フォーマットエラー）があってもロバストにデータを読み込めるように修正した</li>
+<li>Hisui.Spatial.Formats.STLFormat.Export() で出力先に既存のSTLファイルを指定すると、既存ファイルの末尾に追加される動作になっていた問題を修正。</li>
+<li>Hisui.Spatial.ITriangleSoup を Hisui.Spatial.IPolygonMesh に変換する処理において、頂点マージ処理に利用するボクセルの解像度が粗いことが原因で
+	不正な頂点マージが発生することが分かったため、このボクセル解像度を外から指定可能にしデフォルト値を大きく変更した。</li>
+<li>Hisui.Spatial.Factory.CreateSubset( Hisui.Spatial.IPolygonMesh, IEnumerable&lt;int&gt; ) のバグ修正。</li>
+<li>Hisui.Core.Holder&lt;T&gt;、 Hisui.Core.Array&lt;T&gt;、 Hisui.Core.Array2&lt;T&gt;、Hisui.Graphics.SceneDecorator の Undo/Redo に関するバグ修正</li>
+<li>Hisui.Core.History.CurrentAge や Hisui.Core.Document.FileAge が正しく設定されないバグを修正</li>
+<li>Hisui.OpenGL.HiGL.DrawArrays() において頂点配列が null あるいは長さゼロの場合は return するようにした</li>
+<li>オペレーションが二重起動されることがないように Hisui.Ctrl.OperationDriver を修正。</li>
+<li>MouseWheel によるビューの拡大縮小は ModifierKey が None の場合のみにした</li>
+<li>裏面マテリアル付きの半透明表示のデプスが正しく描画されない不具合を修正</li>
+<li>カメラのアニメーションの不具合を修正</li>
+<li>Windows7 64bit で wglCreateContext() に失敗する問題を解消するための修正</li>
+<li>System.Drawing.Color が Write/ReadHixArray(), Write/ReadHixStorage() で失敗する不具合を修正。</li>
+<li>entry.Entity と entry.Elements でオブジェクトが重複している場合に、それに対するコンテキストメニューも重複して表示されてしまう不具合を修正</li>
+</ul>
+
+
+
+<h2><a name="111">from 1.10 to 1.11 [2010.04.13]</a></h2>
+
+<h3>バグ修正</h3>
+<ul>
+<li>Core.IStorage の Undo/Redo 修正
+<li>Graphics.IScope がスコープを抜ける際に Material 設定時の Color も元に戻すように修正
+<li>OpenGL.HiGL.DrawArrays() の stride に関するバグ修正
+<li>IPolygonMesh → IPolygonShell の変換処理における法線ベクトル設定で、不正なファセットIDにアクセスする場合がある不具合を修正
+<li>Spatial.Triangle.GetEdge() バグ修正
+</ul>
+
+<h3>シェーダー機能追加</h3>
+<ul>
+<li>Hisui.OpenGL.GL にシェーダー関係のラッパー関数を追加
+<li>Hisui.OpenGL.HiGL に IProgramObject などシェーダーを扱う関数やクラスを追加
+<li>Hisui.Graphics に IShaderProgram や ShaderDecoration を追加
+</ul>
+<p>Hisui.OpenGL.HiGLを利用してシェーダーを適用する方法。
+<pre>
+using Hisui.OpenGL;
+
+var program = HiGL.CreateProgramObject( vertexShaderSource, fragmentShaderSource );
+using ( var use = program.Use() ) {
+  use.Uniform( "foo", 123 );
+  scene.Draw( sc );
+}
+</pre>
+<p>シェーダーをプラグインする方法。
+<pre>
+[Hisui.Graphics.ShaderProgram]
+class MyShader : Hisui.Graphics.ShaderProgram
+{
+  public MyShader()
+    : base( vertexShaderSource, fragmentShaderSource )
+  { }
+  public override void SetParams( Hisui.OpenGL.HiGL.IProgramUse use, Hisui.Graphics.ISceneContext sc )
+  {
+    use.Uniform( "foo", 123 );
+  }
+}
+</pre>
+
+<h3>WPF対応（ベータ機能）</h3>
+<ul>
+<li>Hisui.Wpf.dll を新たに追加
+<li>Graphics.GLViewControl をWPFにホストした Wpf.GLViewControl, Wpf.GLDocViewControl を作成
+<li>ヒスイのコマンドを関連付ける MarkupExtension として CommandBinding クラスを作成
+</ul>
+<p>XAMLコードは、まず下記のようにネームスペースを宣言。
+<pre>
+&lt;Window
+    ...
+    xmlns:h="http://www.quatouch.com/products/hisui" &gt;
+</pre>
+<p>ヒスイのビューを載せるのは次のように書くだけ。
+<pre>
+  &lt;h:GLDocViewControl Name="view"/&gt;
+</pre>
+<p>MenuItem の Command にヒスイの "File.Open" コマンドを関連付ける場合は次のように書く。
+<pre>
+  &lt;MenuItem Command="{h:CommandBinding 'File.Open'}"/&gt;
+</pre>
+
+<h3>ドキュメント関連</h3>
+<ul>
+<li>Hisui.SI.dll の XML Documentation として Hisui.SI.XML を bin フォルダに同梱
+<li>Hisui.SI のヘルプドキュメント HisuiHelp.chm を同梱
+<li>パッケージ構成の図を更新
+<li>シーングラフの説明が古いバージョンのままだったので修正
+<li>チュートリアル「直線エンティティを自作してみよう(2)」の Undo/Redo 対応をより簡潔な方法に修正。
+<li>チュートリアル中のコードで変数宣言に積極的に var を利用するように修正。
+</ul>
+
+<h3>その他</h3>
+<ul>
+<li><strong>UseVertexBuffer のデフォルト値を false に変更した</strong>
+<li>各種便利な拡張メソッドを追加（To2d(), To3d() など）
+<li>Entryが大量にある場合の描画を高速化
+</ul>
+
+
+<h2><a name="110">from 1.9 to 1.10 [2009.05.26]</a></h2>
+
+<h3>バグ修正</h3>
+<ul>
+<li>BlockStorage の Remove 操作の不具合修正（Remove と Put を繰り返すとメモリ使用量が単調増加してしまう不具合）
+<li>Array や Storage のUndo/Redo不具合修正
+<li>obj形式ファイルのインポート不具合修正（行末の空白文字を除去）
+<li>サムネイル・ビューアのメモリリークを修正
+</ul>
+
+<h3>IHalfEdge.Normal を Obsolete に</h3>
+<ul>
+<li>Hisui.Spatial.IHalfEdge の Normal プロパティを廃止（Obsolete）
+<li>かわりに Hisui.Spatial.IPolygonShell に GetNormal()/SetNormal() メソッドを追加
+</ul>
+<pre>
+namespace Hisui.Spatial
+{
+  public interface IPolygonShell : ...
+  {
+    ...
+    int GetNormal( IHalfEdge he );
+    void SetNormal( IHalfEdge he, int nid );
+  }
+}
+</pre>
+
+<h3>新たなファイル形式としてHOX(Hisui Object XML)形式を定義</h3>
+<p>ヒスイのシリアライズ形式であるHIXフォーマットを拡張し、HOX(Hisui Object XML)フォーマットを新たに定義した。
+<h4>HIXとの違い</h4>
+<ul>
+<li>HIXはドキュメント全体（Hisui.Core.Document）を保存する。
+<li>HOXは指定した一つのオブジェクトのみを保存する。（そのオブジェクトが別のオブジェクトに依存している場合は、その依存先オブジェクトも保存する）
+</ul>
+<p>つまり、ドキュメント全体ではなくて、オブジェクト単体をI/Oしたい場合に利用できる。
+
+<h4>I/Oのやり方</h4>
+<pre>
+var obj = Hisui.Hix.HoxFormat.Import( filename ); // インポート
+Hisui.Hix.HoxFormat.Export( obj, filename );      // エクスポート
+</pre>
+
+<h4>シリアライザの定義方法</h4>
+<p>HIXと同じ。つまり、HIX形式用にシリアライザを定義すれば、それがそのままHOX形式用のシリアライザとして動作する。
+
+<h3>Application Data の I/O</h3>
+<p>"C:\Documents and Settings" にアプリケーションデータを保存する仕組みを用意。保存形式は上記のHOX形式。
+<h4>保存先フォルダ</h4>
+<p>Hisui.SI.ApplicationData クラスを利用する。ApplicationDataオブジェクトはHisui.SIクラスのスタティック・プロパティとして取得できる。下記の表にそのプロパティ名と対応する保存先フォルダを示す。
+<p><table>
+<tr><th>プロパティ</th><th>保存先フォルダ</th></tr>
+<tr><td>CommonAppData</td><td>C:\Documents and Settings\All Users\Application Data\会社名\製品名\バージョン\</td></tr>
+<tr><td>UserAppData</td><td>C:\Documents and Settings\ユーザ名\Application Data\会社名\製品名\バージョン\</td></tr>
+<tr><td>LocalUserAppData</td><td>C:\Documents and Settings\ユーザ名\Local Settings\Application Data\会社名\製品名\バージョン\</td></tr>
+</table>
+
+<h4>保存方法</h4>
+<ol>
+<li>保存対象のクラスとそのシリアライザを用意する。
+<pre>
+class Hoge { ... }
+class HogeSerializer : Hisui.Hix.ISerializer { ... }
+</pre>
+<li>型をキーとしてオブジェクトを SI.ApplicationData に追加する。<br>
+なお下記の Add() 関数は、対応するデータが既に登録済みの場合やファイルに保存済みの場合にはそのデータを優先し、指定オブジェクト hoge で上書きすることはしない。
+<pre>
+Hisui.SI.UserAppData.Add( typeof( Hoge ), hoge );
+</pre>
+<li>最後に（アプリケーション終了時に）SaveAppData() 関数を呼ぶ。
+<pre>
+Hisui.SI.SaveAppData();
+</pre>
+</ol>
+
+<h4>読み込み方法</h4>
+<p>下記のように、型をキーとして単に Get() すればよい。
+<pre>
+var hoge = Hisui.SI.UserAppData.Get&lt;Hoge&gt;();
+</pre>
+<p>この関数は、すでに読み込み済みの場合にはそのオブジェクトを返し、まだ読み込まれていない場合にはその場でデータを読み込む。その読み込みにも失敗した場合には null を返す。
+
+<h3>カルチャ毎のconfig</h3>
+<p>現在のカルチャに合わせて特定の config.xml を読み込む機能を追加。
+<p>この config.xml は、アプリケーション実行ファイルがあるフォルダに en/ や en-US/ などカルチャ名のフォルダを作成し、その中に作成する。するとこの config.xml は、カルチャが英語の場合にのみ読み込まれるファイルとなる。
+<p>config.xml を用いてコマンドの表示名などを設定できるので、たとえば英語カルチャ専用の config.xml を用意してそこにコマンドの英語表記を設定すれば、メニュー文字列等の英語化が可能となる。
+
+<h3>拡張メソッド</h3>
+<p>現在、拡張メソッドが定義されているのは下記の static class。
+<ul>
+<li>Hisui.GeomUT
+<li>Hisui.CoreUT
+<li>Hisui.HixUT
+<li>Hisui.CtrlUT
+<li>Hisui.GraphicsUT
+<li>Hisui.SpatialUT
+<li>Hisui.SI
+</ul>
+<p>これらはすべて、冒頭に using Hisui を記述することで拡張メソッドとして利用可能。今回は特に SpatialUT の拡張メソッドを増強した。
+
+
+<h2><a name="19">from 1.8 to 1.9 [2008.10.24]</a></h2>
+
+<h3>Import/Export を統括する仕組みを作成</h3>
+<p>下記のクラスを Obsolete （非推奨）とした。
+<ul>
+<li>Hisui.Hix.IImporter
+<li>Hisui.Hix.ImporterRegistry
+<li>Hisui.Hix.ImporterAttribute
+</ul>
+<p>代わりに、下記のクラスを新たに導入した。
+<ul>
+<li>Hisui.Hix.Format
+<li>Hisui.Hix.FormatRegistry
+<li>Hisui.Hix.ImportAttribute
+<li>Hisui.Hix.ExportAttribute
+</ul>
+<p>例えば *.hoge フォーマットのインポート/エクスポート機能を作成したい場合には、次のようなコードを記述すればよい。これによりヒスイのインポートメニューに *.hoge フォーマットが追加される。
+<pre>
+[Hisui.Hix.Format( "Hoge format", "hoge" )]
+public static class HogeFormat
+{
+  [Hisui.Hix.Import( typeof( HogeFormat ) )]
+  public static HogeEntity Import( System.IO.TextReader reader )
+  {
+    // reader から HogeEntity をインポート
+  }
+
+  [Hisui.Hix.Export( typeof( HogeFormat ) )]
+  public static void Import( HogeEntity entity, System.IO.TextWriter writer )
+  {
+    // writer へ HogeEntity をエクスポート
+  }
+}
+</pre>
+
+
+<h3>GUI の変更</h3>
+<p>Hisui.Gui.dllにMainForm2クラスを新規追加し、こちらを標準とした。以前のMainFormではPropertyGridを利用していたため開発者以外の一般ユーザーには分かりにくいインターフェイスであったが、MainForm2では各エンティティごとにプロパティ画面をカスタマイズしてプラグインすることが出来る。
+<p><table align="center">
+<tr><th>変更前（MainFormクラス）</th><th>変更後（MainForm2クラス）</th></tr>
+<tr><td><img src="changelog-1_9-gui_before.png"></td>
+    <td><img src="changelog-1_9-gui_after.png"></td></tr>
+</table>
+<p>プロパティ画面のプラグインは、下記のようなコードで実現できる。
+<pre>
+  [Gui.PropertyControl( typeof( IPolygonMesh ) )]
+  public partial class PolygonMeshPropertyControl : Gui.PropertyControl
+  {
+    public PolygonMeshPropertyControl()
+      : base( new Property() )  // 内部クラス Property のインスタンスを親クラスに渡す
+    {
+      InitializeComponent();
+      ...
+    }
+
+    // 内部クラスを作成
+    class Property : AbstractProperty&lt;IPolygonMesh, PolygonMeshPropertyControl&gt;
+    {
+      protected override bool IsEqualTo( IPolygonMesh target )
+      {
+        // target とプロパティ画面の表示が一致しているかどうかを返す
+      }
+      protected override void CopyFrom( IPolygonMesh target )
+      {
+        // target の内容をプロパティ画面にコピー
+      }
+      protected override void CopyTo( IPolygonMesh target )
+      {
+        // プロパティ画面の内容を target にコピー
+      }
+      public override void Initialize()
+      {
+        // 初期化。主にイベントハンドラの設定を行う。
+        // 例えば、画面に変更が合った場合には base.Commit() を呼び出す、など。
+      }
+    }
+  }
+</pre>
+
+
+<h2><a name="18">from 1.7 to 1.8 [2008.08.11]</a></h2>
+
+<h3>.NET Framework 2.0 でも動作するバージョンを用意した</h3>
+<p>ヒスイは内部で LINQ の機能を利用しているため、本来は .NET Framework 3.5 が必要となる。しかし、LINQ の仕様のためだけに .NET Framework 3.5 のインストールをユーザーに強いるのは負担になる場合があると考え、.NET Framework 2.0 でも動作するバージョンを用意した。
+<p>.NET Framework 2.0 でも LINQ が動作するようにするためには、System.Core.dll に定義されている System.Linq.Enumerable クラスなどが用意できれば良い。この System.Core.dll のソースコードが Mono プロジェクトのソースリポジトリから取得できる。
+<br><a href="http://anonsvn.mono-project.com/">http://anonsvn.mono-project.com/</a>
+<p>ヒスイ1.8 では、Monoプロジェクトからソースコードを取得してSystem.Core.dllをビルドし、これを同梱した。なお、Monoプロジェクトではクラスライブラリは MIT X11 ライセンスで配布されており、無償で無制限に利用が可能である。Monoプロジェクトに感謝の意を表したい。
+<br>参考：<a href="http://www.mono-project.com/FAQ:_Licensing">FAQ: Licensing - Mono</a>
+
+<h3>hixファイルI/Oの仕様変更</h3>
+<p>hixファイルの読込において、従来は XmlReader クラスの ReadToFollowing() メソッドを多用していたが、より厳密な読み込み処理とするために ReadToNextSibling() メソッドを使用するように変更した。この影響により、従来のヒスイでは問題なく動作していたシリアライザが、ヒスイ1.8では正しく動作しなくなる場合が考えられる。この問題は以下のいずれかの対策により解決できる。
+<ul>
+<li>シリアライザ定義において ReadToFollowing() の使用をなくし、HixUT に定義された XmlReader への拡張メソッド群（ReadHixData(), ReadHixRef(), etc）を使用するように変更する。
+<li>あるいは、Hisui.HixUT.UseReadToFollowing フラグを true に設定することで、従来の動作と互換性を保つことが出来る。
+</ul>
+<p>なお、今後は Hisui.Hix.Util.Read()/Write() よりも、Hisui.HixUT に定義された拡張メソッド群 ReadHixData()/WriteHixData() などの使用を推奨とする。
+
+<h3>IEntry.Enabled プロパティ追加</h3>
+<p>IEntry.Enabled プロパティを false に設定すると下記の動作となる。
+<ul>
+<li>非表示
+<li>ビルドされない（ビルドグラフから外される）
+</ul>
+<p>使い道としては次のような状況が考えられる。
+<br>あるエンティティを非表示にした場合、それだけではそのエンティティはビルドグラフからは外されないため、何らかの編集が加わった際にはそのエンティティのビルド処理が走ってしまう。このビルド処理が計算時間を要するものだった場合、ユーザーは画面に表示されていないエンティティのビルド処理を待たされることになるため、ストレスを感じることになるだろう。この問題は IEntry の Enabled プロパティを false に設定することで回避することが出来る。
+
+<h3>Hisui.Ctrl.Operation クラス追加</h3>
+<p>Hisui.Ctrl.IOperation を実装するためのベースクラスとして Hisui.Ctrl.Operation クラスを新規追加した。さらに、MouseOperation クラスなどのマウス操作オペレーションをこの Operation クラスの派生クラスとして定義しなおした。
+<p>この Operation クラスには WorldScenes や ForgroundScenes などのシーンを登録するプロパティが備わっており、そのオペレーションが有効な間だけ描画される一時的なシーンを登録できるようになった。
+
+
+
+<h2><a name="17">from 1.6 to 1.7 [2008.05.30]</a></h2>
+
+<h3>GLViewControl の所属名前空間を変更 <strong>[重要]</strong></h3>
+<p>Hisui.Graphics.OpenGL.GLViewControl を Hisui.Graphics.GLViewControl に変更した。
+
+<h3>非推奨プロパティ Items/ActiveItems を完全に削除</h3>
+<p>前回のリリースで非推奨とした下記のプロパティを、完全に削除した。
+<ul>
+  <li>Hisui.Core.IEntry.Items
+  <li>Hisui.Core.Document.Items
+  <li>Hisui.Core.Document.ActiveItems
+  <li>Hisui.Ctrl.IContext.ActiveItems
+  <li>Hisui.SI.ActiveItems
+</ul>
+<p>今後は Items の代わりに Entries プロパティを、ActiveItems の代わりに ActiveEntries プロパティを使用すること。
+
+<h3>GLUT32.DLL の使用を廃止（64bit 対応）</h3>
+<p>今までは一部で GLUT32.DLL を利用していたが、GLUT32.DLL は 64bit で動作しないという問題があった。そこで、GLUTを使用していた箇所は C# による自前の実装を用意することで GLUT32.DLL への依存を回避した。これにより、弊社におけるテストでは 64bit の環境でも動作することが確認された。
+
+<h3>CommandOption に IsChecked を追加</h3>
+<p>下記のコードでメニューのチェック状態を制御可能にした。
+<pre>
+[Hisui.Ctrl.Command]
+static void Hoge( ..., Hisui.Ctrl.CommandOption opt )
+{
+  if ( opt.QueryRunnable ) {
+    opt.QueryRunnable = ...;  // [true/false] メニューの Enable/Disable 状態を設定
+    opt.IsChecked = ...;      // [true/false] メニューのチェック状態を設定
+    return;
+  }
+  // コマンド本体の処理
+  ...
+}
+</pre>
+
+
+<h3>裏面のマテリアル</h3>
+<p>Hisui.Graphics.MaterialDecoration に BackMaterial プロパティを追加し、裏面にもマテリアルを設定可能にした。裏面マテリアルを使用する際には、MaterialDecoration の UseBackMaterial プロパティを true 設定する必要がある。
+
+<h3>シーン関係の拡張メソッド</h3>
+Hisui.SI のシーン関係（マテリアルなど）のメソッドを拡張メソッドにした。下記のように利用できる。
+<pre>
+using Hisui;  // 拡張メソッドの使用にはコレが必要
+...
+entry.SetMaterial( material );
+entry.SetVisible( false );
+var scene = entry.GetScene();
+</pre>
+
+<h3>OpenGL 描画を便利にするクラス/関数</h3>
+<p>今まではOpenGLの関数を直接呼ぶしか方法がなかったが、より便利に描画できる機能を追加した。例として、点 p1, p2, p3, p4 を結ぶ赤い折線を描画するコードを下記に示す。
+<pre>
+void Draw( Hisui.Graphics.ISceneContext sc )
+{
+  Hisui.Geom.Point3d p1, p2, p3, p4;
+  using ( var scope = sc.Push() ) {
+    scope.Color = Color.Red;
+    sc.DrawLineStrip( gl =&gt; gl.Vertices( p1, p2, p3, p4 ) );
+  }
+}
+</pre>
+<p>sc.Push() を呼ぶと Hisui.Graphics.IScope オブジェクトが生成され、このオブジェクトは IDisposable を実装しているため using() 文の中で使用する。すると、その using スコープ内での属性変更（色、線種、線幅、etc）はそのスコープ内に限定され、using を抜けた後は元の属性値に戻る。この例で言えば、scope.Color = Color.Red という設定は using スコープ内に限定されるため、using を抜けた後は GL_CURRENT_COLOR は元に戻るのである。
+<p>sc.DrawLineStrip() を使用すると、glBegin( GL_LINE_STRIP ) ～ glEnd() による描画が可能である。引数としてデリゲート（ラムダ式）を渡し、そのデリゲート内で折線の頂点列を指定する。渡すデリゲートは Hisui.OpenGL.HiGL.IBeginEnd 型の引数を一つ受け取る関数である。
+<p>別の例として、三角形を一枚描画するときには次のように記述できる。
+<pre>
+sc.DrawTriangles( gl =&gt;
+  {
+    gl.Normal( 0.0, 0.0, 1.0 );
+    gl.Vertex( 0.0, 0.0, 0.0 );
+    gl.Vertex( 1.0, 0.0, 0.0 );
+    gl.Vertex( 0.0, 1.0, 0.0 );
+  } );
+</pre>
+
+
+<h3>ILocal3d, ILocal&lt;T&gt;</h3>
+<p>Hisui.Geom に下記の ILocal3d インターフェイスを追加した。
+<pre class="hisui">
+namespace Hisui.Geom
+{
+  public interface ILocal3d
+  {
+    CodSys3d CodSys { get; set; }
+  }
+}
+</pre>
+<p>これを実装するエンティティは、局所座標系 CodSys に定義されたオブジェクトと認識される。したがって、これを実装するエンティティはその局所座標系に座標変換した位置に描画される。
+<p>更に、これを利用して Hisui.Spatial に下記のエンティティを定義した。
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface ILocal : Geom.ILocal3d, IGeometry
+  {
+    Geom.IBoundary3d Object { get; }
+  }
+
+  public interface ILocal&lt;T&gt; : ILocal where T : Geom.IBoundary3d
+  {
+    new T Object { get; }
+  }
+}
+</pre>
+<p>ILocal オブジェクトは、Hisui.Spatial.Factory.CreateLocal() 関数で生成できる。例えば IPolygonMesh を局所座標系に入れたい場合には次のようにすればよい。
+<pre>
+var mesh = Hisui.SI.NewInstance&lt;Hisui.Spatial.IPolygonMesh&gt;();
+var localMesh = Hisui.Spatial.Factory.CreateLocal( mesh );
+localMesh.CodSys = new Hisui.Geom.CodSys( ... );
+</pre>
+
+
+<h2><a name="16">from 1.5 to 1.6 [2008.04.23]</a></h2>
+
+<h3>Visual Studio 2008 への移行 <strong>[重要]</strong></h3>
+<p>ヒスイの開発環境を下記に移行したので、同様の環境を推奨とする。
+<ul>
+  <li>Visual Studio 2008 (C# 3.0)
+  <li>.NET Framework 3.5
+</ul>
+
+
+<h3>IEntryCollection の変更 <strong>[重要]</strong></h3>
+<p>Hisui.Core.IEntryCollection に関して次の変更をした。
+<ul>
+  <li>Hisui.Core.IEntry の Items プロパティは非推奨とし、いずれ削除するものとした。
+  <li>代わりに IEntry に Entries プロパティを新規追加し、今後はこちらを推奨する。
+  <li>旧 IEntryCollection は IEntryCollectionOLD と改名され、Items プロパティは IEntryCollectionOLD を返す。
+  <li>新しく IEntryCollection を定義しなおし、Entries プロパティは新しい IEntryCollection を返す。
+</ul>
+
+<h4>変更の動機</h4>
+<p>従来の IEntryCollection は IStorage&lt;IEntry&gt; の派生として定義されていたことにより、下記の問題があった。
+<ul>
+  <li>IStorage から int Put( IEntry entry ) メソッドが継承されるが、実際にこのメソッドを使用すると構造が破綻してしまう。
+  <li>int Put( object entity ) メソッドが定義されているが、IEntry Put( object entity ) と IEntry を返すほうが使い勝手が良い。
+  <li>IEntry.Items と IEntryCollection.Items の2つの Items プロパティがあるので、パッと見分かりにくい。
+  <li>IEntry には ID プロパティがあるので、IEntryCollection には IDs プロパティや Items プロパティは不要である。
+</ul>
+
+<h4>新しい IEntryCollection の定義</h4>
+<p>以上の問題を解消するために、IEntryCollection を次のように定義し直した。（変更された箇所のみ掲載）
+<pre>
+  public interface IEntryCollection 
+      : IEnumerable&lt;IEntry&gt;   <strong>// IEnumerable&lt;IEntry&gt; を継承</strong>
+  {
+    IEntry Put( object entity );          <strong>// Put() は IEntry を返す</strong>
+    IEntry Put( int id, object entity );  <strong>// Put() は IEntry を返す</strong>
+    ...
+  }
+</pre>
+
+
+<h3>CsGLの廃止 <strong>[重要]</strong></h3>
+<ul>
+  <li>C#用のOpenGLラッパとして従来はCsGLを使用していたが、その使用を廃止した。
+  <br>従って、従来は csgl.dll や csgl.native.dll が必要だったが、今後は不要となる。
+  <li>代わりに OpenGL ラッパとして Hisui.OpenGL.dll を自前で新規作成した。
+  <br>今後は using CsGL.OpenGL の代わりに using Hisui.OpenGL を推奨とする。
+  <br>※ ただし、CsGLを使用してもアプリケーションは正常に動作する
+</ul>
+
+<h4>変更の動機</h4>
+<ul>
+  <li>CsGL のプロジェクトは既に開発やメンテナンスが停止している。
+  <li>CsGL が 64bit 環境では動作しないことが分かった。
+</ul>
+<p>なお、CsGL を取り除いても 64bit 対応にはまだ問題が残っており、現状のヒスイは64bit環境では動作しない。
+
+
+<h3>ColorXx 等を Geom へ移動</h3>
+<p>下記の構造体を Hisui.Graphics から Hisui.Geom へ移動した。
+<ul>
+  <li>Color3f, Color4f, Color3b, Color4b
+  <li>ColoredPoint3f
+  <li>ColoredPointNormal3f
+</ul>
+
+<h3>メニューのプラグイン順序</h3>
+<p>従来はプラグインの読込順序が制御できなかったため、例えばメニューの並ぶ順序が環境ごとに異なってしまうなどの不具合があった。
+<p>そこで各プラグイン用の属性クラスに Order プロパティを新規追加し、Order の値で昇順にソートしてプラグインを読み込むようにした。
+例えば次のように記述することでメニューの順序を制御することができる。
+<pre>
+  [Hisui.Ctrl.Command( Order = 100 )]
+  static class Menu1
+  {
+    [Hisui.Ctrl.Command( Order = 10 )]
+    static void Fizz( ... ) { ... }
+
+    [Hisui.Ctrl.Command( Order = 20 )]
+    static void Buzz( ... ) { ... }
+  }
+
+  [Hisui.Ctrl.Command( Order = 200 )]
+  static class Menu2
+  {
+    [Hisui.Ctrl.Command( Order = 50 )]
+    static void Foo( ... ) { ... }
+
+    [Hisui.Ctrl.Command( Order = 40 )]
+    static void Bar( ... ) { ... }
+  }
+</pre>
+<p>Order 値の指定を省略すると、デフォルトで uint.MaxValue が設定される。つまり、値が省略されたプラグインは最後尾に回される。
+
+
+<h3>GeomUT</h3>
+<p>Hisui.Geom.dll モジュールに Hisui.GeomUT クラス（静的クラス）を新規作成。C#3.0 の新機能 extension method を利用して、点やベクトルのシーケンスに対するユーティリティ関数を提供する。
+
+<h3>CoreUT</h3>
+<p>Hisui.Core.dll モジュールに Hisui.CoreUT クラス（静的クラス）を新規作成。C#3.0 の新機能 extension method も利用して、Storage のためのユーティリティ関数などを提供する。
+<P>代わりに Hisui.Core.UT クラスは隠蔽した。
+
+
+<h2><a name="15">from 1.4 to 1.5 [2008.02.04]</a></h2>
+
+<h3>wavefront obj エクスポートの不具合修正</h3>
+<p>法線ベクトルつきの obj ファイル出力に間違いがあったので修正。
+
+<h3>インスタンスメソッドも Command や Handler として扱えるようにした</h3>
+<p>今までは [Hisui.Ctrl.Command] 属性により static 関数のみがコマンドとして登録できた。この機能を拡張し、インスタンスメソッドでもコマンドとして登録できるようにした。その場合、ターゲットオブジェクトは this となる。
+<p>同様に、[Hisui.Ctrl.Handler] 属性によりインスタンスメソッドもハンドラとして登録できるようにした。
+
+<h3>Core.Progress を新規追加</h3>
+<p>Hisui.Core に Progress、IProgress を新規追加し、代わりに <strong>Ctrl.Progress を削除した</strong>。
+<p>次のように使用することで、プログレスを通知することが出来る。
+<pre>
+using ( Hisui.Core.IProgress progress = Hisui.SI.StartProgress( "処理中" ) ) {
+  int stepcount = 10;
+  for ( int i = 0 ; i < stepcount ; ++i ) {
+    progress.Step( 1.0 / stepcount ); // １ステップ辺りの重みを通知
+    // 処理ステップ
+  }
+}
+</pre>
+<p>using(){...} の中で別の関数を呼び出す場合には SI.PushProgress() を使用する。
+<pre>
+void Hoge()
+{
+  using ( Hisui.Core.IProgress progress = Hisui.SI.PushProgress() ) {
+    ...
+  }
+}
+</pre>
+<pre>
+using ( Hisui.Core.IProgress progress = Hisui.SI.StartProgress( "処理中" ) ) {
+  progress.Step( ... );
+  Hoge(); // 別の関数を呼び出す
+}
+</pre>
+
+<h3>ToolStripの更新処理周りの修正</h3>
+<p>今までは ToolStrip の更新（ICommand.IsRunnable() によるメニューの enable/disable など）をビルドグラフで行っていたが、ビルドグラフでは行わないようにした。そのため、アプリケーション開発者は<strong>次の箇所に Hisui.SI.UpdateToopStrips() を追加する必要がある</strong>。
+<ul>
+<li>MainForm のコンストラクタの最後（初期化処理の最後の部分）
+<li>Core.Progresss の進捗通知イベントのハンドラ
+</ul>
+なお、Hisui.Gui.MainFormをそのまま利用している場合には問題ない。
+
+<h3>IHighlight のプラグインを可能にした</h3>
+<p>要素を選択したときのハイライト描画をプラグイン可能にした。
+<p>Hisui.Graphics.IHighlight の実装クラスをプラグインする。HighlightAttribute 属性の付いたハイライトクラスを定義しておくと、プラグインとして HighlightFactory にロードされるようにした。使い方はシーンのプラグインと同様。
+<pre>
+[Hisui.Graphics.Highlight( typeof( HogeEntity ) )]
+class HogeEntityHighlight : Hisui.Graphics.IHighlight
+{
+  public void PreHighlight( Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+    ...
+  }
+
+  public void PostHighlight( Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+    ...
+  }
+}
+</pre>
+
+<h3>マルチビュー対応</h3>
+<p>マルチビュー（複数のビューを使用）に対応するための修正を行った。
+<ul>
+  <li>Hisui.Graphics に DocumentViews クラスを新規追加
+  <li>Hisui.Ctrl.Current に DocumentViews プロパティを新規追加
+  <li>Hisui.Ctrl.IContext に Events プロパティを新規追加
+  <li>Hisui.Ctrl.IContext に Invalidate()、Refresh() メソッドを新規追加
+</ul>
+<p>例えば LButtonClick のコンストラクタ引数に IContext.Events を入れるとマルチビュー対応となる。
+<pre>
+[Hisui.Ctrl.Command]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; コマンド関数( ..., Hisui.Ctrl.IContext con )
+{
+  // シングルビュー（今アクティブなビュー）
+  Hisui.Ctrl.LButtonClick click1 = new Hisui.Ctrl.LButtonClick( <strong>con.View.Events</strong> );
+
+  // マルチビュー
+  Hisui.Ctrl.LButtonClick click2 = new Hisui.Ctrl.LButtonClick( <strong>con.Events</strong> );
+}
+</pre>
+
+
+<h3>ColorXfのメンバの名称変更</h3>
+<p>メンバ red, green, blue を R, G, B に名称変更した。System.Drawing.Color に合わせるため。
+
+
+<h3>点群やメッシュに色情報を付加</h3>
+<p>Hisui.Spatial の IPointCloud や IPolygonMesh に色情報を持てるようにした。
+<ul>
+  <li>Hisui.Graphics に Color3b, Color4b を新規追加
+  <li>Hisui.Spatial に IColors エンティティを新規追加
+  <li>Hisui.Spatial.IPointCloud に Colors プロパティを追加
+  <li>Hisui.Spatial.IPolygonMesh に Colors プロパティを追加
+</ul>
+
+
+<h2><a name="14">from 1.3 to 1.4 [2007.09.12]</a></h2>
+
+<h3>STL読込の不具合修正</h3>
+<p>STLアスキーフォーマットでの不具合修正。
+<ul>
+  <li>solid, vertex 等のキーワードが大文字でも読み込めるようにした。
+  <li>solid ～ endsolid が複数ある場合には複数オブジェクトとして読み込むようにした。
+  <li>solid の後の文字列をキャプションして取り込むようにした
+</ul>
+
+<h3>ビューの拡大操作</h3>
+<p>マウス中ボタンのドラッグによる矩形ズームを修正。矩形の中心に物体がないと正しくズームされないという不具合を修正した。また、矩形の中に要素が全く含まれない場合には、ズーム操作がキャンセルされるようにした。
+
+<h3>Hisui.Spatial.Factory を作成</h3>
+<p>Hisui.Spatial.Factory クラスを作成し、オブジェクトを生成するメソッドを Factory クラスに集約するようにした。
+<ul>
+  <li>Hisui.Spatial.Misc.CreateXxx() メソッドを削除し、Factory へ移動した。
+  <li>Hisui.Spatial.Facet クラスは非推奨とする。代わりに、IFacet を生成するときは Spatial.Factory.CreateFacet(...) を用いるか、Spatial.IFacets の Put( int[] points ) メソッドを用いること。
+  <li>Hisui.Spatial.Polygon クラスは非推奨とする。代わりに、IPolygon を生成するときは Spatial.Factory.CreatePolygon(...) を用いるか、Spatial.IPolygonSoup の Put( Geom.Point3d[] polygon ) メソッドを用いること。
+</ul>
+
+<h3>Hisui.Spatial.Polygon.CalcNormal() メソッドを削除</h3>
+<p>代わりに Hisui.Spatial.Misc.CalcPolygonNormal() を用いること。
+
+<h3>Spatial.Storage<T>, CurveStorage, SurfaceStorage を非公開に</h3>
+<p>代わりにインターフェイス ICurveStorage, ISurfaceStorage を作成した。これらのインスタンスを生成するときは、次のように Hisui.Core.Factory を使用すること。
+<ul>
+  <li>Hisui.Core.Factory.NewInstance&lt;Hisui.Spatial.ICurveStorage&gt;();
+  <li>Hisui.Core.Factory.NewInstance&lt;Hisui.Spatial.ISurfaceStorage&gt;();
+</ul>
+
+<h3>Hix.IImporter の修正</h3>
+<p>string FileExtension { get; } を string[] FileExtensions { get; } に変更した。同じファイル形式でも複数の拡張子を用いる場合があるため。（例：HTMLは *.html と *.htm の2つが用いられる）
+
+<h3>エンティティのイベントハンドラ機構を追加</h3>
+<p>Hisui.Ctrl モジュールにイベントハンドラの仕組みを作成した。大まかな構造はコマンド周辺と似ており、異なるのはメニューからではなくイベントから起動される点である。
+<p><table>
+  <tr><td>Hisui.Ctrl.IHandler</td><td>イベントハンドラのインターフェイス</td></tr>
+  <tr><td>Hisui.Ctrl.HandlerRegistry</td><td>IHandler を格納する static class</td></tr>
+  <tr><td>Hisui.Ctrl.HandlerLoader</td><td>ハンドラをプラグインモジュールからロードするクラス</td></tr>
+  <tr><td>Hisui.Ctrl.HandlerAttribute</td><td>この属性が付与されたメソッドがハンドラとしてプラグインされる。</td></tr>
+</table>
+<p>この機構の使い方は、<a href="tutorial/entity2.html">「Hisuiチュートリアル / 直線エンティティを自作してみよう (2)」</a>の「直線の端点移動」を参照。
+
+
+
+<h2><a name="13">from 1.2 to 1.3 [2007.06.25]</a></h2>
+
+<h3>Hisui.Config.dll 削除</h3>
+<p>Hisui.Config.dll は削除。従来の Hisui.Config.ConfigLoader の代わりに、下記のHisui.SI関数を使用すること。</p>
+<ul>
+	<li>void Hisui.SI.LoadConfig( string cfgPath )</li>
+	<li>bool Hisui.SI.SetUp( string cfgPath )</li>
+</ul>
+
+<h3>Hisui.Spatial.Util.dll から Hisui.Spatial.Formats.dll へ変更</h3>
+<p>まず、下記クラスはHisui.Spatial.Utilから削除した。</p>
+<ul>
+	<li>Hisui.Spatial.Util.Convert (Hisui.Spatial.Convert へ移動)</li>
+	<li>Hisui.Spatial.Util.Primitive</li>
+	<li>Hisui.Spatial.Util.QEM</li>
+	<li>Hisui.Spatial.Util.Nearest</li>
+</ul>
+<p>その後、Hisui.Spatial.Util は Hisui.Spatial.Formats と名称変更。
+結果として、Hisui.Spatial.Formats.dll には下記のファイルフォーマット入出力のみが含まれている。</p>
+<ul>
+	<li>AsciiFormat, AsciiImporter</li>
+	<li>ObjFormat, ObjImporter</li>
+	<li>PlyFormat, PlyImporter</li>
+	<li>STLFormat, STLImporter</li>
+</ul>
+
+<h3>Hisui.SI.dll 追加</h3>
+<p>SI とは Service Interfaces の略称。
+ヒスイの頻繁に使用される機能を薄くラップした関数群。つまりヒスイのFacade（ファサード）クラス。
+下記のようにSIクラスの中にstatic関数群をフラットに並べて提供する。</p>
+<pre>
+namespace Hisui
+{
+  public static class SI
+  {
+    public static void SetUp( string cfgPath ) { ... }
+    ....
+  }
+}
+</pre>
+<p>SIはヒスイのクラス構造を深く理解していなくても簡単に利用できるようにするための関数群。
+特に IronPython からヒスイの機能を呼び出すときにはこのようなフラットな関数群のほうが便利だと思われる。</p>
+
+<h3>Hisui.Graphics.IView.SceneGraph プロパティ</h3>
+<p>IView に SceneGraph プロパティが追加され、代わりに下記のプロパティは削除した。</p>
+<ul>
+	<li>WorldScenes</li>
+	<li>CameraScenes</li>
+	<li>ForgroundScenes</li>
+	<li>BackgroundScenes</li>
+</ul>
+<p>例えば view.WorldScenes と記述していた箇所は view.SceneGraph.WorldScenes に変更すること。</p>
+
+<h3>Hisui.Core.Builder のプログレスイベント</h3>
+<p>Builder に Progress イベントを追加。Run() や RunRebuild() でビルドの進捗状況をイベントで通知するようにした。</p>
+<table border="0">
+	<tr><th>新メソッド</th><th>旧メソッド名</th><th>意味</th></tr>
+	<tr><td>Run()</td><td>新規</td><td>プログレスイベント付きの全体ビルド</td></tr>
+	<tr><td>RunRebuild()</td><td>新規</td><td>プログレスイベント付きの全体リビルド</td></tr>
+	<tr><td>Build()</td><td>Run()</td><td>プログレスイベントなしの全体ビルド</td></tr>
+	<tr><td>Rebuild()</td><td>Rebuild()</td><td>プログレスイベントなしの全体リビルド</td></tr>
+	<tr><td>Build( IBuild )</td><td>Run( IBuild )</td><td>プログレスイベントなしの部分ビルド</td></tr>
+	<tr><td>Rebuild( IBuild )</td><td>Rebuild( IBuild )</td><td>プログレスイベントなしの部分リビルド</td></tr>
+</table>
+
+<h3>セレクション（ピック）の重要な変更</h3>
+<p>セレクションの仕組みは大きく変更した。</p>
+<h4>変更の動機</h4>
+<ul>
+	<li>従来はIEntry単位でしかピック出来なかった。もっと細かいオブジェクト単位でもピックをしたい。</li>
+	<li>ピックフィルタ機能が欲しい。例えばICurveのみをピックしたい。</li>
+	<li>ピックエコー機能（ピックされた要素をハイライト表示）が欲しい。</li>
+	<li>プリセレクションハイライト（マウス位置の選択候補をハイライト）が欲しい。</li>
+</ul>
+<h4>ISceneObject 追加</h4>
+<p>Hisui.Graphics.ISceneObject インターフェイスを追加。ISceneObject の単位でピックする。
+ISceneObject は次の3つをパックしたもの。</p>
+<ul>
+	<li>セレクション対象のオブジェクト</li>
+	<li>そのオブジェクトを含むエントリ</li>
+	<li>そのオブジェクトを描画するシーン</li>
+</ul>
+<pre>
+namespace Hisui.Graphics
+{
+  public interface ISceneObject
+  {
+    Core.IEntry Entry { get; }
+    IScene Scene { get; }
+    object Value { get; }
+    bool Highlight { get; set; }
+  }
+}
+</pre>
+<h4>Hisui.Ctrl.Pick 変更</h4>
+<p>次のように HitObject プロパティでピックした ISceneObject が取得できるようにした。</p>
+<pre>
+namespace Hisui.Ctrl
+{
+  public struct Pick
+  {
+    public Graphics.ISceneObject HitObject { get; }
+    public Geom.Point3d HitPosition { get; }
+
+    public static Pick Entity&lt;T&gt;( Graphics.IView view, Geom.Point2i pt ) { ... }
+    public static Pick[] Entities&lt;T&gt;( Graphics.IView view, Geom.Box2i box ) { ... }
+
+    public static Pick Entry( Graphics.IView view, Geom.Point2i pt ) { ... }
+    public static Pick[] Entries( Graphics.IView view, Geom.Box2i box ) { ... }
+  }
+}
+</pre>
+<h4>Hisui.Ctrl.LButtonPick 変更</h4>
+<table>
+	<tr><td>Hisui.Ctrl.LButtonPickBase</td><td>次の2つのクラスのベースクラス</td></tr>
+	<tr><td>Hisui.Ctrl.LButtonPick</td><td>エントリのピック</td></tr>
+	<tr><td>Hisui.Ctrl.LButtonPick&lt;T&gt;</td><td>T型エンティティのピック</td></tr>
+</table>
+<p>ピックした ISceneObject は HitObject プロパティで取得できる。</p>
+
+<hr><p align="center"><a href="../index.html">戻る</a></p>
+<p align="right">Copyright &copy; 2010, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

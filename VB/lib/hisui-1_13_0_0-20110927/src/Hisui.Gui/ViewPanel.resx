@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="menuClipPlusX.Text" xml:space="preserve">
+    <value>+X</value>
+  </data>
+  <data name="btnPrev.Text" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnPrev.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;menuClipPlusY.Name" xml:space="preserve">
+    <value>menuClipPlusY</value>
+  </data>
+  <data name="btnClipOnOff.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAM1JREFUOE/dU7EN
+        AjEMtBTpF2IHCqagyg6UGYOCOSgo6NFXVIyQLQ5scsEJQbwoecmK8687n/1nkfLknJFSwuP6FntEYIa9
+        70+De/DhBjB2F0DBGizEU4mMbAl4QEBCCGV/qhznVaOgtGBCmFfJJKFsBUsUT9C3Yvfh0Kxy+cbTV/+q
+        gNUXKfD9a64tjAj+UEEI4fkXfp7B1ewtUMv68EPsjFR9ME1TzbE9owkSEEwrV+eVynUvNkdgfXoFCQaL
+        RNM1uzV0ooGLE7sVbsB3DUzfUb0NTloAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="&gt;&gt;btnClipOnOff.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnOrtho.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnVisibleSideFront.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="menuClipView.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="&gt;&gt;btnPerspective.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnFit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAalJREFUOE+1k1so
+        g2EYx5fIMRfalRS7IiFyMR+K2meOn5p9S9JM4oqSO1y64wYRTTmENjktW7IN+TQmouxGORRCIjklRenP
+        +9a37GDceOq5et/f7zm8vRLJf0WdlmfqdWrwHAs1p9CROm3yFJD8taYIn5pScGSUUQlfpmAIXJWUEFgg
+        wg+WGDTXlKOxuhRnRimVNGUkokQW+7PAG7baVmCcMaNWxeJwOIJKcmKl/gXe8OqqADFsywLUymzs94dS
+        iaaMzfXYQyBYlFjtAopyM7HbE+IrIdsWZ/5eWYTf3j/w9PKORasAlknHXreEStxdNGj5vHx5KgTB4W7b
+        G76+e8XJ5TPGDSYkyuKg4QpqPcao0DZ5wLOT3Zga7cKEvgPDve0Udh3fY25pC/HJjO8iucoGDwGBHy3R
+        uDNF0ecksNN1A4PZ6V9QzNe5BWRmUvl2NhIXhnDU80oKL29fYWz+B0GhSkcF4sJI22cTYehq1UDFZlF4
+        Yf0cQ9Ob/jtgy7UUXnPswL62jcHOFhzog+HqC4KCScPInBP6L3jAuOFfoOCq6cFf89cP9dcLn6EcnES2
+        SdzTAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="menuClipMinusX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="menuClipMinusY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="&gt;&gt;btnStyleEdge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnPrev.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="&gt;&gt;menuClipPlusX.Name" xml:space="preserve">
+    <value>menuClipPlusX</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="btnOrtho.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAFJJREFUOE9jYKAm
+        MDZO+08KRrEbpDEt7cx/YhwEswSulhRbQWpBGmE02BAYhxgXjBqACK/hHIigtIAPw1IsRhgQk4hgiQ5F
+        M7IgsUmamPxCtBoAQxaxT50cFJwAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnNext.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAlJJREFUOE+dk11I
+        k1EYx98NbS0zZ40mbUG6tqymUZaSRC1UVjfSB1ENGlRqaCBhNKuLFhp90FgNMidEdLFWUH5s7UMcbrWa
+        Q5aV1jZxK5banVczuunin+fd9s6XGUQPHDg85/x/z/885xwOtSiis6PwJgKUZW5gcZqeq4WHKGXBbkou
+        ruJkLZJEMO7GfrcSB4MqGKduwBLTw/i5BbpgPU57y1BpFUHlqEFw2o0sQFp8PdKO3rgJpogWNz+ocdFf
+        jfO+cmZohkshf1zEhhDbpHJn+BKeTHXAMNHECBzfu1kAAmvwbsXmh1KMxF1JJ0/DPdjj2Y6uUBs63h/B
+        hXe7aNH4nAckZn5OsiAtvjLsfbYO5kBXEkCqN47UQhvYx9p4a+wYfv1OsCBNbxRQe2U47pFCcVeaAbS+
+        rciySly8/HqHBpCYno/Qew4PF6NuSII1Ol4KMKikF+6Pn2E2/23ybT6E2iExqgdFEF7jpwDWfwc4fzzH
+        TpcQ25yFELTnZgAadylzBJVbAjJOemToDmsZM9ZZCy3e4ijAetsKbLpakrqFiR5UmUU0IN0kAniwcK3p
+        IOLyharFr/IgsfGx2sDDvRedSUB0ZhQHzDU46pLihGcj06RY4gutJ2K5fRVdtcjKQ34fF8JmASaj/syL
+        fP2pH1K9CHVOCdOktrFTuB26QlcV25ajsD8H/F4Kueco+D86sp8zgVTqd6DEtJJuksyeT9tdO7AMeX0c
+        8IwUhI2CpcXpzxGK+WCw61ChU4DfzAWvgYscDQXp2Q24/KiVbXvJL/kfyT8MggC1E+F79AAAAABJRU5E
+        rkJggg==
+</value>
+  </data>
+  <data name="btnStyleFace.Text" xml:space="preserve">
+    <value>Shading</value>
+  </data>
+  <data name="&gt;&gt;menuClipPlusZ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnStyleFace.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAGpJREFUOE9jYKA1
+        mHnm/3+y7Ygsm/IfZABZhiBrJskAkEYYhtlOtCuQNaO7gKAr0DVjMwCnIcRqxukVig0AxTMh/xMMUHyh
+        j64Za1iQagBeQ7DZiCyGM2njSkBEJyRYYBJlGy5nkGQb0BAAQVpoi6wXuLAAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="&gt;&gt;menuClipPlusZ.Name" xml:space="preserve">
+    <value>menuClipPlusZ</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="btnCopyImage.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="menuFitXY.Text" xml:space="preserve">
+    <value>XY</value>
+  </data>
+  <data name="&gt;&gt;menuClipMinusX.Name" xml:space="preserve">
+    <value>menuClipMinusX</value>
+  </data>
+  <data name="btnEnvInfo.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnVisibleSideFront.Text" xml:space="preserve">
+    <value>Front side</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;btnEnvInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnCopyImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAehJREFUOE+t099L
+        U3EYx3H/lFKGZDdB7K6biDKlwCDxooJAk652oVddRYZBJjMWOJ0La5ayzc70RKSLlKlraTJzrl+TlkFu
+        MJUdnc7pZu92viPXFm1BPfC5+z6v7/N8D6ek5F9LnviIGmncL2Id8dInv+ZOt1z1V7banF+WYQ+NLY/R
+        VjccKYo4xvw5/am973T2v8Dp9nOhqaM4Yh2dE4AzANJb8AUV7lmeI00p2Cei2FxRHoxGMQytiVxqXz6W
+        M1Wf7NmfYGc3hbKRIBSJCSC/WgdW0F5xc7RxMouY7S5xrte9i35E4Ya0TPPDIP0vV38DmkwR5GmFw3XD
+        VNTKGcSY3lfdeyueZCUaZym0zvvgKuZnYQG0SSkR3+I6l/VhKuqecuj8IOU1jxCAuu92Irl/s84c4Krx
+        HXdtSzkTKJtJFr9t417YwCTNojl7PwsosQQfvkSY+xTC4/vK+JvPtPRmPu/1gRg6Y5iL7QHO3ZwXMUkz
+        aKq7soC2qp78NBvmBZBMrxeJJlkIbjHmVXBMrtE96KGs0pAB/lQNrdMC+PXmnxN02V9RelJfGKi95iK+
+        s4d5yEuPYxbTkxlxs9pstE5x8MTtwkClzpl+bZtIeY0FzZkeyk53UnqqI93cxoHjtwoDRf+B/3XgB/HZ
+        2qt308hsAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="btnStyleFaceEdge.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnVisibleSideBoth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnStyleEdge.Text" xml:space="preserve">
+    <value>Wireframe</value>
+  </data>
+  <data name="btnNext.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnStyleEdge.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAG9JREFUOE+1klsK
+        ACAIBDtuh+1ORohg5fogCvxIdNTV1v6/Tg81VrJYGaMTS12gxBTkDNL/EGAFeMBNk05j0KE2qmj62bkg
+        Yqy+9eAod7s7UMOcLjjsDkh0V1EcHpdAvPnddVqA8jlrSHg8aE35xAnzV2XGLbPENQAAAABJRU5ErkJg
+        gg==
+</value>
+  </data>
+  <data name="btnSetting.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="menuClipMinusZ.Text" xml:space="preserve">
+    <value>-Z</value>
+  </data>
+  <data name="&gt;&gt;btnSaveImage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnOrtho.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="&gt;&gt;btnNext.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuFitZX.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnVisibleSideBoth.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAKVJREFUOE9jZMAK
+        Mv7DhFNTgxgCA1UYvLyUGLGrxWHAzDP//4NwZNmU/6mpu4AGggzNALO3bbsHtwCHoRlgzTADQIbAsLln
+        DJKBON2E3wCQIRAXkWkAzDtI2lH9l5Y2E8ULyGEA0hyY3Y7ugoz/IGehBxhyoP0HAlCY1K+8gt8AkCEg
+        RTAMC8xRA0AhMJgCEUsqRCQkbNGInpBwJmBQLkNXTCj3AQBnkc2jY8UWTgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="menuFitYZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="menuClipMinusZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="&gt;&gt;btnCopyImage.Name" xml:space="preserve">
+    <value>btnCopyImage</value>
+  </data>
+  <data name="&gt;&gt;menuClipMinusY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuFitZX.Name" xml:space="preserve">
+    <value>menuFitZX</value>
+  </data>
+  <data name="&gt;&gt;btnClipOnOff.Name" xml:space="preserve">
+    <value>btnClipOnOff</value>
+  </data>
+  <data name="btnVisibleSideFront.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnEnvInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnNext.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="&gt;&gt;btnOrtho.Name" xml:space="preserve">
+    <value>btnOrtho</value>
+  </data>
+  <data name="&gt;&gt;menuClipPlusX.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnPerspective.Name" xml:space="preserve">
+    <value>btnPerspective</value>
+  </data>
+  <data name="menuFitZX.Text" xml:space="preserve">
+    <value>ZX</value>
+  </data>
+  <data name="btnClipOnOff.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;btnCopyImage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuClipPlusZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="btnNext.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="&gt;&gt;btnSetting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuFitYZ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuFitZX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="btnStyleEdge.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="btnVisibleSideBoth.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="btnCopyImage.Text" xml:space="preserve">
+    <value>Copy an image</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="menuFitYZ.Text" xml:space="preserve">
+    <value>YZ</value>
+  </data>
+  <data name="btnClipOnOff.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 22</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ViewPanel</value>
+  </data>
+  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 25</value>
+  </data>
+  <data name="toolStrip1.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="btnStyleFace.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="btnSetting.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;menuClipView.Name" xml:space="preserve">
+    <value>menuClipView</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="btnPerspective.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAGdJREFUOE9jYKA2
+        MDZO+08sRrW7+TpYI0gwLe0MmMYFYBbA5Ym1EVkjzDKwISgcAi6AqR01AC3caBKIoLSADYMsA4njjAVi
+        EhFG1BObAmEa0b0MTkiEbIYlW7BmYLJHSebkJGWqZWIAxHatPY9DmqgAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="&gt;&gt;btnEnvInfo.Name" xml:space="preserve">
+    <value>btnEnvInfo</value>
+  </data>
+  <data name="btnVisibleSideFront.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAJpJREFUOE9jZMAK
+        Mv7DhFNTgxgCA1UYvLyUGLGrJWAASHrbtntAA0GGZvxPTd31H8LHCxAuwKYMZAjEQJwAvwEQbRQZAPEO
+        kv2o/ktLm4niPJCfYc4G0YHZ7ZgGmHvG/I8smwJXiBxoIE0gMPPM///1K6/gNwBkCEgRDIM0gfCoAYMt
+        DLCkQkRCwhaNiLSPkQJRMwNyiiM29wEAUCOF+5yuLzcAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="&gt;&gt;menuClipMinusY.Name" xml:space="preserve">
+    <value>menuClipMinusY</value>
+  </data>
+  <data name="&gt;&gt;btnSaveImage.Name" xml:space="preserve">
+    <value>btnSaveImage</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="btnStyleEdge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="&gt;&gt;btnPrev.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuClipMinusX.Text" xml:space="preserve">
+    <value>-X</value>
+  </data>
+  <data name="&gt;&gt;btnStyleFaceEdge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuFitYZ.Name" xml:space="preserve">
+    <value>menuFitYZ</value>
+  </data>
+  <data name="btnStyleFaceEdge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnSetting.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 436</value>
+  </data>
+  <data name="&gt;&gt;btnVisibleSideBoth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuClipMinusX.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnNext.Name" xml:space="preserve">
+    <value>btnNext</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnFit.Name" xml:space="preserve">
+    <value>btnFit</value>
+  </data>
+  <data name="btnFit.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;menuClipMinusZ.Name" xml:space="preserve">
+    <value>menuClipMinusZ</value>
+  </data>
+  <data name="&gt;&gt;btnPrev.Name" xml:space="preserve">
+    <value>btnPrev</value>
+  </data>
+  <data name="&gt;&gt;btnFit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnSaveImage.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="menuClipPlusX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="btnFit.Text" xml:space="preserve">
+    <value>Fit</value>
+  </data>
+  <data name="&gt;&gt;btnVisibleSideFront.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuClipPlusY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnPerspective.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;btnVisibleSideFront.Name" xml:space="preserve">
+    <value>btnVisibleSideFront</value>
+  </data>
+  <data name="btnVisibleSideBoth.Text" xml:space="preserve">
+    <value>Both side</value>
+  </data>
+  <data name="btnCopyImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="&gt;&gt;btnOrtho.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuFitXY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="btnSaveImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAi1JREFUOE+tk91L
+        k3EUx/0XvO8m8KLbmhrDtVgNnnIOZdkwrIhSn/A1TZf5QoqladTyBbIVLp20Wk3CSUW+gCliIoulaGXm
+        iqY4fEUngsG33/lFzy/TuskfnMvP5zznnO8TFrYT78XzEKg87Stocy/jkXMBLc1B3LPNoKH+G6y3/Lhe
+        NYnyso8oLhpDQf4ILuT4oPQmsKcbqK9bx7/e2voGDEk9OJH0jJcicD9d4oKa6sW/8gQHF9Zw0PQSKpUM
+        83GXEDgfznNBedn0toJf8OfAEiKNHhRdnsIxU6sQ2JtmueCS5dMWwe/wu4kg9khu5OWOIyHeLgSNdwJc
+        kJ01sknwJzzgC2CXzglZHobRaBOCutqvXCCnDSuC7eDuoS8Ij2nGyVOvERvbIAQ3aqbQ1Ql2SuDMuTcw
+        n+7n26aF0cz02dT5J9yLRPMrSJJVCK5WTKDDA5YBoNXxnd19FVWVc3yptDCaOTPDp8BxCe3Q66uFoKR4
+        HK7HwAP7BgtOCIbk3E1lOmtBcnop7xwXz+CjLuh0FUJgKRhlMFB7O8Q7k4CFBJEaCd4PsxidnIOcfw2H
+        DW0c1hxyQKstFQKKpe0ulM8mAcHnC2/ivX8e/pllXLxiRZTOweAWRB24D01MoRBkZrxlc6/wmSP0Luze
+        J+FJRx88nQPo6h1C/6AXR4xmqLRNiGbwXnUj1Oo8IchK9yampvTxeFLCKCR0ZzoVbZsWRjNTVyqC90dn
+        C8H//NE/AEJWOr7cK6XnAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="btnStyleFace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnPrev.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAnFJREFUOE+dk11I
+        U2Ecxs+GtpaZX6uJW5CeNCtn2UpLhRZTZjdRdlHsYhCpoYFFH7MiXGhE4VosmM2oqJze+DnbhzjcarYt
+        W1QofrQPWinRRTdJdePFU+fsu0kXvfCHl/85z+95zv+8L4OIWd7FSdiWXETvt+HYNr2Xcg4TorR9RAGv
+        jJHwkGq4AxaI7CIcdEug9lxHr08J9XQTFO5DOGEToFTPhcQohvuzBQmAsPjaXAsGAlpo5+S48VaK845y
+        nLYXR0o2XoiCR9nxECo25dw+exGPPW1QTTXg8qsq6DwK/FpeQr//VhykzrYdWztJOAPmYJKe2S5UWkug
+        mTmHtje1OPtyD7o/XEV4WRd1cYAmuwAVnULoXJog4IBFhHpnFeSu/fSLseKFH/O44KyIABpeFEFqy8cx
+        K4miDjIKaJ4QJoipBJS78dM9uvQBDfo/3sWR8VxUj/GRpWCFAKMiWtz6uiYS+1+bqjEeyke54LSyQwB9
+        EPB3/J/L32lHqrr9Kjz138ZDXwd2mznYYcpAektyFCCzFEYgT2IGaPvSD4mFD/FYDvaOrsdOUya2GdOw
+        cWQNtlzJC/2FqS6U6bg0IDwkzaw88hV9gfsoMWWh+I9r7rMU8EfYyFSxcKevPQjwLkyiRifGUTOJ49bN
+        kSHdnD5DQ6xfjSgwrKNds/UspA4ywWlMx7zXET2Rz98PgVRyUW3iIzwkKm7tRCUE5hzwRlYjYygJ7AEC
+        yacION4ZE48zBSlV7kKedi09pHxDKh13w/AqpAwywFIT4NSnrywOX44Znx0qgwJCRRHYjUyw6phIkhEg
+        T27CpQfN8bFXvJL/0fwNxnQBNzBy4S0AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="menuClipView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator5.Name" xml:space="preserve">
+    <value>toolStripSeparator5</value>
+  </data>
+  <data name="btnEnvInfo.Text" xml:space="preserve">
+    <value>Env info</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnStyleEdge.Name" xml:space="preserve">
+    <value>btnStyleEdge</value>
+  </data>
+  <data name="&gt;&gt;btnSetting.Name" xml:space="preserve">
+    <value>btnSetting</value>
+  </data>
+  <data name="btnSaveImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="&gt;&gt;btnStyleFaceEdge.Name" xml:space="preserve">
+    <value>btnStyleFaceEdge</value>
+  </data>
+  <data name="menuClipPlusZ.Text" xml:space="preserve">
+    <value>+Z</value>
+  </data>
+  <data name="btnPerspective.Text" xml:space="preserve">
+    <value>Perspective</value>
+  </data>
+  <data name="btnSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnClipOnOff.Text" xml:space="preserve">
+    <value>Clipping plane</value>
+  </data>
+  <data name="btnPerspective.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="btnStyleFaceEdge.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAG9JREFUOE9jYKA9
+        yPhPgR0gzTBMsjEQjTPP/IcaQrQBEI2RZVPgBpBgCEQjDMNcQKQBqJrRXUDAEMKaQQbgMYRiA0AhjNv/
+        MNuJdgVy4KFrJsobxBmANYVixj+yC4hIlbgSEEnJGTn5kpWRSLKNAQBm2hlVtqXAYQAAAABJRU5ErkJg
+        gg==
+</value>
+  </data>
+  <data name="&gt;&gt;menuClipView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuClipMinusZ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnPrev.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;btnStyleFace.Name" xml:space="preserve">
+    <value>btnStyleFace</value>
+  </data>
+  <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnStyleFaceEdge.Text" xml:space="preserve">
+    <value>Shading+wire</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnEnvInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAnxJREFUOE+Vk19I
+        01EUx/fUY0/12ksv9lC92Us9CEbQ36dQ0HzwD5USi/5HEBSUf7AM1CQjikoNQ1f+m0jDqTPdls5JbtOc
+        K3V/dNOlbm6m9un8tHQjhDpw+d177vl+zrnn3p9KFWOLkSijE9MEFxaJtVB0mS6zA+c3L7HxcXOPf45w
+        aH5DZ+y3k5yUiaa5e8P3U2ZDY76/IePeAMGZmbisJ1MeSuAZEg5XxvmVRZ3OugnxzIRxuyfXgn7IWFhe
+        j1fm1b1LzCppxXxhCCrO35ZfoVmH9H52EQxFWJKNgBxd+RqHPdwtbaSyqo1X9Z1ExTcRgtFZ8AtkRdZN
+        pnGMfXZUup4BpsKr+CXKIy0IrsKIJ8iuQ8WSIYfdB4tRinB+B5sfhgXiFohxbJ5LtytQaTstfBWVkmEs
+        KFkkULHaDpsArpOYWr1WwZC0aGAKBgMCkUR6e4D03Puo6tstDHmjuARgk01lLIigTNMngCskplQxJ2uL
+        D0xu+U6DVSrRmCYFUIDqRUM3PV982CWzQu/3gnIf5Q0WAag5kPoapSij+D8KwCiA7okV8orquHDt0Xoj
+        X7aa6XDMYpUjWOSM4yLIvNMkmzfZtq8EgzuCWahdAtHawzzVjbBjb9rmVda0GKlsNtEqB/0k5WltUU5d
+        1JNVPkX6Aye3ql1r4ve2EGUtdvYcuUyOujD+QT2raSO3oIYnLYO8MXlpn1ylR5pmlQ422sKUtjrILqxj
+        5/4MMs7f2/pJ51wt5Xh2EUfPFpNfa6JxFLLzNWxPOE1i8jneNRu2Fsf+HHq9mWN5jzFEICmrjA+63n8T
+        xkIatAbUz/s5cePt/4v/gJwuN2nqki0BvwBshGst1638WAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="&gt;&gt;menuFitXY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnStyleFace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnOrtho.Text" xml:space="preserve">
+    <value>Ortho</value>
+  </data>
+  <data name="btnFit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 22</value>
+  </data>
+  <data name="btnNext.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="menuClipPlusY.Text" xml:space="preserve">
+    <value>+Y</value>
+  </data>
+  <data name="btnSaveImage.Text" xml:space="preserve">
+    <value>Save an image</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="menuClipPlusY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="menuClipMinusY.Text" xml:space="preserve">
+    <value>-Y</value>
+  </data>
+  <data name="&gt;&gt;btnVisibleSideBoth.Name" xml:space="preserve">
+    <value>btnVisibleSideBoth</value>
+  </data>
+  <data name="&gt;&gt;menuFitXY.Name" xml:space="preserve">
+    <value>menuFitXY</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>0, 0</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>

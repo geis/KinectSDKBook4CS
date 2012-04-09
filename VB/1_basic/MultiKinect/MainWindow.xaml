@@ -1,0 +1,17 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MultiKinect" Height="778" Width="1078" xmlns:my="clr-namespace:MultiKinect" Closing="Window_Closing">
+    <Grid>
+        <my:KinectWindow x:Name="kinectWindow1" Width="525" HorizontalAlignment="Left"
+                     Height="350" VerticalAlignment="Top" Margin="0,33,0,0" />
+        <my:KinectWindow x:Name="kinectWindow2" Width="525" HorizontalAlignment="Left"
+                     Height="350" VerticalAlignment="Top" Margin="531,33,0,0" />
+        <my:KinectWindow Height="350" HorizontalAlignment="Left" Margin="0,389,0,0"
+                     x:Name="kinectWindow3" VerticalAlignment="Top" Width="525" />
+        <my:KinectWindow Height="350" HorizontalAlignment="Left" Margin="531,389,0,0"
+                     x:Name="kinectWindow4" VerticalAlignment="Top" Width="525" />
+        <ComboBox Height="24" HorizontalAlignment="Left" Name="comboBoxSkeleton"
+              VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" />
+    </Grid>
+</Window>
