@@ -1,0 +1,1359 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.SI</name>
+    </assembly>
+    <members>
+        <member name="T:Hisui.SI">
+            <summary>
+            Hisui の API をラップしたファサードクラスです。SIは Service Interface を意味しています。
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.AppData">
+            <summary>
+            設定データの集合です。
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.CommonAppDataPath">
+            <summary>
+            設定ファイルへのパス：<see cref="F:System.Environment.SpecialFolder.CommonApplicationData"/>/会社名/製品名/バージョン番号/
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.UserAppDataPath">
+            <summary>
+            設定ファイルへのパス：<see cref="F:System.Environment.SpecialFolder.ApplicationData"/>/会社名/製品名/バージョン番号/
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.LocalUserAppDataPath">
+            <summary>
+            設定ファイルへのパス：<see cref="F:System.Environment.SpecialFolder.LocalApplicationData"/>/会社名/製品名/バージョン番号/
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.CommonAppDataPathWithoutVersion">
+            <summary>
+            設定ファイルへのパス：<see cref="F:System.Environment.SpecialFolder.CommonApplicationData"/>/会社名/製品名/
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.UserAppDataPathWithoutVersion">
+            <summary>
+            設定ファイルへのパス：<see cref="F:System.Environment.SpecialFolder.ApplicationData"/>/会社名/製品名/
+            </summary>
+        </member>
+        <member name="F:Hisui.SI.LocalUserAppDataPathWithoutVersion">
+            <summary>
+            設定ファイルへのパス：<see cref="F:System.Environment.SpecialFolder.LocalApplicationData"/>/会社名/製品名/
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.SaveAppData">
+            <summary>
+            全ての設定データをファイル（HOX形式）に保存します。
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.Increment">
+            <summary>
+            システム全体の論理時刻をインクリメントします。<see cref="M:Hisui.Core.Breath.Increment"/> と同義です。
+            </summary>
+            <seealso cref="M:Hisui.Core.Breath.Increment"/>
+        </member>
+        <member name="M:Hisui.SI.RunBuild">
+            <summary>
+            <see cref="P:Hisui.SI.Tasks"/>をビルドします。<see cref="M:Hisui.Core.Builder.Run"/> と同義です。
+            </summary>
+            <remarks>
+            <para>このメソッドは下記のコードと同じ意味になります。</para>
+            <code>
+            using ( var progress = SI.StartProgress( "building ..." ) ) {
+              progress.Step( 1.0 );
+              SI.Build();
+            }
+            </code>
+            </remarks>
+            <seealso cref="M:Hisui.Core.Builder.Run"/>
+        </member>
+        <member name="M:Hisui.SI.RunRebuild">
+            <summary>
+            <see cref="P:Hisui.SI.Tasks"/>をリビルドします。<see cref="M:Hisui.Core.Builder.RunRebuild"/> と同義です。
+            </summary>
+            <remarks>
+            <para>このメソッドは下記のコードと同じ意味になります。</para>
+            <code>
+            using ( var progress = SI.StartProgress( "building ..." ) ) {
+              progress.Step( 1.0 );
+              SI.Rebuild();
+            }
+            </code>
+            </remarks>
+            <seealso cref="M:Hisui.Core.Builder.RunRebuild"/>
+        </member>
+        <member name="M:Hisui.SI.Build">
+            <summary>
+            <see cref="P:Hisui.SI.Tasks"/>をビルドします。<see cref="M:Hisui.Core.Builder.Build"/> と同義です。
+            </summary>
+            <seealso cref="M:Hisui.Core.Builder.Build"/>
+        </member>
+        <member name="M:Hisui.SI.Rebuild">
+            <summary>
+            <see cref="P:Hisui.SI.Tasks"/>をリビルドします。<see cref="M:Hisui.Core.Builder.Rebuild"/> と同義です。
+            </summary>
+            <seealso cref="M:Hisui.Core.Builder.Rebuild"/>
+        </member>
+        <member name="M:Hisui.SI.Build(Hisui.Core.IDependent)">
+            <summary>
+            指定された <see cref="T:Hisui.Core.IBuild"/> ノードをビルドします。<see cref="M:Hisui.Core.Builder.Build(Hisui.Core.IDependent)"/> と同義です。
+            </summary>
+            <param name="node">ビルド対象ノード</param>
+            <seealso cref="M:Hisui.Core.Builder.Build(Hisui.Core.IDependent)"/>
+        </member>
+        <member name="M:Hisui.SI.Rebuild(Hisui.Core.IDependent)">
+            <summary>
+            指定された <see cref="T:Hisui.Core.IBuild"/> ノードをリビルドします。<see cref="M:Hisui.Core.Builder.Rebuild(Hisui.Core.IDependent)"/> と同義です。
+            </summary>
+            <param name="node">ビルド対象ノード</param>
+            <seealso cref="M:Hisui.Core.Builder.Rebuild(Hisui.Core.IDependent)"/>
+        </member>
+        <member name="M:Hisui.SI.NeedToBuild">
+            <summary>
+            ルートノード <see cref="P:Hisui.SI.Tasks"/> がビルドを必要としている状態かどうかを判定します。
+            <see cref="M:Hisui.Core.Builder.NeedToBuild"/> と同義です。
+            </summary>
+            <seealso cref="M:Hisui.Core.Builder.NeedToBuild"/>
+        </member>
+        <member name="M:Hisui.SI.NeedToBuild(Hisui.Core.IDependent)">
+            <summary>
+            指定されたノードがビルドを必要としている状態かどうかを判定します。
+            <see cref="M:Hisui.Core.Builder.NeedToBuild(Hisui.Core.IDependent)"/> と同義です。
+            </summary>
+            <param name="node">判定対象のビルドグラフ</param>
+            <seealso cref="M:Hisui.Core.Builder.NeedToBuild(Hisui.Core.IDependent)"/>
+        </member>
+        <member name="M:Hisui.SI.MeasureBuildWeight(System.Action)">
+            <summary>
+            Estimate build-weight value of a process
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.FindCaption(System.String)">
+            <summary>
+            コマンドに関連付けられたキャプション文字列を取得します。
+            <see cref="M:Hisui.Ctrl.CommandRegistry.FindCaption(System.String)"/> と同義です。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>キャプション文字列。見つからない場合は null。</returns>
+            <seealso cref="M:Hisui.Ctrl.CommandRegistry.FindCaption(System.String)"/>
+        </member>
+        <member name="M:Hisui.SI.Run(System.Object,System.String)">
+            <summary>
+            コマンドを起動します。<see cref="M:Hisui.Ctrl.CommandRegistry.Run(System.Object,System.String)"/> と同義です。
+            </summary>
+            <param name="target">ターゲット</param>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが起動された場合 true。何らかの理由で起動できなかった場合は false。</returns>
+            <seealso cref="M:Hisui.Ctrl.CommandRegistry.Run(System.Object,System.String)"/>
+        </member>
+        <member name="M:Hisui.SI.Run(System.String)">
+            <summary>
+            コマンドを起動します。<see cref="M:Hisui.Ctrl.CommandRegistry.Run(System.String)"/> と同義です。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが起動された場合 true。何らかの理由で起動できなかった場合は false。</returns>
+            <seealso cref="M:Hisui.Ctrl.CommandRegistry.Run(System.String)"/>
+        </member>
+        <member name="M:Hisui.SI.LoadConfig(System.Xml.XmlDocument)">
+            <summary>
+            設定情報を解析し、設定に従ってプラグインDLLのロードやコマンドの設定などを行います。
+            </summary>
+            <param name="config">設定情報の書きこまれた<see cref="T:System.Xml.XmlDocument"/></param>
+        </member>
+        <member name="M:Hisui.SI.LoadConfig(System.String)">
+            <summary>
+            設定情報を解析し、設定に従ってプラグインDLLのロードやコマンドの設定などを行います。
+            </summary>
+            <param name="filename">XML形式の設定ファイル名。設定ファイルは実行ファイルと同じフォルダにあるものとする。</param>
+        </member>
+        <member name="M:Hisui.SI.LoadConfig(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            指定されたカルチャの設定情報を解析し、設定に従ってプラグインDLLのロードやコマンドの設定などを行います。
+            </summary>
+            <remarks>
+            実際に読み込まれるXMLファイルは （実行ファイルのあるフォルダ）/（カルチャ名）/filename となります。
+            <para>（カルチャ名）には "ja" や "en" などが入ります。</para>
+            </remarks>
+            <param name="filename">XML形式の設定ファイル名。設定ファイルは実行ファイルと同じフォルダにあるものとする。</param>
+            <param name="culture">カルチャ</param>
+        </member>
+        <member name="M:Hisui.SI.LoadPluginAssemblies(System.String[])">
+            <summary>
+            アセンブリをプラグインモジュールとしてロードします。
+            </summary>
+            <param name="plugins">ロードするアセンブリのファイルパス</param>
+        </member>
+        <member name="M:Hisui.SI.LoadPluginAssemblies(System.Reflection.Assembly[])">
+            <summary>
+            アセンブリをプラグインモジュールとしてロードします。
+            </summary>
+            <param name="plugins">ロードするアセンブリ群</param>
+        </member>
+        <member name="M:Hisui.SI.LoadPluginAssemblies(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            アセンブリをプラグインモジュールとしてロードします。
+            </summary>
+            <param name="plugins">ロードするアセンブリのファイルパス</param>
+        </member>
+        <member name="M:Hisui.SI.LoadPluginAssemblies(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            アセンブリをプラグインモジュールとしてロードします。
+            </summary>
+            <param name="plugins">ロードするアセンブリ群</param>
+        </member>
+        <member name="M:Hisui.SI.RegisterToPluginLoader">
+            <summary>
+            <see cref="T:Hisui.Core.PluginLoader"/> に様々なハンドラを登録します。
+            </summary>
+            <remarks>
+            実際に <see cref="T:Hisui.Core.PluginLoader"/> に登録されるものを下記に列挙します。
+            <list type="bullet">
+              <item><term><see cref="T:Hisui.Graphics.SceneFactory"/></term><description>シーンをプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Graphics.HighlightFactory"/></term><description>ハイライト表示をプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Graphics.ShaderRegistry"/></term><description>シェーダーをプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Ctrl.CommandLoader"/></term><description>コマンドをプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Ctrl.HandlerLoader"/></term><description>イベントハンドラをプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Ctrl.ToolStripRegistry"/></term><description><see cref="T:System.Windows.Forms.ToolStrip"/>をプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Hix.SerializerFactory"/></term><description>シリアライザをプラグイン登録</description></item>
+              <item><term><see cref="T:Hisui.Hix.FormatRegistry"/></term><description>ファイルフォーマットをプラグイン登録</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:Hisui.SI.SetUp(System.String)">
+            <summary>
+            初期化処理や設定ファイルの読込を行います。
+            </summary>
+            <param name="cfgPath">設定ファイル名</param>
+            <returns>処理に成功すると true を返します</returns>
+            <remarks>
+            次の順序で関数が呼び出されます。
+            <code>
+            Hisui.SI.RegisterToPluginLoader();
+            Hisui.SI.LoadConfig( cfgPath );                                      // invariant culture
+            Hisui.SI.LoadConfig( cfgPath, CultureInfo.CurrentUICulture.Parent ); // neutral culture
+            Hisui.SI.LoadConfig( cfgPath, CultureInfo.CurrentUICulture );        // current culture
+            </code>
+            <seealso cref="M:Hisui.SI.RegisterToPluginLoader"/>
+            <seealso cref="M:Hisui.SI.LoadConfig(System.String)"/>
+            <seealso cref="M:Hisui.SI.LoadConfig(System.String,System.Globalization.CultureInfo)"/>
+            </remarks>
+        </member>
+        <member name="M:Hisui.SI.LoadLicense(System.Reflection.Assembly,System.String)">
+            <summary>
+            ライセンスをロードします。ライセンスの認証はパスワードで行います。
+            </summary>
+            <param name="licenseAssembly">ライセンスとして発行されたアセンブリ</param>
+            <param name="password"><paramref name="licenseAssembly"/> に埋め込まれたパスワードと一致する文字列を指定します</param>
+            <seealso cref="M:Hisui.Core.LicenseManager.LoadLicense(System.Reflection.Assembly,System.String)"/>
+        </member>
+        <member name="M:Hisui.SI.LoadLicense(Hisui.Core.License)">
+            <summary>
+            ライセンスをロードします。ライセンスの認証にはアセンブリに付けられた署名を利用します。
+            </summary>
+            <param name="license">発行されたライセンス</param>
+            <seealso cref="M:Hisui.Core.LicenseManager.LoadLicense(Hisui.Core.License)"/>
+        </member>
+        <member name="M:Hisui.SI.LoadLicense(System.Reflection.Assembly)">
+            <summary>
+            ライセンスをロードします。ライセンスの認証にはアセンブリに付けられた署名を利用します。
+            </summary>
+            <param name="licenseAssembly">ライセンスとして発行されたアセンブリ</param>
+            <seealso cref="M:Hisui.Core.LicenseManager.LoadLicense(System.Reflection.Assembly)"/>
+        </member>
+        <member name="M:Hisui.SI.LoadLicense(System.String)">
+            <summary>
+            ライセンスをロードします。ライセンスの認証にはアセンブリに付けられた署名を利用します。
+            <param name="licensePath">ライセンスとして発行されたアセンブリへのパス</param>
+            </summary>
+            <seealso cref="M:Hisui.Core.LicenseManager.LoadLicense(System.String)"/>
+        </member>
+        <member name="M:Hisui.SI.ChangeCulture(System.Globalization.CultureInfo,System.Globalization.CultureInfo)">
+            <summary>
+            <c>using</c> で指定されるスコープで一時的にカルチャ設定を変更するために使用します。
+            <paramref name="culture"/>、<paramref name="uiCulture"/> は null を指定することが出来ます。
+            </summary>
+            <param name="culture">カルチャ（変更しない場合はnull）</param>
+            <param name="uiCulture">UIカルチャ（変更しない場合はnull）</param>
+        </member>
+        <member name="M:Hisui.SI.ChangeCulture(System.String,System.String)">
+            <summary>
+            <c>using</c> で指定されるスコープで一時的にカルチャ設定を変更するために使用します。
+            <paramref name="cultureName"/>、<paramref name="uiCultureName"/> は null を指定することが出来ます。
+            </summary>
+            <param name="cultureName">カルチャ名（変更しない場合はnull）</param>
+            <param name="uiCultureName">UIカルチャ名（変更しない場合はnull）</param>
+        </member>
+        <member name="M:Hisui.SI.NewInstance``1">
+            <summary>
+            <see cref="T:Hisui.Core.InjectionAttribute"/> 属性によって登録されたクラスのインスタンスを生成します。
+            <see cref="M:Hisui.Core.Factory.NewInstance``1"/> と同義です。
+            </summary>
+            <typeparam name="T">キータイプ</typeparam>
+            <returns>生成されたインスタンス。キーに合致するクラスが存在しない場合は null。</returns>
+            <example>
+            <code>
+            var poly = SI.NewInstance&lt;Hisui.Spatial.IPolyline&gt;();
+            var mesh = SI.NewInstance&lt;Hisui.Spatial.IPolygonMesh&gt;();
+            var tris = SI.NewInstance&lt;Hisui.Spatial.ITriangleSoup&gt;();
+            </code>
+            </example>
+        </member>
+        <member name="M:Hisui.SI.GetActiveEntries">
+            <summary>
+            Get all entries in <c>SI.ActiveEntries</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.ActiveEntries.GetEntriesRecursive()</c>.
+            </remarks>
+        </member>
+        <member name="M:Hisui.SI.GetAllEntries">
+            <summary>
+            Get all entries in a current <c>SI.Document</c>
+            </summary>
+            <remarks>This method is equivalent to <c>SI.Document.Entries.GetEntriesRecursive()</c></remarks>
+        </member>
+        <member name="M:Hisui.SI.FindEntry(System.Int32[])">
+            <summary>
+            Find an entry at a path specified as a parameter from <c>SI.Document</c>
+            </summary>
+            <example>
+            The 2 lines below will get a same entry.
+            <code>
+            var entry1 = SI.FindEntry( new int[] { 3, 5, 2 } );
+            var entry2 = SI.Document.Entries[3].Entries[5].Entries[2];
+            </code>
+            </example>
+            <param name="path">sequence of entry's ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.FindEntry(System.String)">
+            <summary>
+            Find an entry at a path specified as a parameter from <c>SI.Document</c>
+            </summary>
+            <example>
+            The 2 lines below are equivalent.
+            <code>
+            var entry1 = SI.FindEntry( new int[] { 3, 5, 2 } );
+            var entry2 = SI.FindEntry( "3.5.2" );
+            </code>
+            </example>
+            <param name="entryPathString">sequence of entry's ID separated with ','</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.PutEntry(System.Object)">
+            <summary>
+            Put a new entry into <c>SI.ActiveEntries</c>
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.PutEntry(System.Int32,System.Object)">
+            <summary>
+            Put a new entry into <c>SI.ActiveEntries</c>
+            </summary>
+            <param name="id"></param>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.RemoveEntry(Hisui.Core.IEntry)">
+            <summary>
+            エントリをドキュメントから削除します。<c>entry.Owner.Remove( entry.ID )</c> と同義です。
+            </summary>
+            <param name="entry">削除するエントリ</param>
+        </member>
+        <member name="M:Hisui.SI.MoveEntry(Hisui.Core.IEntry,Hisui.Core.IEntryCollection)">
+            <summary>
+            Move an entry to an arbitary entry-collection
+            </summary>
+            <param name="src">target entry</param>
+            <param name="dst">destination entry-collection</param>
+        </member>
+        <member name="M:Hisui.SI.Commit">
+            <summary>
+            前回の <see cref="M:Hisui.SI.Commit"/> 呼び出し以降の変更履歴をひとつの履歴単位（エピソード）としてコミットします。
+            Undo/Redo ではこのエピソードの単位で履歴操作が行われます。
+            <c>SI.History.Commit()</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.SI.Document"/>
+            <seealso cref="P:Hisui.SI.History"/>
+            <seealso cref="M:Hisui.Core.History.Commit"/>
+        </member>
+        <member name="M:Hisui.SI.Undo">
+            <summary>
+            一つ前の状態に戻します。<c>SI.History.Undo()</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.SI.History"/>
+            <seealso cref="M:Hisui.Core.History.Undo"/>
+        </member>
+        <member name="M:Hisui.SI.Redo">
+            <summary>
+            一つ先の状態に進めます。<c>SI.History.Redo()</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.SI.History"/>
+            <seealso cref="M:Hisui.Core.History.Redo"/>
+        </member>
+        <member name="M:Hisui.SI.Cancel">
+            <summary>
+            まだ <see cref="M:Hisui.SI.Commit"/> されていない処理中のエピソードをキャンセルします。
+            <c>SI.History.Cancel()</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.SI.History"/>
+            <seealso cref="M:Hisui.Core.History.Cancel"/>
+        </member>
+        <member name="M:Hisui.SI.LockHistory">
+            <summary>
+            一時的にヒストリ機能を無効化したい時に使用します。
+            <c>SI.History.Lock()</c> と同義です。
+            </summary>
+            <example>
+            <code>
+            using ( SI.LockHistory() ) {
+              ...  // do something without recording history
+            }
+            </code>
+            </example>
+            <returns></returns>
+            <seealso cref="P:Hisui.SI.History"/>
+            <seealso cref="M:Hisui.Core.History.Lock"/>
+        </member>
+        <member name="M:Hisui.SI.Open(System.String)">
+            <summary>
+            Open a HIX file
+            </summary>
+            <param name="filename"></param>
+        </member>
+        <member name="M:Hisui.SI.Clear">
+            <summary>
+            Clear a current document and a current history
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.Save">
+            <summary>
+            Save a current document as a HIX file to <c>SI.Document.FilePath</c>
+            </summary>
+            <exception cref="T:System.Exception">This method throws an exception if <c>SI.Document.FilePath == null</c>.</exception>
+        </member>
+        <member name="M:Hisui.SI.SaveAs(System.String)">
+            <summary>
+            Save a current document as a HIX file to a specified path
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:Hisui.SI.ImportHix(Hisui.Core.IEntryCollection,System.String)">
+            <summary>
+            Import a HIX file
+            </summary>
+            <param name="dst">import destination</param>
+            <param name="filename">import target file path</param>
+        </member>
+        <member name="M:Hisui.SI.ImportHix(Hisui.Core.IEntry,System.String)">
+            <summary>
+            Import a HIX file
+            </summary>
+            <param name="dst"></param>
+            <param name="filename"></param>
+        </member>
+        <member name="M:Hisui.SI.ExportHix(Hisui.Core.IEntry,System.String)">
+            <summary>
+            Export an entry to a HIX file
+            </summary>
+            <param name="entry"></param>
+            <param name="filename"></param>
+        </member>
+        <member name="M:Hisui.SI.ImportHox(Hisui.Core.IEntry,System.String)">
+            <summary>
+            Import a HOX file
+            </summary>
+            <param name="dst"></param>
+            <param name="filename"></param>
+        </member>
+        <member name="M:Hisui.SI.ExportHox(Hisui.Core.IEntry,System.String)">
+            <summary>
+            Export a HOX file
+            </summary>
+            <param name="entry"></param>
+            <param name="filename"></param>
+        </member>
+        <member name="M:Hisui.SI.ImportFile(Hisui.Core.IEntry,System.String,System.String)">
+            <summary>
+            Import a file with a specified format
+            </summary>
+            <param name="dst"></param>
+            <param name="filename"></param>
+            <param name="format"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.ImportFile(Hisui.Core.IEntry,System.String)">
+            <summary>
+            Import a file the format of which is predicted from its extension
+            </summary>
+            <param name="dst"></param>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.StartProgress(System.String)">
+            <summary>
+            プログレス通知処理を開始します。通常 <c>using</c> 節で使用され、最後に <c>Dispose()</c> されてプログレス通知処理が終了します。
+            <see cref="M:Hisui.Core.Progress.Start(System.String)"/> と同義です。
+            </summary>
+            <param name="caption">処理名を設定します。</param>
+        </member>
+        <member name="M:Hisui.SI.PostAbortProgress">
+            <summary>
+            アボート処理のリクエストをポストします。
+            即時にアボートされるわけではなく、次に <see cref="E:Hisui.SI.ProgressChanged"/> イベントが発生するタイミングでアボートされます。
+            <see cref="M:Hisui.Core.Progress.PostAbort"/> と同義です。
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.PushProgress(System.String)">
+            <summary>
+            プログレス通知処理をスタックにプッシュします。
+            通常 <c>using</c> 節で使用され、最後に <c>Dispose()</c> されてスタックからポップされます。
+            ただし、プログレス通知処理が開始していない場合（<c>Progress.Start()</c> されていない場合）はプッシュされません。
+            <see cref="M:Hisui.Core.Progress.Push(System.String)"/> と同義です。
+            </summary>
+            <param name="caption">処理名を設定します。</param>
+            <returns>プッシュされた <see cref="T:Hisui.Core.IProgress"/></returns>
+        </member>
+        <member name="M:Hisui.SI.PushProgress">
+            <summary>
+            プログレス通知処理をスタックにプッシュします。
+            通常 <c>using</c> 節で使用され、最後に <c>Dispose()</c> されてスタックからポップされます。
+            ただし、プログレス通知処理が開始していない場合（<c>Progress.Start()</c> されていない場合）はプッシュされません。
+            <see cref="M:Hisui.Core.Progress.Push"/> と同義です。
+            </summary>
+            <returns>プッシュされた <see cref="T:Hisui.Core.IProgress"/></returns>
+        </member>
+        <member name="M:Hisui.SI.SuspendProgress">
+            <summary>
+            プログレス通知処理をサスペンド（一時停止）します。<c>Dispose()</c> でサスペンド状態から復帰します。
+            <see cref="M:Hisui.Core.Progress.Suspend"/> と同義です。
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.GetScene(Hisui.Core.IEntry)">
+            <summary>
+            エントリに関連付けられたシーンを取得します。<c>entry.GetElement{Graphics.IScene}()</c> と同義です。
+            </summary>
+            <param name="entry">エントリ</param>
+            <returns>エントリに関連付けられているシーン</returns>
+        </member>
+        <member name="M:Hisui.SI.GetScene(Hisui.Core.Document)">
+            <summary>
+            登録されているドキュメント描画シーン <see cref="T:Hisui.Graphics.IDocumentScene"/> を取得します。
+            <see cref="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document)"/> と同義です。
+            </summary>
+            <param name="doc">シーンが描画するドキュメント</param>
+            <returns>ドキュメントを描画する <see cref="T:Hisui.Graphics.IDocumentScene"/></returns>
+            <seealso cref="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document)"/>
+        </member>
+        <member name="M:Hisui.SI.GetScene(Hisui.Core.Document,Hisui.Graphics.SceneLocation)">
+            <summary>
+            登録されているドキュメント描画シーン <see cref="T:Hisui.Graphics.IDocumentScene"/> を取得します。
+            <see cref="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document,Hisui.Graphics.SceneLocation)"/> と同義です。
+            </summary>
+            <param name="doc">シーンが描画するドキュメント</param>
+            <param name="location">シーンの座標系</param>
+            <returns>ドキュメントを描画する <see cref="T:Hisui.Graphics.IDocumentScene"/></returns>
+            <seealso cref="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document,Hisui.Graphics.SceneLocation)"/>
+        </member>
+        <member name="M:Hisui.SI.GetDecorator(Hisui.Core.IEntry)">
+            <summary>
+            Get an entry's <c>ISceneDecorator</c>
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.GetDecorator(Hisui.Core.ILayer)">
+            <summary>
+            Get a layer's <c>ISceneDecorator</c>
+            </summary>
+            <param name="layer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.GetDecorator(Hisui.Core.Document)">
+            <summary>
+            Get a document's <c>ISceneDecorator</c>
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.PutDecoration(Hisui.Core.IEntry,System.Type,Hisui.Graphics.IDecoration)">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.IDecoration"/> を付与します。
+            </summary>
+            <param name="entry"><see cref="T:Hisui.Graphics.IDecoration"/> を付けるエントリ</param>
+            <param name="key"><see cref="T:Hisui.Graphics.IDecoration"/> のキータイプ</param>
+            <param name="item"><see cref="T:Hisui.Graphics.IDecoration"/> インスタンス</param>
+        </member>
+        <member name="M:Hisui.SI.PutDecoration(Hisui.Core.ILayer,System.Type,Hisui.Graphics.IDecoration)">
+            <summary>
+            レイヤに <see cref="T:Hisui.Graphics.IDecoration"/> を付与します。
+            </summary>
+            <param name="layer"><see cref="T:Hisui.Graphics.IDecoration"/> を付けるレイヤ</param>
+            <param name="key"><see cref="T:Hisui.Graphics.IDecoration"/> のキータイプ</param>
+            <param name="item"><see cref="T:Hisui.Graphics.IDecoration"/> インスタンス</param>
+        </member>
+        <member name="M:Hisui.SI.PutDecoration(Hisui.Core.Document,System.Type,Hisui.Graphics.IDecoration)">
+            <summary>
+            ドキュメントに <see cref="T:Hisui.Graphics.IDecoration"/> を付与します。
+            </summary>
+            <param name="doc"><see cref="T:Hisui.Graphics.IDecoration"/> を付けるドキュメント</param>
+            <param name="key"><see cref="T:Hisui.Graphics.IDecoration"/> のキータイプ</param>
+            <param name="item"><see cref="T:Hisui.Graphics.IDecoration"/> インスタンス</param>
+        </member>
+        <member name="M:Hisui.SI.PutDecoration``1(Hisui.Core.IEntry,``0)">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.IDecoration"/> を付与します。
+            </summary>
+            <typeparam name="T"><see cref="T:Hisui.Graphics.IDecoration"/> のキータイプ</typeparam>
+            <param name="entry"><see cref="T:Hisui.Graphics.IDecoration"/> を付けるエントリ</param>
+            <param name="item"><see cref="T:Hisui.Graphics.IDecoration"/> インスタンス</param>
+        </member>
+        <member name="M:Hisui.SI.PutDecoration``1(Hisui.Core.ILayer,``0)">
+            <summary>
+            レイヤに <see cref="T:Hisui.Graphics.IDecoration"/> を付与します。
+            </summary>
+            <typeparam name="T"><see cref="T:Hisui.Graphics.IDecoration"/> のキータイプ</typeparam>
+            <param name="layer"><see cref="T:Hisui.Graphics.IDecoration"/> を付けるレイヤ</param>
+            <param name="item"><see cref="T:Hisui.Graphics.IDecoration"/> インスタンス</param>
+        </member>
+        <member name="M:Hisui.SI.PutDecoration``1(Hisui.Core.Document,``0)">
+            <summary>
+            ドキュメントに <see cref="T:Hisui.Graphics.IDecoration"/> を付与します。
+            </summary>
+            <typeparam name="T"><see cref="T:Hisui.Graphics.IDecoration"/> のキータイプ</typeparam>
+            <param name="doc"><see cref="T:Hisui.Graphics.IDecoration"/> を付けるドキュメント</param>
+            <param name="item"><see cref="T:Hisui.Graphics.IDecoration"/> インスタンス</param>
+        </member>
+        <member name="M:Hisui.SI.FindDecoration``1(Hisui.Core.IEntry)">
+            <summary>
+            Find a <c>IDecoration</c> of an entry
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.FindDecoration``1(Hisui.Core.ILayer)">
+            <summary>
+            Find a <c>IDecoration</c> of a layer
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="layer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.FindDecoration``1(Hisui.Core.Document)">
+            <summary>
+            Find a <c>IDecoration</c> of a document
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.FindDecoration``1(Hisui.Core.IEntry,``0@)">
+            <summary>
+            Find a <c>IDecoration</c> of an entry
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entry"></param>
+            <param name="deco"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.FindDecoration``1(Hisui.Core.ILayer,``0@)">
+            <summary>
+            Find a <c>IDecoration</c> of a layer
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="layer"></param>
+            <param name="deco"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.FindDecoration``1(Hisui.Core.Document,``0@)">
+            <summary>
+            Find a <c>IDecoration</c> of a document
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="doc"></param>
+            <param name="deco"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.RemoveDecoration``1(Hisui.Core.IEntry)">
+            <summary>
+            Remove a <c>IDecoration</c> from an entry
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.RemoveDecoration``1(Hisui.Core.ILayer)">
+            <summary>
+            Remove a <c>IDecoration</c> from a layer
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="layer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.RemoveDecoration``1(Hisui.Core.Document)">
+            <summary>
+            Remove a <c>IDecoration</c> from a document
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.SetLineWidth(Hisui.Core.IEntry,System.Nullable{System.Single})">
+            <summary>
+            Set a <c>LineWidthDecoration</c> to an entry
+            </summary>
+            <param name="entry"></param>
+            <param name="width">if null the decoration will be removed</param>
+        </member>
+        <member name="M:Hisui.SI.SetLineWidth(Hisui.Core.ILayer,System.Nullable{System.Single})">
+            <summary>
+            Set a <c>LineWidthDecoration</c> to a layer
+            </summary>
+            <param name="layer"></param>
+            <param name="width">if null the decoration will be removed</param>
+        </member>
+        <member name="M:Hisui.SI.QueryLineWidth(Hisui.Core.IEntry)">
+            <summary>
+            Query entry's <c>LineWidthDecoration.Width</c>
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.QueryLineWidth(Hisui.Core.ILayer)">
+            <summary>
+            Query layer's <c>LineWidthDecoration.Width</c>
+            </summary>
+            <param name="layer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.SetPointSize(Hisui.Core.IEntry,System.Nullable{System.Single})">
+            <summary>
+            Set entry's <c>PointSizeDecoration</c>
+            </summary>
+            <param name="entry"></param>
+            <param name="size">if null the decoration will be removed</param>
+        </member>
+        <member name="M:Hisui.SI.QueryPointSize(Hisui.Core.IEntry)">
+            <summary>
+            Query entry's <c>PointSizeDecoration.Size</c>
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.SetPolygonStyle(Hisui.Core.IEntry,System.Nullable{Hisui.Graphics.PolygonStyles})">
+            <summary>
+            Set entry's <c>PolygonStyle</c>
+            </summary>
+            <param name="entry"></param>
+            <param name="flag">if null the decoration will be removed</param>
+        </member>
+        <member name="M:Hisui.SI.QueryPolygonStyle(Hisui.Core.IEntry)">
+            <summary>
+            Query entry's <c>PolygonStyle.Flag</c>
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.GetAppliedMaterial(Hisui.Core.IEntry)">
+            <summary>
+            実際に適用されているマテリアルを返します。
+            <paramref name="entry"/> にマテリアルが設定されていない場合は親エントリを辿って探索します。
+            </summary>
+            <param name="entry">エントリ</param>
+            <returns>適用されているマテリアル</returns>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.IEntry,System.Nullable{Hisui.Graphics.Material},System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定または削除します。
+            </summary>
+            <remarks>
+            <paramref name="front"/> と <paramref name="back"/> の両方に null を指定された場合は、
+            <paramref name="entry"/> から <see cref="T:Hisui.Graphics.MaterialDecoration"/> を削除します。
+            </remarks>
+            <param name="entry">エントリ</param>
+            <param name="front">オモテ面のマテリアル</param>
+            <param name="back">ウラ面のマテリアル</param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.IEntry,System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定または削除します。
+            <c>SI.SetMaterial( entry, mat, null )</c> と同義です。
+            </summary>
+            <param name="entry">エントリ</param>
+            <param name="mat">両面のマテリアル</param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.IEntry,System.Drawing.Color)">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定します。
+            <c>SI.SetMaterial( entry, new Hisui.Graphics.Material( color ) )</c> と同義です。
+            </summary>
+            <param name="entry">エントリ</param>
+            <param name="color">色</param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.IEntry,System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定します。
+            <c>SI.SetMaterial( entry, new Hisui.Graphics.Material( color, specular ) )</c> と同義です。
+            </summary>
+            <param name="entry">エントリ</param>
+            <param name="color">色</param>
+            <param name="specular">鏡面色</param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.IEntry,System.Drawing.Color,System.Drawing.Color,System.Double)">
+            <summary>
+            エントリに <see cref="T:Hisui.Graphics.MaterialDecoration"/> を設定します。
+            <c>SI.SetMaterial( entry, new Hisui.Graphics.Material( color, specular, shininess ) )</c> と同義です。
+            </summary>
+            <param name="entry">エントリ</param>
+            <param name="color">色</param>
+            <param name="specular">鏡面色</param>
+            <param name="shininess">鏡面指数</param>
+        </member>
+        <member name="M:Hisui.SI.SetUseBackMaterial(Hisui.Core.IEntry,System.Boolean)">
+            <summary>
+            Set entry's <c>MaterialDecoration.UseBackMaterial</c> flag
+            </summary>
+            <param name="entry"></param>
+            <param name="use"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.IEntry,System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            Set a material to entry's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            If <c>back == null</c>, this method will turn <c>UseBackMaterial</c> flag into <c>false</c>. 
+            Otherwise, <c>true</c>.
+            </remarks>
+            <param name="entry"></param>
+            <param name="back"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.IEntry,System.Drawing.Color)">
+            <summary>
+            Set a material to entry's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetBackMaterial( entry, new Hisui.Graphics.Material( color ) )</c>.
+            </remarks>
+            <param name="entry"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.IEntry,System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            Set a material to entry's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetBackMaterial( entry, new Hisui.Graphics.Material( color, specular ) )</c>.
+            </remarks>
+            <param name="entry"></param>
+            <param name="color"></param>
+            <param name="specular"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.IEntry,System.Drawing.Color,System.Drawing.Color,System.Double)">
+            <summary>
+            Set a material to entry's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetBackMaterial( entry, new Hisui.Graphics.Material( color, specular, shininess ) )</c>.
+            </remarks>
+            <param name="entry"></param>
+            <param name="color"></param>
+            <param name="specular"></param>
+            <param name="shininess"></param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.ILayer,System.Nullable{Hisui.Graphics.Material},System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            Set layer's <c>MaterialDecoration</c>
+            </summary>
+            <remarks>
+            If both <c>front</c> and <c>back</c> are null, this method will remove the <c>MaterialDecoration</c> from the entry.
+            </remarks>
+            <param name="layer"></param>
+            <param name="front">front material</param>
+            <param name="back">back material</param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.ILayer,System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            Set layer's <c>MaterialDecoration</c>
+            </summary>
+            <remarks>This method is equivalent to <c>SI.SetMaterial( layer, mat, null )</c>.</remarks>
+            <param name="layer"></param>
+            <param name="mat"></param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.ILayer,System.Drawing.Color)">
+            <summary>
+            Set layer's <c>MaterialDecoration</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetMaterial( layer, new Hisui.Graphics.Material( color ) )</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.ILayer,System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            Set layer's <c>MaterialDecoration</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetMaterial( layer, new Hisui.Graphics.Material( color, specular ) )</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="color"></param>
+            <param name="specular"></param>
+        </member>
+        <member name="M:Hisui.SI.SetMaterial(Hisui.Core.ILayer,System.Drawing.Color,System.Drawing.Color,System.Double)">
+            <summary>
+            Set layer's <c>MaterialDecoration</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetMaterial( layer, new Hisui.Graphics.Material( color, specular, shininess ) )</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="color"></param>
+            <param name="specular"></param>
+            <param name="shininess"></param>
+        </member>
+        <member name="M:Hisui.SI.SetUseBackMaterial(Hisui.Core.ILayer,System.Boolean)">
+            <summary>
+            Set layer's <c>MaterialDecoration.UseBackMaterial</c> flag
+            </summary>
+            <param name="layer"></param>
+            <param name="use"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.ILayer,System.Nullable{Hisui.Graphics.Material})">
+            <summary>
+            Set a material to layer's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            If <c>back == null</c>, this method will turn <c>UseBackMaterial</c> flag into <c>false</c>. 
+            Otherwise, <c>true</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="back"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.ILayer,System.Drawing.Color)">
+            <summary>
+            Set a material to layer's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetBackMaterial( layer, new Hisui.Graphics.Material( color ) )</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="color"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.ILayer,System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            Set a material to layer's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetBackMaterial( layer, new Hisui.Graphics.Material( color, specular ) )</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="color"></param>
+            <param name="specular"></param>
+        </member>
+        <member name="M:Hisui.SI.SetBackMaterial(Hisui.Core.ILayer,System.Drawing.Color,System.Drawing.Color,System.Double)">
+            <summary>
+            Set a material to layer's <c>MaterialDecoration.BackMaterial</c>
+            </summary>
+            <remarks>
+            This method is equivalent to <c>SI.SetBackMaterial( layer, new Hisui.Graphics.Material( color, specular, shininess ) )</c>.
+            </remarks>
+            <param name="layer"></param>
+            <param name="color"></param>
+            <param name="specular"></param>
+            <param name="shininess"></param>
+        </member>
+        <member name="M:Hisui.SI.GetBoundary(Hisui.Core.IEntry)">
+            <summary>
+            Get a entry's boundary
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.GetBoundary(Hisui.Core.Document)">
+            <summary>
+            Get a document's boundary
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.IsVisible(Hisui.Core.IEntry)">
+            <summary>
+            Get an entry's visibility flag
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.SI.SetVisible(Hisui.Core.IEntry,System.Boolean)">
+            <summary>
+            Set an entry's visibility flag
+            </summary>
+            <param name="entry"></param>
+            <param name="visible"></param>
+        </member>
+        <member name="M:Hisui.SI.CreateScene(System.Object,System.Type)">
+            <summary>
+            引数に指定されたエンティティ型 <paramref name="type"/> に関連付けて登録された
+            <see cref="T:Hisui.Graphics.IScene"/> 実装クラスを探し出し、コンストラクタ引数に <paramref name="src"/>
+            を指定してインスタンスを生成します。
+            <c>src.GetType()</c> は <paramref name="type"/> かその派生クラスである必要があります。
+            <see cref="M:Hisui.Graphics.SceneFactory.NewInstance(System.Object,System.Type)"/> と同義です。
+            </summary>
+            <param name="src">生成されるシーンが描画するエンティティ。シーンクラスのコンストラクタ引数に指定されます。</param>
+            <param name="type">シーンクラスが関連付けられているエンティティ型</param>
+            <returns>生成されたシーンオブジェクト。失敗した場合は null を返します。</returns>
+        </member>
+        <member name="M:Hisui.SI.CreateScene(System.Object)">
+            <summary>
+            エンティティ <paramref name="src"/> を描画するシーンオブジェクトを生成します。
+            <see cref="M:Hisui.Graphics.SceneFactory.NewInstance(System.Object)"/> と同義です。
+            </summary>
+            <param name="src">生成されるシーンが描画するエンティティ。シーンクラスのコンストラクタ引数に指定されます。</param>
+            <returns>生成されたシーンオブジェクト。失敗した場合は null を返します。</returns>
+        </member>
+        <member name="M:Hisui.SI.GetDocumentScene(Hisui.Core.Document)">
+            <summary>
+            登録されているドキュメント描画シーン <see cref="T:Hisui.Graphics.IDocumentScene"/> を取得します。
+            <paramref name="document"/> に対応するシーンが登録されていない場合にはインスタンスを new して返します。
+            <see cref="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document)"/> と同義です。
+            </summary>
+            <param name="doc">シーンが描画するドキュメント</param>
+            <returns>ドキュメントを描画する <see cref="T:Hisui.Graphics.IDocumentScene"/></returns>
+        </member>
+        <member name="M:Hisui.SI.GetScreenDocumentScene(Hisui.Core.Document)">
+            <summary>
+            <c>Graphics.SceneFactory.GetInstance( doc, Graphics.SceneLocation.Screen )</c> と同義です。
+            </summary>
+            <param name="doc">シーンが描画するドキュメント</param>
+            <returns>スクリーン座標系のシーン</returns>
+            <seealso cref="M:Hisui.Graphics.SceneFactory.GetInstance(Hisui.Core.Document,Hisui.Graphics.SceneLocation)"/>
+        </member>
+        <member name="M:Hisui.SI.UpdateToolStrips">
+            <summary>
+            <see cref="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips"/> の要素の状態をコマンドの状態に合わせて更新します。
+            <see cref="M:Hisui.Ctrl.ToolStripRegistry.Update"/> と同義です。
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.UpdateToolStrip(System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> のTextプロパティやToolTipTextプロパティを設定します。
+            また Enabled プロパティや Checked プロパティを現在の状態に合わせて更新します。
+            <see cref="M:Hisui.Ctrl.ToolStripBuilder.Build(System.Windows.Forms.ToolStrip)"/> と同義です。
+            </summary>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.SI.BindCommandsToToolStrip(System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStrip"/> の各要素の Click イベントに <see cref="P:Hisui.Ctrl.ToolStripBuilder.ClickHandler"/> をアタッチします。
+            これにより、<see cref="T:System.Windows.Forms.ToolStripItem"/> をクリックすると <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/>
+            プロパティに設定されたコマンドが起動されるようになります。
+            <see cref="M:Hisui.Ctrl.ToolStripBuilder.AttachClickEventHandler(System.Windows.Forms.ToolStrip)"/> と同義です。
+            </summary>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.SI.RegisterToolStrip(System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="M:Hisui.SI.BindCommandsToToolStrip(System.Windows.Forms.ToolStrip)"/> して <see cref="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips"/> に登録します。
+            </summary>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.SI.RegisterToolStrip(System.Object,System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="M:Hisui.CtrlUT.BindToCommandByTag(System.Object,System.Windows.Forms.ToolStrip)"/> して <see cref="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips"/> に登録します。
+            </summary>
+            <param name="target">コマンド起動のターゲット</param>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.SI.SetupMainForm(System.Windows.Forms.Form,System.String)">
+            <summary>
+            フォームに様々な初期設定をします。
+            </summary>
+            <param name="mainform">メインフォーム</param>
+            <param name="title">タイトル文字列</param>
+            <seealso cref="M:Hisui.SI.SetupFormTitle(System.Windows.Forms.Form,System.String)"/>
+            <seealso cref="M:Hisui.SI.SetupFileDragDrop(System.Windows.Forms.Form)"/>
+            <seealso cref="M:Hisui.SI.SetupEscapeKeyCancelation"/>
+            <seealso cref="M:Hisui.SI.SetupEscapeKeyDeselection"/>
+        </member>
+        <member name="M:Hisui.SI.SetupFormTitle(System.Windows.Forms.Form,System.String)">
+            <summary>
+            フォームにタイトル文字列を設定します。
+            タイトル文字列は、引数で指定した <paramref name="title"/>、ファイル名、ドキュメントが変更されていることを表すアスタリスク
+            などを組み合わせた文字列となります。
+            <see cref="E:Hisui.Core.History.AgeChanged"/> や <see cref="E:Hisui.Core.Document.FileAgeChanged"/> のタイミングで更新されます。
+            </summary>
+            <param name="mainform">フォーム</param>
+            <param name="title">タイトル文字列（アプリ名）</param>
+        </member>
+        <member name="M:Hisui.SI.SetupFileDragDrop(System.Windows.Forms.Form)">
+            <summary>
+            フォームに対するファイルのドラッグ＆ドロップで、ファイルを開くようにイベントハンドラを設定します。
+            </summary>
+            <param name="mainform">フォーム</param>
+        </member>
+        <member name="M:Hisui.SI.SetupEscapeKeyCancelation">
+            <summary>
+            ESCキーで実行中のオペレーションをアボートされるようにイベントハンドラを設定します。
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.SetupEscapeKeyDeselection">
+            <summary>
+            ESCキーでエントリの選択を解除されるようにイベントハンドラを設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.CommonAppData">
+            <summary>
+            <see cref="F:Hisui.SI.CommonAppDataPath"/> に保存される設定データを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.UserAppData">
+            <summary>
+            <see cref="F:Hisui.SI.UserAppDataPath"/> に保存される設定データを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.LocalUserAppData">
+            <summary>
+            <see cref="F:Hisui.SI.LocalUserAppDataPath"/> に保存される設定データを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.CommonAppDataWithoutVersion">
+            <summary>
+            <see cref="F:Hisui.SI.CommonAppDataPathWithoutVersion"/> に保存される設定データを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.UserAppDataWithoutVersion">
+            <summary>
+            <see cref="F:Hisui.SI.UserAppDataPathWithoutVersion"/> に保存される設定データを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.LocalUserAppDataWithoutVersion">
+            <summary>
+            <see cref="F:Hisui.SI.LocalUserAppDataPathWithoutVersion"/> に保存される設定データを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.BreathCount">
+            <summary>
+            システム全体の論理時刻を返します。<see cref="P:Hisui.Core.Breath.SystemBreathCount"/> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Core.Breath.SystemBreathCount"/>
+        </member>
+        <member name="P:Hisui.SI.Tasks">
+            <summary>
+            ビルドグラフのルートノードとなる <see cref="T:Hisui.Core.IBuild"/> のコレクションです。
+            <see cref="P:Hisui.Core.Builder.Tasks"/> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Core.Builder.Tasks"/>
+        </member>
+        <member name="P:Hisui.SI.PrototypeBuildWeightMilliseconds">
+            <summary>
+            Time cost in millisecond per one build-weighted process
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.Document">
+            <summary>
+            現在のドキュメントを返します。<see cref="P:Hisui.Ctrl.Current.Document"/> や <see cref="P:Hisui.Core.Document.Current"/> と同義です。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.History">
+            <summary>
+            現在のヒストリを返します。<c>SI.Document.History</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Core.Document.History"/>
+        </member>
+        <member name="P:Hisui.SI.SelectedEntries">
+            <summary>
+            現在選択されているエントリ（複数）を取得します。
+            <c>SI.Document.SelectedEntries</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.Entries"/>
+            <seealso cref="P:Hisui.Core.Document.SelectedEntries"/>
+        </member>
+        <member name="P:Hisui.SI.SelectedEntry">
+            <summary>
+            選択されているエントリを set/get します。<c>SI.Document.SelectedEntry</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Core.Document.SelectedEntry"/>
+        </member>
+        <member name="P:Hisui.SI.SelectedEntity">
+            <summary>
+            現在選択されているエンティティを取得します。<c>Ctrl.Current.Entity</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.Entity"/>
+        </member>
+        <member name="P:Hisui.SI.Self">
+            <summary>
+            現在アクティブなオブジェクトを取得します。<see cref="P:Hisui.Ctrl.Current.Self"/> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.Self"/>
+        </member>
+        <member name="P:Hisui.SI.DocumentViews">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.DocumentViews"/> を取得します。<see cref="P:Hisui.Ctrl.Current.DocumentViews"/> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.DocumentViews"/>
+        </member>
+        <member name="P:Hisui.SI.View">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.IView"/> を取得します。<c>Ctrl.Current.View</c> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.View"/>
+        </member>
+        <member name="P:Hisui.SI.Context">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Ctrl.IContext"/> を取得します。<see cref="P:Hisui.Ctrl.Current.Context"/> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.Context"/>
+        </member>
+        <member name="P:Hisui.SI.Driver">
+            <summary>
+            アクティブな <see cref="T:Hisui.Ctrl.OperationDriver"/> を取得します。<see cref="P:Hisui.Ctrl.Current.Driver"/> と同義です。
+            </summary>
+            <seealso cref="P:Hisui.Ctrl.Current.Driver"/>
+        </member>
+        <member name="P:Hisui.SI.ActiveEntries">
+            <summary>
+            現在のアクティブエントリー群を返します。<c>SI.Document.ActiveEntries</c> と同義です。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.CanUndo">
+            <summary>
+            Get if there are any history data to undo.
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.CanRedo">
+            <summary>
+            Get if there are any history data to redo.
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.CanCancel">
+            <summary>
+            Get if there are any history data for a current command to cancel.
+            </summary>
+        </member>
+        <member name="E:Hisui.SI.ProgressChanged">
+            <summary>
+            処理の進捗状態が変化した場合に発生するイベントです。
+            <see cref="E:Hisui.Core.Progress.Changed"/> と同義です。
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.DocumentScene">
+            <summary>
+            <c>SI.GetDocumentScene( SI.Document )</c> と同義です。
+            </summary>
+            <seealso cref="M:Hisui.SI.GetDocumentScene(Hisui.Core.Document)"/>
+            <seealso cref="P:Hisui.SI.Document"/>
+        </member>
+        <member name="P:Hisui.SI.ScreenDocumentScene">
+            <summary>
+            <c>SI.GetScreenDocumentScene( SI.Document )</c> と同義です。
+            </summary>
+            <seealso cref="M:Hisui.SI.GetScreenDocumentScene(Hisui.Core.Document)"/>
+            <seealso cref="P:Hisui.SI.Document"/>
+        </member>
+        <member name="T:Hisui.SI.ApplicationDataCollection">
+            <summary>
+            collection of application data
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.ApplicationDataCollection.Item(System.String)">
+            <summary>
+            get (or create if not exists) an ApplicationData for the specified path
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hisui.SI.ApplicationData">
+            <summary>
+            application data
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Get(System.Type)">
+            <summary>
+            get an object the type of which is the key
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Get``1">
+            <summary>
+            get an object the type of which is the key
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Reload(System.Type)">
+            <summary>
+            reload a HOX file of the data object
+            </summary>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Add(System.Type,System.Object)">
+            <summary>
+            define an entry of application data
+            </summary>
+            <param name="key">data type</param>
+            <param name="defvalue">default data object</param>
+            <returns>false if the entry already exists</returns>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Add``1(``0)">
+            <summary>
+            define an entry of application data
+            </summary>
+            <typeparam name="T">data type</typeparam>
+            <param name="defvalue">default data object</param>
+            <returns>false if the entry already exists</returns>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Set(System.Type,System.Object)">
+            <summary>
+            set a data object
+            </summary>
+            <param name="key">type of the data object</param>
+            <param name="value">the data object</param>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Set``1(``0)">
+            <summary>
+            set a data object
+            </summary>
+            <typeparam name="T">type of the data object</typeparam>
+            <param name="value">the data object</param>
+        </member>
+        <member name="M:Hisui.SI.ApplicationData.Load(System.Type,System.String)">
+            <summary>
+            try to set a data object from a HOX file
+            </summary>
+            <param name="key">key type of the data object</param>
+            <param name="path">the HOX file's path</param>
+            <returns>return true if the load is successful</returns>
+        </member>
+        <member name="P:Hisui.SI.ApplicationData.IsReadOnly">
+            <summary>
+            get/set whether this application data is read-only or not
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.ApplicationData.Parent">
+            <summary>
+            get/set a parent 
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.ApplicationData.FolderPath">
+            <summary>
+             get a folder's path of this application data
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.ApplicationData.Keys">
+            <summary>
+            get data types
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.ApplicationData.Values">
+            <summary>
+            get data objects
+            </summary>
+        </member>
+        <member name="P:Hisui.SI.ApplicationData.Count">
+            <summary>
+            get data count
+            </summary>
+        </member>
+    </members>
+</doc>

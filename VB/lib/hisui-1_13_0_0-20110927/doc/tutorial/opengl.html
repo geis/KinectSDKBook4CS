@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / OpenGL 命令で直線を描画してみよう</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>OpenGL 命令で直線を描画してみよう</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+</center>
+
+<p>OpenGL の描画命令を使用して、ヒスイ上に直線を描画する方法を解説します。開発チュートリアル「Hello World を作ってみよう」を理解していることを前提とします。
+
+<h2>直線を描画しよう</h2>
+<h3>まずは直線作図メニューを作成</h3>
+<p>「Hello World を作ってみよう」と同様の手順で、下記のように DrawLine コマンドを作成します。
+<pre>
+  [Hisui.Ctrl.Command("直線描画")]
+  static void DrawLine()
+  {
+  }
+</pre>
+
+<h3>引数でコンテキスト情報を受け取る</h3>
+下記のように、Hisui.Ctrl.IContext を引数で受け取るようにします。
+<pre>
+  [Hisui.Ctrl.Command("直線描画")]
+  static void DrawLine( Hisui.Ctrl.IContext con )
+  {
+  }
+</pre>
+コンテキスト情報からは View オブジェクトを取得することが出来ます。その View に直線シーンを追加したいのです。
+
+<h3>直線の描画</h3>
+<p>ではいよいよ直線を描画してみましょう。ここでは原点から (1, 1, 1) までの直線を描画することにします。
+<p>描画には OpenGL を用います。ヒスイでは OpenGL を C# で利用するためのライブラリとして Hisui.OpenGL.dll モジュールを用意しています。ファイルの先頭で using Hisui.OpenGL ; と記述しておくと便利でしょう。
+<p>次のように、con.View.SceneGraph.WorldScenes に直線を描画する匿名メソッド（delegate）を追加します。なお、匿名メソッドの引数 ISceneContext はここでは使いませんので、今は気にしないでください。
+<pre>
+using Hisui.OpenGL ;
+...
+  [Hisui.Ctrl.Command("直線描画")]
+  static void DrawLine( Hisui.Ctrl.IContext con )
+  {
+      con.View.SceneGraph.WorldScenes.Add( sc =&gt;
+          {
+              GL.glBegin(GL.GL_LINES);
+              GL.glVertex3d(0, 0, 0);
+              GL.glVertex3d(1, 1, 1);
+              GL.glEnd();
+          }
+      );
+  }
+</pre>
+<img src="fig05_01.png" alt="[図05-01:直線]"></img>
+<p>直線が表示されたら、ビューを回転したり拡大したりして遊んでみましょう(^^;
+
+
+<h2>シーンクラスを作ろう</h2>
+
+<h3>LineSceneクラスの作成</h3>
+<p>匿名メソッドでも描画できるのですが、今後の拡張のためにキチンとSceneクラスを作ることにしましょう。Sceneクラスは Hisui.Graphics.IScene インターフェイスを実装することで作ることが出来ます。IScene インターフェイスは次のように定義されています。
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface IScene
+  {
+    void Draw( ISceneContext context ) ;
+  }
+}
+</pre>
+<p>シンプルですね。Draw()メソッドがひとつあるだけです。これを実装するとこうなります。
+<pre>
+class LineScene : Hisui.Graphics.IScene
+{
+    public void Draw(Hisui.Graphics.ISceneContext sc)
+    {
+        GL.glBegin(GL.GL_LINES);
+        GL.glVertex3d(0, 0, 0);
+        GL.glVertex3d(1, 1, 1);
+        GL.glEnd();
+    }
+}
+</pre>
+DrawLine() コマンドを次のように書き換えます。
+<pre>
+    con.View.SceneGraph.WorldScenes.Add(new LineScene());
+</pre>
+
+<h3>始点、終点を設定できるように</h3>
+<p>直線の始点、終点がハードコーディングされているのはカッコ悪いので、次のように修正しておきましょう。
+<pre>
+class LineScene : Hisui.Graphics.IScene
+{
+    Hisui.Geom.Point3d _p1;
+    Hisui.Geom.Point3d _p2;
+
+    public LineScene(Hisui.Geom.Point3d p1, Hisui.Geom.Point3d p2)
+    {
+        _p1 = p1;
+        _p2 = p2;
+    }
+
+    public void Draw(Hisui.Graphics.ISceneContext sc)
+    {
+        GL.glBegin(GL.GL_LINES);
+        GL.glVertex3d(_p1.x, _p1.y, _p1.z);
+        GL.glVertex3d(_p2.x, _p2.y, _p2.z);
+        GL.glEnd();
+    }
+}
+</pre>
+DrawLine() コマンドは次のようになります。
+<pre>
+    var p1 = new Hisui.Geom.Point3d(0, 0, 0);
+    var p2 = new Hisui.Geom.Point3d(1, 1, 1);
+    con.View.SceneGraph.WorldScenes.Add(new LineScene(p1, p2));
+</pre>
+
+
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2010, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>

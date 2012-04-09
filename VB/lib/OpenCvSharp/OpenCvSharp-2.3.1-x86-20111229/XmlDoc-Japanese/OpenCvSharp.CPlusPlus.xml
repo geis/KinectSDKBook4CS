@@ -1,0 +1,3479 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenCvSharp.CPlusPlus</name>
+    </assembly>
+    <members>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorRect">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.IStdVector">
+            <summary>
+            Represents std::vector 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.IStdVector.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.IStdVector.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorRect._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorRect.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorRect.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorRect.#ctor(OpenCvSharp.CvRect[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorRect.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorRect.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorRect.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorRect.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorByte">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorByte._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorByte.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorByte.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorByte.#ctor(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorByte.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorByte.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorByte.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorByte.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.LinearIndexParams">
+            <summary>
+            線形のブルートフォース探索が行われます
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.IndexParams">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.IndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::IndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.GetString(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="defaultVal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.GetString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.GetInt(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="defaultVal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.GetInt(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.GetDouble(System.String,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="defaultVal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.GetDouble(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.SetString(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.SetInt(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.SetDouble(System.String,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.SetFloat(System.String,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.SetBool(System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.IndexParams.SetAlgorithm(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.LinearIndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::LinearIndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.LinearIndexParams.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.LinearIndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorPoint">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorPoint._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorPoint.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorPoint.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorPoint.#ctor(OpenCvSharp.CvPoint[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorPoint.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorPoint.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorPoint.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorPoint.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.ExtensionAttribute">
+            <summary>
+            拡張メソッドをコンパイルするのに必要となるExtensionAttributeの宣言
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.CvCpp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ToPtr(OpenCvSharp.ICvPtrHolder)">
+            <summary>
+            引数がnullの時はIntPtr.Zeroに変換する
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.MorphologyDefaultBorderValue">
+            <summary>
+            Default borderValue for Dilate/Erode
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Canny(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Double,System.Double,OpenCvSharp.ApertureSize,System.Boolean)">
+            <summary>
+            Cannyアルゴリズムを用いて，画像のエッジを検出します．
+            </summary>
+            <param name="image">8ビット，シングルチャンネルの入力画像</param>
+            <param name="edges">出力されるエッジのマップ． image  と同じサイズ，同じ型</param>
+            <param name="threshold1">ヒステリシスが存在する処理の，1番目の閾値</param>
+            <param name="threshold2">ヒステリシスが存在する処理の，2番目の閾値</param>
+            <param name="apertureSize">Sobelオペレータのアパーチャサイズ [既定値はApertureSize.Size3]</param>
+            <param name="L2gradient">画像勾配の強度を求めるために，より精度の高い L2ノルムを利用するか，L1ノルムで十分（false）かを指定します. [既定値はfalse]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.CvtColor(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.ColorConversion,System.Int32)">
+            <summary>
+            画像の色空間を変換します．
+            </summary>
+            <param name="src">8ビット符号なし整数型，16ビット符号なし整数型，または単精度浮動小数型の入力画像</param>
+            <param name="dst">src と同じサイズ，同じタイプの出力画像</param>
+            <param name="code">色空間の変換コード．</param>
+            <param name="dstCn">出力画像のチャンネル数．この値が 0 の場合，チャンネル数は src と code から自動的に求められます</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Dilate(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Nullable{OpenCvSharp.CvPoint},System.Int32,OpenCvSharp.BorderType,System.Nullable{OpenCvSharp.CvScalar})">
+            <summary>
+            指定の構造要素を用いて画像の膨張を行います．
+            </summary>
+            <param name="src">入力画像</param>
+            <param name="dst">src と同じサイズ，同じ型の出力画像</param>
+            <param name="element">膨張に用いられる構造要素． element=new Mat()  の場合， 3x3 の矩形構造要素が用いられます</param>
+            <param name="anchor">構造要素内のアンカー位置．デフォルト値の (-1, -1) は，アンカーが構造要素の中心にあることを意味します</param>
+            <param name="iterations">膨張が行われる回数. [既定値は1]</param>
+            <param name="borderType">ピクセル外挿手法．[既定値はBorderType.Constant]</param>
+            <param name="borderValue">定数境界モードで利用されるピクセル値．デフォルト値は特別な意味を持ちます．[既定値はCvCpp.MorphologyDefaultBorderValue()]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Erode(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Nullable{OpenCvSharp.CvPoint},System.Int32,OpenCvSharp.BorderType,System.Nullable{OpenCvSharp.CvScalar})">
+            <summary>
+            指定の構造要素を用いて画像の収縮を行います．
+            </summary>
+            <param name="src">入力画像</param>
+            <param name="dst">src と同じサイズ，同じ型の出力画像</param>
+            <param name="element">収縮に用いられる構造要素． element=new Mat() の場合， 3x3 の矩形の構造要素が用いられます</param>
+            <param name="anchor">構造要素内のアンカー位置．デフォルト値の (-1, -1) は，アンカーが構造要素の中心にあることを意味します</param>
+            <param name="iterations">収縮が行われる回数. [既定値は1]</param>
+            <param name="borderType">ピクセル外挿手法．[既定値はBorderType.Constant]</param>
+            <param name="borderValue">定数境界モードで利用されるピクセル値．デフォルト値は特別な意味を持ちます．[既定値はCvCpp.MorphologyDefaultBorderValue()]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.HoughCircles(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.HoughCirclesMethod,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Int32)">
+            <summary>
+            ハフ変換を用いて，グレースケール画像から円を検出します．
+            </summary>
+            <param name="image">8ビット，シングルチャンネル，グレースケールの入力画像></param>
+            <param name="method">現在のところ，HoughCirclesMethod.Gradient メソッドのみが実装されている．</param>
+            <param name="dp">画像分解能に対する投票分解能の比率の逆数．</param>
+            <param name="minDist">検出される円の中心同士の最小距離．</param>
+            <param name="param1">手法依存の1番目のパラメータ．[既定値は100]</param>
+            <param name="param2">手法依存の2番目のパラメータ．[既定値は100]</param>
+            <param name="minRadius">円の半径の最小値 [既定値は0]</param>
+            <param name="maxRadius">円の半径の最大値 [既定値は0]</param>
+            <returns>検出された円．各ベクトルは，3要素の浮動小数点型ベクトル (x, y, radius) としてエンコードされます</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.HoughLines(OpenCvSharp.CPlusPlus.Mat,System.Double,System.Double,System.Int32,System.Double,System.Double)">
+            <summary>
+            標準ハフ変換を用いて，2値画像から直線を検出します．
+            </summary>
+            <param name="image">8ビット，シングルチャンネルの2値入力画像．この画像は関数により書き換えられる可能性があります</param>
+            <param name="rho">ピクセル単位で表される投票空間の距離分解能</param>
+            <param name="theta">ラジアン単位で表される投票空間の角度分解能</param>
+            <param name="threshold">投票の閾値パラメータ．十分な票（ &gt; threshold ）を得た直線のみが出力されます</param>
+            <param name="srn">マルチスケールハフ変換において，距離分解能 rho  の除数となる値．[既定値は0]</param>
+            <param name="stn">マルチスケールハフ変換において，角度分解能 theta  の除数となる値. [既定値は0]</param>
+            <returns>検出された直線．各直線は，2要素のベクトル (rho, theta) で表現されます．
+            rho は原点（画像の左上コーナー）からの距離， theta はラジアン単位で表される直線の回転角度です</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.HoughLinesP(OpenCvSharp.CPlusPlus.Mat,System.Double,System.Double,System.Int32,System.Double,System.Double)">
+            <summary>
+            確率的ハフ変換を利用して，2値画像から線分を検出します．
+            </summary>
+            <param name="image">8ビット，シングルチャンネルの2値入力画像．この画像は関数により書き換えられる可能性があります</param>
+            <param name="rho">ピクセル単位で表される投票空間の距離分解能</param>
+            <param name="theta">ラジアン単位で表される投票空間の角度分解能</param>
+            <param name="threshold">投票の閾値パラメータ．十分な票（ &gt; threshold ）を得た直線のみが出力されます</param>
+            <param name="minLineLength">最小の線分長．これより短い線分は棄却されます. [既定値は0]</param>
+            <param name="maxLineGap">2点が同一線分上にあると見なす場合に許容される最大距離. [既定値は0]</param>
+            <returns>検出された線分．各線分は，4要素のベクトル (x1, y1, x2, y2) で表現されます．</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.MorphologyEx(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.MorphologyOperation,OpenCvSharp.CPlusPlus.Mat,System.Nullable{OpenCvSharp.CvPoint},System.Int32,OpenCvSharp.BorderType,System.Nullable{OpenCvSharp.CvScalar})">
+            <summary>
+            高度なモルフォロジー変換を行います．
+            </summary>
+            <param name="src">入力画像</param>
+            <param name="dst">src と同じサイズ，同じ型の出力画像</param>
+            <param name="op">モルフォロジー演算の種類</param>
+            <param name="element">構造要素</param>
+            <param name="anchor">構造要素内のアンカー位置．デフォルト値の (-1, -1) は，アンカーが構造要素の中心にあることを意味します.</param>
+            <param name="iterations">収縮と膨張が適用される回数. [既定値は1]</param>
+            <param name="borderType">ピクセル外挿手法. [既定値はBorderType.Constant]</param>
+            <param name="borderValue">定数境界モードで利用されるピクセル値．デフォルト値は特別な意味を持ちます． [既定値は CvCpp.MorphologyDefaultBorderValue()]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Add(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            2つの配列同士，あるいは配列とスカラの 要素毎の和を求めます．
+            </summary>
+            <param name="src1">1番目の入力配列</param>
+            <param name="src2">src1 と同じサイズ，同じ型である2番目の入力配列</param>
+            <param name="dst">src1 と同じサイズ，同じ型の出力配列．</param>
+            <param name="mask">8ビット，シングルチャンネル配列のオプションの処理マスク．出力配列内の変更される要素を表します. [既定値はnull]</param>        
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Add(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvScalar,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            つの配列同士，あるいは配列とスカラの 要素毎の和を求めます．
+            </summary>
+            <param name="src1">1番目の入力配列</param>
+            <param name="sc">2番目の入力パラメータであるスカラ</param>
+            <param name="dst">src1 と同じサイズ，同じ型の出力配列．</param>
+            <param name="mask">8ビット，シングルチャンネル配列のオプションの処理マスク．出力配列内の変更される要素を表します. [既定値はnull]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Circle(OpenCvSharp.CPlusPlus.Mat,System.Int32,System.Int32,System.Int32,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            円を描画する
+            </summary>
+            <param name="img">画像</param>
+            <param name="center_x">円の中心のx座標</param>
+            <param name="center_y">円の中心のy座標</param>
+            <param name="radius">円の半径</param>
+            <param name="color">円の色</param>
+            <param name="thickness">線の幅．負の値を指定した場合は塗りつぶされる．[既定値は1]</param>
+            <param name="line_type">線の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">中心座標と半径の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Circle(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvPoint,System.Int32,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            円を描画する
+            </summary>
+            <param name="img">画像</param>
+            <param name="center">円の中心</param>
+            <param name="radius">円の半径</param>
+            <param name="color">円の色</param>
+            <param name="thickness">線の幅．負の値を指定した場合は塗りつぶされる．[既定値は1]</param>
+            <param name="line_type">線の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">中心座標と半径の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ConvertScaleAbs(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Double,System.Double)">
+            <summary>
+            スケーリング後，絶対値を計算し，結果を結果を 8 ビットに変換します．
+            </summary>
+            <param name="src">入力配列</param>
+            <param name="dst">出力配列</param>
+            <param name="alpha">オプションのスケールファクタ. [既定値は1]</param>
+            <param name="beta">スケーリングされた値に加えられるオプション値. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.CvarrToMat(OpenCvSharp.CvArr,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            CvMat・IplImage・CvMatND を cv::Matに変換する
+            </summary>
+            <param name="arr">入力配列の CvMat, IplImage, CvMatND</param>
+            <param name="copyData">
+            false(既定値)の場合、データはコピーされず、ヘッダのみが新たに作られる。
+            trueの場合、データはすべてコピーされ、変換後はユーザは元の行列を解放しても構わない。[既定値はfalse]
+            </param>
+            <param name="allowND">
+            true(既定値)の場合、入力のCvMatNDは可能ならばMatに変換される。
+            もし不可能な場合、またはこのフラグがfalseであれば、このメソッドはエラーを通知する。[既定値はtrue]
+            </param>
+            <param name="coiMode">
+            IplImageのCOIの取り扱いを指定するパラメータ。
+            falseの場合、COIが設定されていたらエラーを通知する。
+            trueの場合、エラーは通知せず、代わりに入力画像全体を表すヘッダを返し、ユーザにCOIの扱いを決めさせる。[既定値はfalse]
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Divide(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Double)">
+            <summary>
+            2つの配列同士，あるいは配列とスカラの 要素毎の商を求めます．
+            </summary>
+            <param name="src1">1番目の入力配列</param>
+            <param name="src2">src1 と同じサイズ，同じ型である2番目の入力配列</param>
+            <param name="dst">src2 と同じサイズ，同じ型である出力配列</param>
+            <param name="scale">スケールファクタ [既定値は1]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Divide(System.Double,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            2つの配列同士，あるいは配列とスカラの 要素毎の商を求めます．
+            </summary>
+            <param name="scale">スケールファクタ</param>
+            <param name="src">1番目の入力配列</param>
+            <param name="dst">src2 と同じサイズ，同じ型である出力配列</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Ellipse(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvPoint,OpenCvSharp.CvSize,System.Double,System.Double,System.Double,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            枠だけの楕円，楕円弧，もしくは塗りつぶされた扇形の楕円を描画する
+            </summary>
+            <param name="img">楕円が描画される画像</param>
+            <param name="center">楕円の中心</param>
+            <param name="axes">楕円の軸の長さ</param>
+            <param name="angle">回転角度</param>
+            <param name="start_angle">楕円弧の開始角度</param>
+            <param name="end_angle">楕円弧の終了角度</param>
+            <param name="color">楕円の色</param>
+            <param name="thickness">楕円弧の線の幅 [既定値は1]</param>
+            <param name="line_type">楕円弧の線の種類 [既定値はLineType.Link8]</param>
+            <param name="shift">中心座標と軸の長さの小数点以下の桁を表すビット数 [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Ellipse(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvBox2D,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            枠だけの楕円，もしくは塗りつぶされた楕円を描画する
+            </summary>
+            <param name="img">楕円が描かれる画像．</param>
+            <param name="box">描画したい楕円を囲む矩形領域．</param>
+            <param name="color">楕円の色．</param>
+            <param name="thickness">楕円境界線の幅．[既定値は1]</param>
+            <param name="line_type">楕円境界線の種類．[既定値はLineType.Link8]</param>
+            <param name="shift">矩形領域の頂点座標の小数点以下の桁を表すビット数．[既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ExtractImageCOI(OpenCvSharp.CvArr,OpenCvSharp.CPlusPlus.Mat,System.Int32)">
+            <summary>
+            選択されたチャンネルの画像を取り出す
+            </summary>
+            <param name="arr">入力配列. CvMat または IplImage の参照.</param>
+            <param name="coiimg">出力行列. 1チャンネルで, 入力配列srcと同じサイズ・ビット深度を持つ.</param>
+            <param name="coi">0以上の場合, 指定されたチャンネルについて取り出される。
+            0未満の場合, 入力配列srcがIplImageでCOIが指定されていれば, そのCOIについて取り出される. [既定値は-1]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.InsertImageCOI(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvArr,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="coiimg"></param>
+            <param name="arr"></param>
+            <param name="coi">[既定値は-1]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Line(OpenCvSharp.CPlusPlus.Mat,System.Int32,System.Int32,System.Int32,System.Int32,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            2点を結ぶ線分を画像上に描画する．
+            </summary>
+            <param name="img">画像</param>
+            <param name="pt1_x">線分の1番目の端点x</param>
+            <param name="pt1_y">線分の1番目の端点y</param>
+            <param name="pt2_x">線分の2番目の端点x</param>
+            <param name="pt2_y">線分の2番目の端点y</param>
+            <param name="color">線分の色</param>
+            <param name="thickness">線分の太さ. [既定値は1]</param>
+            <param name="line_type">線分の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">座標の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Line(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvPoint,OpenCvSharp.CvPoint,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            2点を結ぶ線分を画像上に描画する．
+            </summary>
+            <param name="img">画像</param>
+            <param name="pt1">線分の1番目の端点</param>
+            <param name="pt2">線分の2番目の端点</param>
+            <param name="color">線分の色</param>
+            <param name="thickness">線分の太さ. [既定値は1]</param>
+            <param name="line_type">線分の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">座標の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Multiply(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Double)">
+            <summary>
+            2つの配列同士の，要素毎のスケーリングされた積を求めます．
+            </summary>
+            <param name="src1">1番目の入力配列</param>
+            <param name="src2">src1 と同じサイズ，同じ型である2番目の入力配列</param>
+            <param name="dst">src1 と同じサイズ，同じ型の出力配列</param>
+            <param name="scale">オプションであるスケールファクタ. [既定値は1]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Rectangle(OpenCvSharp.CPlusPlus.Mat,System.Int32,System.Int32,System.Int32,System.Int32,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            枠のみ，もしくは塗りつぶされた矩形を描画する
+            </summary>
+            <param name="img">画像</param>
+            <param name="pt1_x">矩形の一つの頂点のx座標</param>
+            <param name="pt1_y">矩形の一つの頂点のy座標</param>
+            <param name="pt2_x">矩形の反対側の頂点のx座標</param>
+            <param name="pt2_y">矩形の反対側の頂点のy座標</param>
+            <param name="color">線の色(RGB)，もしくは輝度(グレースケール画像).</param>
+            <param name="thickness">矩形を描く線の太さ．負の値を指定した場合は塗りつぶされる．[既定値は1]</param>
+            <param name="line_type">線の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">座標の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Rectangle(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvPoint,OpenCvSharp.CvPoint,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            枠のみ，もしくは塗りつぶされた矩形を描画する
+            </summary>
+            <param name="img">画像</param>
+            <param name="pt1">矩形の一つの頂点</param>
+            <param name="pt2">矩形の反対側の頂点</param>
+            <param name="color">線の色(RGB)，もしくは輝度(グレースケール画像).</param>
+            <param name="thickness">矩形を描く線の太さ．負の値を指定した場合は塗りつぶされる. [既定値は1]</param>
+            <param name="line_type">線の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">座標の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Rectangle(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvRect,OpenCvSharp.CvScalar,System.Int32,OpenCvSharp.LineType,System.Int32)">
+            <summary>
+            枠のみ，もしくは塗りつぶされた矩形を描画する
+            </summary>
+            <param name="img">画像</param>
+            <param name="rect">矩形</param>
+            <param name="color">線の色(RGB)，もしくは輝度(グレースケール画像).</param>
+            <param name="thickness">矩形を描く線の太さ．負の値を指定した場合は塗りつぶされる. [既定値は1]</param>
+            <param name="line_type">線の種類. [既定値はLineType.Link8]</param>
+            <param name="shift">座標の小数点以下の桁を表すビット数. [既定値は0]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Subtract(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            2つの配列同士，あるいは配列とスカラの 要素毎の差を求めます．
+            </summary>
+            <param name="src1">1番目の入力配列</param>
+            <param name="src2">src1 と同じサイズ，同じ型である2番目の入力配列</param>
+            <param name="dst">src1 と同じサイズ，同じ型の出力配列．</param>
+            <param name="mask">オプション．8ビット，シングルチャンネル配列の処理マスク．出力配列内の変更される要素を表します. [既定値はnull]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Subtract(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvScalar,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            2つの配列同士，あるいは配列とスカラの 要素毎の差を求めます．
+            </summary>
+            <param name="src1">1番目の入力配列</param>
+            <param name="sc">スカラ．1番目または2番目の入力パラメータ</param>
+            <param name="dst">src1 と同じサイズ，同じ型の出力配列．</param>
+            <param name="mask">オプション．8ビット，シングルチャンネル配列の処理マスク．出力配列内の変更される要素を表します. [既定値はnull]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.Subtract(OpenCvSharp.CvScalar,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            2つの配列同士，あるいは配列とスカラの 要素毎の差を求めます．
+            </summary>
+            <param name="sc">スカラ．1番目または2番目の入力パラメータ</param>
+            <param name="src2">src1 と同じサイズ，同じ型である2番目の入力配列</param>
+            <param name="dst">src1 と同じサイズ，同じ型の出力配列．</param>
+            <param name="mask">オプション．8ビット，シングルチャンネル配列の処理マスク．出力配列内の変更される要素を表します. [既定値はnull]</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.NamedWindow(System.String,OpenCvSharp.WindowMode)">
+            <summary>
+            Creates a window.
+            </summary>
+            <param name="winname">Name of the window in the window caption that may be used as a window identifier.</param>
+            <param name="flags">
+            Flags of the window. Currently the only supported flag is CV WINDOW AUTOSIZE. If this is set, 
+            the window size is automatically adjusted to fit the displayed image (see imshow ), and the user can not change the window size manually.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImShow(System.String,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            Displays the image in the specified window
+            </summary>
+            <param name="winname">Name of the window.</param>
+            <param name="mat">Image to be shown.</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImRead(System.String,OpenCvSharp.LoadMode)">
+            <summary>
+            Loads an image from a file.
+            </summary>
+            <param name="filename">Name of file to be loaded.</param>
+            <param name="flags">Specifies color type of the loaded image</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImWrite(System.String,OpenCvSharp.CPlusPlus.Mat,System.Int32[])">
+            <summary>
+            Saves an image to a specified file.
+            </summary>
+            <param name="filename"></param>
+            <param name="img"></param>
+            <param name="prms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImWrite(System.String,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.ImageEncodingParam[])">
+            <summary>
+            Saves an image to a specified file.
+            </summary>
+            <param name="filename"></param>
+            <param name="img"></param>
+            <param name="prms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImDecode(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.LoadMode)">
+            <summary>
+            Reads image from the specified buffer in memory.
+            </summary>
+            <param name="buf">The input array of vector of bytes.</param>
+            <param name="flags">The same flags as in imread</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImEncode(System.String,OpenCvSharp.CPlusPlus.Mat,System.Byte[]@,System.Int32[])">
+            <summary>
+            Compresses the image and stores it in the memory buffer
+            </summary>
+            <param name="ext">The file extension that defines the output format</param>
+            <param name="img">The image to be written</param>
+            <param name="buf"></param>
+            <param name="prms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.ImEncode(System.String,OpenCvSharp.CPlusPlus.Mat,System.Byte[]@,OpenCvSharp.ImageEncodingParam[])">
+            <summary>
+            Compresses the image and stores it in the memory buffer
+            </summary>
+            <param name="ext">The file extension that defines the output format</param>
+            <param name="img">The image to be written</param>
+            <param name="buf"></param>
+            <param name="prms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.WaitKey(System.Int32)">
+            <summary>
+            Waits for a pressed key.
+            </summary>
+            <param name="delay">Delay in milliseconds. 0 is the special value that means ”forever”</param>
+            <returns>Returns the code of the pressed key or -1 if no key was pressed before the specified time had elapsed.</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCpp.FAST(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.KeyPoint[]@,System.Int32,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="image"></param>
+            <param name="keypoints"></param>
+            <param name="threshold"></param>
+            <param name="nonmax_supression"></param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.Index">
+            <summary>
+            FLANN 最近傍インデックスクラス
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.Index.SizeOf">
+            <summary>
+            sizeof(cv::flann::Index)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.#ctor(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Flann.IndexParams)">
+            <summary>
+            与えられたデータセットの最近傍探索インデックスを作成します．
+            </summary>
+            <param name="features">インデックス作成対象となる特徴（点）が格納された， CV_32F 型の行列．この行列のサイズは matrix is num _ features x feature _ dimensionality となります</param>
+            <param name="params">params – インデックスパラメータを含む構造体．作成されるインデックスの種類は，このパラメータの種類に依存します</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.KnnSearch(System.Single[],System.Int32[]@,System.Single[]@,System.Int32,OpenCvSharp.CPlusPlus.Flann.SearchParams)">
+            <summary>
+            複数のクエリ点に対するk-近傍探索を行います．
+            </summary>
+            <param name="queries">クエリ点</param>
+            <param name="indices">求められた最近傍のインデックス</param>
+            <param name="dists">求められた最近傍までの距離</param>
+            <param name="knn">この個数分の最近傍を求めます</param>
+            <param name="params">探索パラメータ</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.KnnSearch(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Int32,OpenCvSharp.CPlusPlus.Flann.SearchParams)">
+            <summary>
+            複数のクエリ点に対するk-近傍探索を行います．
+            </summary>
+            <param name="queries">クエリ点．1行が1つの点を表します</param>
+            <param name="indices">求められた最近傍のインデックス</param>
+            <param name="dists">求められた最近傍までの距離</param>
+            <param name="knn">この個数分の最近傍を求めます</param>
+            <param name="params">探索パラメータ</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.KnnSearch(OpenCvSharp.CPlusPlus.Mat,System.Int32[]@,System.Single[]@,System.Int32,OpenCvSharp.CPlusPlus.Flann.SearchParams)">
+            <summary>
+            複数のクエリ点に対するk-近傍探索を行います．
+            </summary>
+            <param name="queries">クエリ点．1行が1つの点を表します</param>
+            <param name="indices">求められた最近傍のインデックス</param>
+            <param name="dists">求められた最近傍までの距離</param>
+            <param name="knn">この個数分の最近傍を求めます</param>
+            <param name="params">探索パラメータ</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.RadiusSearch(System.Single[],System.Int32[],System.Single[],System.Single,System.Int32,OpenCvSharp.CPlusPlus.Flann.SearchParams)">
+            <summary>
+            与えられたクエリ点に対するradius 最近傍探索を行います．
+            </summary>
+            <param name="queries">クエリ点．1行が1つの点を表します [入力]</param>
+            <param name="indices">求められた最近傍のインデックス [出力]</param>
+            <param name="dists">求められた最近傍までの距離 [出力]</param>
+            <param name="radius">探索範囲</param>
+            <param name="maxResults"></param>
+            <param name="params">探索パラメータ</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.RadiusSearch(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,System.Single,System.Int32,OpenCvSharp.CPlusPlus.Flann.SearchParams)">
+            <summary>
+            与えられたクエリ点に対するradius 最近傍探索を行います．
+            </summary>
+            <param name="queries">クエリ点．1行が1つの点を表します [入力]</param>
+            <param name="indices">求められた最近傍のインデックス [出力]</param>
+            <param name="dists">求められた最近傍までの距離 [出力]</param>
+            <param name="radius">探索範囲</param>
+            <param name="maxResults"></param>
+            <param name="params">探索パラメータ</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.RadiusSearch(OpenCvSharp.CPlusPlus.Mat,System.Int32[],System.Single[],System.Single,System.Int32,OpenCvSharp.CPlusPlus.Flann.SearchParams)">
+            <summary>
+            与えられたクエリ点に対するradius 最近傍探索を行います．
+            </summary>
+            <param name="queries">クエリ点．1行が1つの点を表します [入力]</param>
+            <param name="indices">求められた最近傍のインデックス [出力]</param>
+            <param name="dists">求められた最近傍までの距離 [出力]</param>
+            <param name="radius">探索範囲</param>
+            <param name="maxResults"></param>
+            <param name="params">探索パラメータ</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.Index.Save(System.String)">
+            <summary>
+            インデックスをファイルに保存します．
+            </summary>
+            <param name="filename">インデックスを保存するファイル名</param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StarDetector">
+            <summary>
+            Star Detector
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.#ctor">
+            <summary>
+            初期化
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.#ctor(System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="maxSize"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.#ctor(System.Int32,System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="maxSize"></param>
+            <param name="responseThreshold"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="maxSize"></param>
+            <param name="responseThreshold"></param>
+            <param name="lineThresholdProjected"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="maxSize"></param>
+            <param name="responseThreshold"></param>
+            <param name="lineThresholdProjected"></param>
+            <param name="lineThresholdBinarized"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="maxSize"></param>
+            <param name="responseThreshold"></param>
+            <param name="lineThresholdProjected"></param>
+            <param name="lineThresholdBinarized"></param>
+            <param name="suppressNonmaxSize"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.GetKeyPoints(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            StarDetectorアルゴリズムによりキーポイントを取得する
+            </summary>
+            <param name="image">8ビット グレースケールの入力画像</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StarDetector.Clone">
+            <summary>
+            現在のインスタンスのコピーである新しいオブジェクトを作成します。    
+            </summary>
+            <returns>このインスタンスのコピーである新しいオブジェクト。</returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorFloat">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorFloat._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorFloat.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorFloat.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorFloat.#ctor(System.Single[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorFloat.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorFloat.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorFloat.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorFloat.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.FlannCentersInit">
+            <summary>
+            k-means クラスタリングの初期中心を選択するアルゴリズム．
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.FlannCentersInit.Random">
+            <summary>
+            ランダムに初期クラスタ中心を選択
+            [flann_centers_init_t::CENTERS_RANDOM]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.FlannCentersInit.Gonzales">
+            <summary>
+            Gonzalesのアルゴリズムを用いて初期クラスタ中心を選択
+            [flann_centers_init_t::CENTERS_GONZALES]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.FlannCentersInit.KMeansPP">
+            <summary>
+            arthur_kmeanspp_2007 で提案されたアルゴリズムを用いて初期クラスタ中心を選択
+            [flann_centers_init_t::CENTERS_KMEANSPP]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.MorphingMethod">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MorphingMethod.None">
+            <summary>
+            
+            [CvAdaptiveSkinDetector::MORPHING_METHOD_NONE]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MorphingMethod.Erode">
+            <summary>
+            
+            [CvAdaptiveSkinDetector::MORPHING_METHOD_ERODE]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MorphingMethod.ErodeErode">
+            <summary>
+            
+            [CvAdaptiveSkinDetector::MORPHING_METHOD_ERODE_ERODE]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MorphingMethod.ErodeDilate">
+            <summary>
+            
+            [CvAdaptiveSkinDetector::MORPHING_METHOD_ERODE_DILATE]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.CppInvoke">
+            <summary>
+            P/Invoke methods of OpenCV C++ interface
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.CppInvoke.DllExtern">
+            <summary>
+            DLL file name
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CppInvoke.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CppInvoke.TryPInvoke">
+            <summary>
+            PInvokeが正常に行えるかチェックする
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.SearchParams">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.SearchParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::SearchParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SearchParams.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SearchParams.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="checks"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SearchParams.#ctor(System.Int32,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="checks"></param>
+            <param name="eps"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SearchParams.#ctor(System.Int32,System.Single,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="checks"></param>
+            <param name="eps"></param>
+            <param name="sorted"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SearchParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.SURF">
+            <summary>
+            画像から SURF を抽出するためのクラス．
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.SURF.#ctor(System.Double,System.Boolean)">
+            <summary>
+            SURFのデフォルトパラメータを生成する
+            </summary>
+            <param name="hessianThreshold">keypoint.hessian の値がこの閾値よりも大きい特徴だけが検出される</param>
+            <param name="extended">false：基本的なディスクリプタ（64要素）, true：拡張されたディスクリプタ（128要素）</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.SURF.Extract(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            高速なマルチスケール Hesian 検出器を用いて keypoint を検出します．
+            </summary>
+            <param name="img"></param>
+            <param name="mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.SURF.Extract(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.KeyPoint[],System.Single[]@)">
+            <summary>
+            keypoint を検出し，その SURF ディスクリプタを計算します．[useProvidedKeypoints = true]
+            </summary>
+            <param name="img"></param>
+            <param name="mask"></param>
+            <param name="keypoints"></param>
+            <param name="descriptors"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.SURF.Extract(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.KeyPoint[]@,System.Single[]@)">
+            <summary>
+            keypoint を検出し，その SURF ディスクリプタを計算します．[useProvidedKeypoints = false]
+            </summary>
+            <param name="img"></param>
+            <param name="mask"></param>
+            <param name="keypoints"></param>
+            <param name="descriptors"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.SURF.GetPointOctave(OpenCvSharp.CvSURFPoint,OpenCvSharp.CvSURFParams)">
+            <summary>
+            
+            </summary>
+            <param name="kpt"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.SURF.Clone">
+            <summary>
+            現在のインスタンスのコピーである新しいオブジェクトを作成します。    
+            </summary>
+            <returns>このインスタンスのコピーである新しいオブジェクト。</returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.SavedIndexParams">
+            <summary>
+            ディスクにあらかじめ保存されたデータを読み出すために利用されます．
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.SavedIndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::SavedIndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SavedIndexParams.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename">インデックスが保存されたファイル名</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SavedIndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Vec4iElem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec4iElem.V1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec4iElem.V2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec4iElem.V3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec4iElem.V4">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorVec4i">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorVec4i._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec4i.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec4i.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec4i.#ctor(OpenCvSharp.CPlusPlus.Vec4iElem[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec4i.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec4i.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec4i.ToArray``1">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <typeparam name="T">structure that has four int members (ex. CvLineSegmentPoint, CvRect)</typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorVec4i.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorVec4i.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.KMeansIndexParams">
+            <summary>
+            階層型 k-means tree でインデックスが表現されます．
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.KMeansIndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::KMeansIndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.KMeansIndexParams.#ctor(System.Int32,System.Int32,OpenCvSharp.CPlusPlus.FlannCentersInit,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="branching">階層型 k-means tree で利用される branching ファクタ</param>
+            <param name="iterations">k-means tree を作成する際の，k-means クラスタリングステージでの反復数の上限．ここで -1 は，k-means クラスタリングが収束するまで続けられることを意味します</param>
+            <param name="centers_init">k-means クラスタリングの初期中心を選択するアルゴリズム．</param>
+            <param name="cb_index">このパラメータ（クラスタ境界インデックス）は，階層的 k-means tree の探索方法に影響を与えます． cb_index が0の場合，最も近い中心のクラスタが，次に探索される k-means 領域になります．0より大きい値の場合も，領域サイズが考慮されます</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.KMeansIndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Vec2fElem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec2fElem.V1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec2fElem.V2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorVec2f">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorVec2f._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec2f.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec2f.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec2f.#ctor(OpenCvSharp.CPlusPlus.Vec2fElem[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec2f.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec2f.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec2f.ToArray``1">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <typeparam name="T">structure that has two float members (ex. CvLineSegmentPolar, CvPoint2D32f, PointF)</typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorVec2f.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorVec2f.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.MatND">
+            <summary>
+            n次元の密な配列
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatND.MAGIC_VAL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatND.AUTO_STEP">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatND.CONTINUOUS_FLAG">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatND.SizeOf">
+            <summary>
+            sizeof(MatND)
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatND._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.#cctor">
+            <summary>
+            static constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.#ctor">
+            <summary>
+            デフォルトコンストラクタ
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Release">
+            <summary>
+            リソースの解放
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.op_Explicit(OpenCvSharp.CPlusPlus.MatND)~OpenCvSharp.CPlusPlus.Mat">
+            <summary>
+            converts header to cv::Mat; no data is copied
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.op_Explicit(OpenCvSharp.CPlusPlus.MatND)~OpenCvSharp.CvMatND">
+            <summary>
+            converts header to CvMatND; no data is copied
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Clone">
+            <summary>
+            creates a complete copy of the matrix (all the data is copied)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.CopyTo(OpenCvSharp.CPlusPlus.MatND)">
+            <summary>
+            copies those matrix elements to "m" 
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.CopyTo(OpenCvSharp.CPlusPlus.MatND,OpenCvSharp.CPlusPlus.MatND)">
+            <summary>
+            copies those matrix elements to "m" that are marked with non-zero mask elements.
+            </summary>
+            <param name="m"></param>
+            <param name="mask"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.ConvertTo(OpenCvSharp.CPlusPlus.MatND,OpenCvSharp.MatrixType,System.Double,System.Double)">
+            <summary>
+            converts data to the specified data type.
+            calls m.create(this->size(), rtype) prior to the conversion
+            </summary>
+            <param name="dst"></param>
+            <param name="rtype"></param>
+            <param name="alpha"></param>
+            <param name="beta"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.SetTo(OpenCvSharp.CvScalar,OpenCvSharp.CPlusPlus.MatND)">
+            <summary>
+            assigns "s" to the selected elements of array
+            (or to all the elements if mask==MatND())
+            </summary>
+            <param name="s"></param>
+            <param name="mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Reshape(System.Int32,System.Int32,System.Int32[])">
+            <summary>
+            modifies geometry of array without copying the data
+            </summary>
+            <param name="newcn"></param>
+            <param name="newndims"></param>
+            <param name="newsz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.ToMat">
+            <summary>
+            converts header to cv::Mat; no data is copied
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.ToCvMatND">
+            <summary>
+            converts header to CvMatND; no data is copied
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.IsContinuous">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Ptr(System.Int32)">
+            <summary>
+            return pointer to the element 
+            </summary>
+            <param name="i0"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Ptr(System.Int32,System.Int32)">
+            <summary>
+            return pointer to the element 
+            </summary>
+            <param name="i0"></param>
+            <param name="i1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Ptr(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            return pointer to the element 
+            </summary>
+            <param name="i0"></param>
+            <param name="i1"></param>
+            <param name="i2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MatND.Ptr(System.Int32[])">
+            <summary>
+            return pointer to the element 
+            </summary>
+            <param name="idx"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Flags">
+            <summary>
+            includes several bit-fields: 
+             1.the magic signature 
+             2.continuity flag 
+             3.depth 
+             4.number of channels
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Dims">
+            <summary>
+            the array dimensionality
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Data">
+            <summary>
+            pointer to the data
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.RefCount">
+            <summary>
+            pointer to the reference counter;
+            when matrix points to user-allocated data, the pointer is NULL
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.DataStart">
+            <summary>
+            helper fields used in locateROI and adjustROI
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.DataEnd">
+            <summary>
+            helper fields used in locateROI and adjustROI
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Size">
+            <summary>
+            size for each dimension, MAX_DIM at max
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Step">
+            <summary>
+            step for each dimension, MAX_DIM at max
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.ElemSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.ElemSize1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Depth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Channels">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.MatND.Item(OpenCvSharp.CvSlice[])">
+            <summary>
+            sub-array selection; only the header is copied
+            </summary>
+            <param name="ranges"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Vec3fElem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec3fElem.V1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec3fElem.V2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Vec3fElem.V3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorVec3f">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorVec3f._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec3f.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec3f.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec3f.#ctor(OpenCvSharp.CPlusPlus.Vec3fElem[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec3f.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec3f.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorVec3f.ToArray``1">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <typeparam name="T">structure that has two float members (ex. CvLineSegmentPolar, CvPoint2D32f, PointF)</typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorVec3f.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorVec3f.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.SearchParams_old">
+            <summary>
+            探索パラメータ
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.SearchParams_old.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="checks">checks インデックスの tree が再帰的に横断されるべき回数．</param>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Flann.SearchParams_old.Checks">
+            <summary>
+            checks インデックスの tree が再帰的に横断されるべき回数．
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.FlannInvoke">
+            <summary>
+            P/Invoke methods of OpenCV FLANN interface
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.FlannInvoke.DllExtern">
+            <summary>
+            DLL file name
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.FlannInvoke.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.FlannInvoke.TryPInvoke">
+            <summary>
+            PInvokeが正常に行えるかチェックする
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Mat">
+            <summary>
+            OpenCVのC++版行列クラス
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Mat.MAGIC_VAL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Mat.AUTO_STEP">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Mat.CONTINUOUS_FLAG">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Mat.SizeOf">
+            <summary>
+            sizeof(Mat)
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Mat._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#cctor">
+            <summary>
+            static constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor">
+            <summary>
+            デフォルトコンストラクタ
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(System.String,OpenCvSharp.LoadMode)">
+            <summary>
+            Loads image from the specified file name using cv::imread
+            </summary>
+            <param name="filename"></param>
+            <param name="flags"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(System.Int32,System.Int32,OpenCvSharp.MatrixType)">
+            <summary>
+            
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CvSize,OpenCvSharp.MatrixType)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(System.Int32,System.Int32,OpenCvSharp.MatrixType,OpenCvSharp.CvScalar)">
+            <summary>
+            
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+            <param name="s"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CvSize,OpenCvSharp.MatrixType,OpenCvSharp.CvScalar)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+            <param name="s"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(System.Int32,System.Int32,OpenCvSharp.MatrixType,System.IntPtr,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+            <param name="data"></param>
+            <param name="step"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CvSize,OpenCvSharp.MatrixType,System.IntPtr,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+            <param name="data"></param>
+            <param name="step"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvSlice,OpenCvSharp.CvSlice)">
+            <summary>
+            
+            </summary>
+            <param name="m"></param>
+            <param name="rowRange"></param>
+            <param name="colRange"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvRect)">
+            <summary>
+            
+            </summary>
+            <param name="m"></param>
+            <param name="roi"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.CvMat,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="m"></param>
+            <param name="copyData"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.IplImage)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(OpenCvSharp.IplImage,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="copyData"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.#ctor(System.Array,OpenCvSharp.BitDepth,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="vec"></param>
+            <param name="depth"></param>
+            <param name="copyData"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Release">
+            <summary>
+            リソースの解放
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_UnaryNegation(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Addition(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="src1"></param>
+            <param name="src2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Addition(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvScalar)">
+            <summary>
+            
+            </summary>
+            <param name="src1"></param>
+            <param name="src2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Subtraction(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="src1"></param>
+            <param name="src2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Subtraction(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvScalar)">
+            <summary>
+            
+            </summary>
+            <param name="src1"></param>
+            <param name="src2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Multiply(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="src1"></param>
+            <param name="src2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Division(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="src1"></param>
+            <param name="src2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Explicit(OpenCvSharp.CPlusPlus.Mat)~OpenCvSharp.CvMat">
+            <summary>
+            converts header to CvMat; no data is copied
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.op_Explicit(OpenCvSharp.CPlusPlus.Mat)~OpenCvSharp.IplImage">
+            <summary>
+            converts header to IplImage; no data is copied
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Diag(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            constructs a square diagonal matrix which main diagonal is vector "d"
+            </summary>
+            <param name="d"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Zeros(System.Int32,System.Int32,OpenCvSharp.MatrixType)">
+            <summary>
+            Matlab-style matrix initialization
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Zeros(OpenCvSharp.CvSize,OpenCvSharp.MatrixType)">
+            <summary>
+            Matlab-style matrix initialization
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Ones(System.Int32,System.Int32,OpenCvSharp.MatrixType)">
+            <summary>
+            Matlab-style matrix initialization
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Ones(OpenCvSharp.CvSize,OpenCvSharp.MatrixType)">
+            <summary>
+            Matlab-style matrix initialization
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Eye(System.Int32,System.Int32,OpenCvSharp.MatrixType)">
+            <summary>
+            Matlab-style matrix initialization
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Eye(OpenCvSharp.CvSize,OpenCvSharp.MatrixType)">
+            <summary>
+            Matlab-style matrix initialization
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Row(System.Int32)">
+            <summary>
+            returns a new matrix header for the specified row
+            </summary>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Col(System.Int32)">
+            <summary>
+            returns a new matrix header for the specified column
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.RowRange(System.Int32,System.Int32)">
+            <summary>
+            returns a new matrix header for the specified row span
+            </summary>
+            <param name="startrow"></param>
+            <param name="endrow"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.RowRange(OpenCvSharp.CvSlice)">
+            <summary>
+            returns a new matrix header for the specified row span
+            </summary>
+            <param name="r"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ColRange(System.Int32,System.Int32)">
+            <summary>
+            returns a new matrix header for the specified column span
+            </summary>
+            <param name="startcol"></param>
+            <param name="endcol"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ColRange(OpenCvSharp.CvSlice)">
+            <summary>
+            returns a new matrix header for the specified column span
+            </summary>
+            <param name="r"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Diag">
+            <summary>
+            returns a new matrix header for the specified diagonal
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Diag(OpenCvSharp.CPlusPlus.MatDiagType)">
+            <summary>
+            returns a new matrix header for the specified diagonal
+            </summary>
+            <param name="d"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Clone">
+            <summary>
+            returns deep copy of the matrix, i.e. the data is copied
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.CopyTo(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            copies those matrix elements to "m"
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.CopyTo(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            copies those matrix elements to "m" that are marked with non-zero mask elements.
+            </summary>
+            <param name="m"></param>
+            <param name="mask"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ConvertTo(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.MatrixType,System.Double,System.Double)">
+            <summary>
+            converts matrix to another datatype with optional scalng. See cvConvertScale.
+            </summary>
+            <param name="dst"></param>
+            <param name="rtype"></param>
+            <param name="alpha"></param>
+            <param name="beta"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.AssignTo(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.AssignTo(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.MatrixType)">
+            <summary>
+            
+            </summary>
+            <param name="m"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.SetTo(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            sets some of the matrix elements to s, according to the mask
+            </summary>
+            <param name="value"></param>
+            <param name="mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Reshape(System.Int32,System.Int32)">
+            <summary>
+            creates alternative matrix header for the same data, with different
+            number of channels and/or different number of rows. see cvReshape.
+            </summary>
+            <param name="cn"></param>
+            <param name="rows"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Cross(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            computes cross-product of 2 3D vectors
+            </summary>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Dot(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            computes dot-product
+            </summary>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Create(System.Int32,System.Int32,OpenCvSharp.MatrixType)">
+            <summary>
+            allocates new matrix data unless the matrix already has specified size and type.
+            previous data is unreferenced if needed.
+            </summary>
+            <param name="rows"></param>
+            <param name="cols"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Create(OpenCvSharp.CvSize,OpenCvSharp.MatrixType)">
+            <summary>
+            allocates new matrix data unless the matrix already has specified size and type.
+            previous data is unreferenced if needed.
+            </summary>
+            <param name="size"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.LocateROI(OpenCvSharp.CvSize@,OpenCvSharp.CvPoint@)">
+            <summary>
+            locates matrix header within a parent matrix.
+            </summary>
+            <param name="wholeSize"></param>
+            <param name="ofs"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.AdjustROI(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            moves/resizes the current matrix ROI inside the parent matrix.
+            </summary>
+            <param name="dtop"></param>
+            <param name="dbottom"></param>
+            <param name="dleft"></param>
+            <param name="dright"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.T">
+            <summary>
+            matrix transposition by means of matrix expressions
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Inv(OpenCvSharp.InvertMethod)">
+            <summary>
+            matrix inversion by means of matrix expressions
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ToCvMat">
+            <summary>
+            converts header to CvMat; no data is copied
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ToIplImage">
+            <summary>
+            converts header to IplImage; no data is copied
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.IsContinuous">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.At``1(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="y"></param>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.At``1(OpenCvSharp.CvPoint)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Get``1(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="y"></param>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Set``1(System.Int32,System.Int32,``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="y"></param>
+            <param name="x"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.Ptr(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ToBitmap">
+            <summary>
+            System.Drawing.Bitmapに変換する
+            </summary>
+            <returns>System.Drawing.Bitmap</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ToBitmap(System.Drawing.Imaging.PixelFormat)">
+            <summary>
+            System.Drawing.Bitmapに変換する
+            </summary>
+            <param name="pf">ピクセル深度</param>
+            <returns>System.Drawing.Bitmap</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Mat.ToBitmap(System.Drawing.Bitmap)">
+            <summary>
+            指定した出力先にSystem.Drawing.Bitmapとして変換する
+            </summary>
+            <param name="dst">出力先のSystem.Drawing.Bitmap</param>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Flags">
+            <summary>
+            includes several bit-fields: 
+             1.the magic signature 
+             2.continuity flag 
+             3.depth 
+             4.number of channels
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Rows">
+            <summary>
+            the number of rows
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Cols">
+            <summary>
+            the number of columns
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Step">
+            <summary>
+            a distance between successive rows in bytes; includes the gap if any
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Data">
+            <summary>
+            pointer to the data
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.RefCount">
+            <summary>
+            pointer to the reference counter;
+            when matrix points to user-allocated data, the pointer is NULL
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.DataStart">
+            <summary>
+            helper fields used in locateROI and adjustROI
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.DataEnd">
+            <summary>
+            helper fields used in locateROI and adjustROI
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.ElemSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.ElemSize1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Depth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Channels">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Bpp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Size">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Item(OpenCvSharp.CvRect)">
+            <summary>
+            
+            </summary>
+            <param name="roi"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Item(OpenCvSharp.CvSlice,OpenCvSharp.CvSlice)">
+            <summary>
+            
+            </summary>
+            <param name="rowRange"></param>
+            <param name="colRange"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.Mat.Item(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="y"></param>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.HOGDescriptor">
+            <summary>
+            HOG (Histogram-of-Oriented-Gradients) Descriptor and Object Detector
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HOGDescriptor.L2Hys">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HOGDescriptor.DEFAULT_NLEVELS">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HOGDescriptor.SizeOf">
+            <summary>
+            sizeof(HOGDescriptor) 
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HOGDescriptor.DefaultPeopleDetector">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HOGDescriptor._svmDetector">
+            <summary>
+            setSVMDetector parameter vector
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HOGDescriptor._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32,System.Int32)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+            <param name="derivAperture"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32,System.Int32,System.Double)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+            <param name="derivAperture"></param>
+            <param name="winSigma">ガウシアン平滑化窓パラメータ．</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32,System.Int32,System.Double,OpenCvSharp.CPlusPlus.HistogramNormType)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+            <param name="derivAperture"></param>
+            <param name="winSigma">ガウシアン平滑化窓パラメータ．</param>
+            <param name="histogramNormType"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32,System.Int32,System.Double,OpenCvSharp.CPlusPlus.HistogramNormType,System.Double)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+            <param name="derivAperture"></param>
+            <param name="winSigma">ガウシアン平滑化窓パラメータ．</param>
+            <param name="histogramNormType"></param>
+            <param name="L2HysThreshold">L2-Hys 正規化縮小処理の閾値．</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32,System.Int32,System.Double,OpenCvSharp.CPlusPlus.HistogramNormType,System.Double,System.Boolean)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+            <param name="derivAperture"></param>
+            <param name="winSigma">ガウシアン平滑化窓パラメータ．</param>
+            <param name="histogramNormType"></param>
+            <param name="L2HysThreshold">L2-Hys 正規化縮小処理の閾値．</param>
+            <param name="gammaCorrection">前処理としてガンマ補正を行うか否か，を指定します．</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Int32,System.Int32,System.Double,OpenCvSharp.CPlusPlus.HistogramNormType,System.Double,System.Boolean,System.Int32)">
+            <summary>
+            HOG ディスクリプタおよび検出器を作成します
+            </summary>
+            <param name="winSize">検出窓サイズ．ブロックのサイズと移動量に合わせる必要があります．</param>
+            <param name="blockSize">ピクセル単位で表されるブロックサイズ．セルサイズに合わせる必要があります．</param>
+            <param name="blockStride">ブロックの移動量．セルサイズの倍数でなければいけません．</param>
+            <param name="cellSize">セルサイズ．</param>
+            <param name="nbins">ビンの個数．</param>
+            <param name="derivAperture"></param>
+            <param name="winSigma">ガウシアン平滑化窓パラメータ．</param>
+            <param name="histogramNormType"></param>
+            <param name="L2HysThreshold">L2-Hys 正規化縮小処理の閾値．</param>
+            <param name="gammaCorrection">前処理としてガンマ補正を行うか否か，を指定します．</param>
+            <param name="nlevels">検出窓拡大回数の最大値</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.#ctor(System.IntPtr)">
+            <summary>
+            ポインタから初期化
+            </summary>
+            <param name="ptr">class HOGDescriptor*</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.GetDefaultPeopleDetector">
+            <summary>
+            （デフォルトの窓サイズで）人検出用に学習された分類器の係数を返します．
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.SetSVMDetector(System.Single[])">
+            <summary>
+            線形SVM分類器に，係数をセットします．
+            </summary>
+            <param name="svmdetector"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Load(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Load(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename"></param>
+            <param name="objname"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Save(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Save(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename"></param>
+            <param name="objname"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.GetDescriptorSize">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.CheckDetectorSize">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.GetWinSigma">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Compute(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Compute(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="winStride"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Compute(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvSize,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Compute(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvPoint[])">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <param name="locations"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Detect(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Detect(OpenCvSharp.CPlusPlus.Mat,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Detect(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Detect(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.Detect(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize,OpenCvSharp.CvSize,OpenCvSharp.CvPoint[])">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <param name="searchLocations"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.DetectMultiScale(OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.DetectMultiScale(OpenCvSharp.CPlusPlus.Mat,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.DetectMultiScale(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.DetectMultiScale(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.DetectMultiScale(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <param name="scale"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.DetectMultiScale(OpenCvSharp.CPlusPlus.Mat,System.Double,OpenCvSharp.CvSize,OpenCvSharp.CvSize,System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="hitThreshold"></param>
+            <param name="winStride"></param>
+            <param name="padding"></param>
+            <param name="scale"></param>
+            <param name="groupThreshold"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.ComputeGradient(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="grad"></param>
+            <param name="angleOfs"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.ComputeGradient(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="grad"></param>
+            <param name="angleOfs"></param>
+            <param name="paddingTL"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.HOGDescriptor.ComputeGradient(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CvSize,OpenCvSharp.CvSize)">
+            <summary>
+            
+            </summary>
+            <param name="img"></param>
+            <param name="grad"></param>
+            <param name="angleOfs"></param>
+            <param name="paddingTL"></param>
+            <param name="paddingBR"></param>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.WinSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.BlockSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.BlockStride">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.CellSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.Nbins">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.DerivAperture">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.WinSigma">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.HistogramNormType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.L2HysThreshold">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.GammaCorrection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.HOGDescriptor.NLevels">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.CvCamShiftTracker">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SizeOf">
+            <summary>
+            sizeof(CvCamShiftTracker) 
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.CvCamShiftTracker._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetOrientation">
+            <summary>
+            orientation of the object in degrees
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetLength">
+            <summary>
+            the larger linear size of the object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetWidth">
+            <summary>
+            the smaller linear size of the object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetCenter">
+            <summary>
+            center of the object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetWindow">
+            <summary>
+            bounding rectangle for the object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetThreshold">
+            <summary>
+            thresholding value that applied to back project
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetHistDims(System.Int32[])">
+            <summary>
+            returns number of histogram dimensions and sets
+            </summary>
+            <param name="dims"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetMinChVal(System.Int32)">
+            <summary>
+            get the minimum allowed value of the specified channel
+            </summary>
+            <param name="channel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetMaxChVal(System.Int32)">
+            <summary>
+            get the maximum allowed value of the specified channel
+            </summary>
+            <param name="channel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SetWindow(OpenCvSharp.CvRect)">
+            <summary>
+            set initial object rectangle (must be called before initial calculation of the histogram)
+            </summary>
+            <param name="window"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SetThreshold(System.Int32)">
+            <summary>
+            threshold applied to the histogram bins
+            </summary>
+            <param name="threshold"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SetHistBinRange(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="dim"></param>
+            <param name="min_val"></param>
+            <param name="max_val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SetHistDims(System.Int32,System.Int32[])">
+            <summary>
+            set the histogram parameters
+            </summary>
+            <param name="c_dims"></param>
+            <param name="dims"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SetMinChVal(System.Int32,System.Int32)">
+            <summary>
+            set the minimum allowed value of the specified channel
+            </summary>
+            <param name="channel"></param>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.SetMaxChVal(System.Int32,System.Int32)">
+            <summary>
+            set the maximum allowed value of the specified channel
+            </summary>
+            <param name="channel"></param>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.TrackObject(OpenCvSharp.IplImage)">
+            <summary>
+            update object position
+            </summary>
+            <param name="cur_frame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.UpdateHistogram(OpenCvSharp.IplImage)">
+            <summary>
+            update object histogram
+            </summary>
+            <param name="cur_frame"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.ResetHistogram">
+            <summary>
+            reset histogram
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.GetBackProject">
+            <summary>
+            get back project image
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvCamShiftTracker.Query(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="bin"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StdVectorKeyPoint">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StdVectorKeyPoint._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.#ctor(OpenCvSharp.CPlusPlus.KeyPoint[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StdVectorKeyPoint.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.MatDiagType">
+            <summary>
+            diagonal type
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatDiagType.Upper">
+            <summary>
+            a diagonal from the upper half
+            [&lt; 0]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatDiagType.Main">
+            <summary>
+            Main dialonal
+            [= 0]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.MatDiagType.Lower">
+            <summary>
+            a diagonal from the lower half
+            [&gt; 0]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="samplingDivider"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector.#ctor(System.Int32,OpenCvSharp.CPlusPlus.MorphingMethod)">
+            <summary>
+            
+            </summary>
+            <param name="samplingDivider"></param>
+            <param name="morphingMethod"></param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.CvAdaptiveSkinDetector.Process(OpenCvSharp.IplImage,OpenCvSharp.IplImage)">
+            <summary>
+            
+            </summary>
+            <param name="inputBGRImage"></param>
+            <param name="outputHueMask"></param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.AutotunedIndexParams">
+            <summary>
+            階層型 k-means tree でインデックスが表現されます．
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.AutotunedIndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::AutotunedIndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.AutotunedIndexParams.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="target_precision">どれだけ厳密な最近傍を返すかという，最近傍探索の近似の割合を指定する 0から1の間の値．このパラメータが大きくなると，より正確な結果が得られますが，探索時間が長くなります．最適な値は，アプリケーションに依存します</param>
+            <param name="build_weight">最近傍探索時間に対するインデックスの構築時間の重要度を指定します．
+            その後のインデックス探索時間が高速になるならば，インデックスの構築時間が長くても良いというアプリケーションが存在する一方で，インデックスの探索時間が多少長くなっても，できるだけ高速にインデックスを構築する必要があるアプリケーションもあります</param>
+            <param name="memory_weight">これは，（インデックスの構築時間と探索時間）とインデックスの占有メモリとの，トレードオフを指定するのに利用されます．
+            1より小さい値は消費時間を重要視し，1より大きい値はメモリ使用量を重要視します</param>
+            <param name="sample_fraction">パラメータの自動設定アルゴリズムにおけるデータ集合の比率を示す，0から1の間の値．
+            全データ集合を用いてアルゴリズムを実行すると，最も正確な結果が得られますが，巨大なデータ集合に対しては長い計算時間がかかります．
+            このような場合，データをある比率分だけ使うことでアルゴリズムを高速化し，なおかつ，最適なパラメータの良い近似となる結果を得ることができます</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.AutotunedIndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.MSER">
+            <summary>
+            MSER抽出機
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32,System.Single)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+            <param name="max_variation">prune the area have simliar size to its children</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32,System.Single,System.Single)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+            <param name="max_variation">prune the area have simliar size to its children</param>
+            <param name="min_diversity">trace back to cut off mser with diversity &lt; min_diversity</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Int32)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+            <param name="max_variation">prune the area have simliar size to its children</param>
+            <param name="min_diversity">trace back to cut off mser with diversity &lt; min_diversity</param>
+            <param name="max_evolution">for color image, the evolution steps</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Int32,System.Double)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+            <param name="max_variation">prune the area have simliar size to its children</param>
+            <param name="min_diversity">trace back to cut off mser with diversity &lt; min_diversity</param>
+            <param name="max_evolution">for color image, the evolution steps</param>
+            <param name="area_threshold">the area threshold to cause re-initialize</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Int32,System.Double,System.Double)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+            <param name="max_variation">prune the area have simliar size to its children</param>
+            <param name="min_diversity">trace back to cut off mser with diversity &lt; min_diversity</param>
+            <param name="max_evolution">for color image, the evolution steps</param>
+            <param name="area_threshold">the area threshold to cause re-initialize</param>
+            <param name="min_margin">ignore too small margin</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.#ctor(System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Int32,System.Double,System.Double,System.Int32)">
+            <summary>
+            MSERのパラメータを生成する
+            </summary>
+            <param name="delta">delta, in the code, it compares (size_{i}-size_{i-delta})/size_{i-delta}</param>
+            <param name="min_area">prune the area which smaller than min_area</param>
+            <param name="max_area">prune the area which bigger than max_area</param>
+            <param name="max_variation">prune the area have simliar size to its children</param>
+            <param name="min_diversity">trace back to cut off mser with diversity &lt; min_diversity</param>
+            <param name="max_evolution">for color image, the evolution steps</param>
+            <param name="area_threshold">the area threshold to cause re-initialize</param>
+            <param name="min_margin">ignore too small margin</param>
+            <param name="edge_blur_size">the aperture size for edge blur</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.Extract(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            MSERのすべての輪郭情報を抽出する
+            </summary>
+            <param name="image"></param>
+            <param name="mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.MSER.Clone">
+            <summary>
+            現在のインスタンスのコピーである新しいオブジェクトを作成します。    
+            </summary>
+            <returns>このインスタンスのコピーである新しいオブジェクト。</returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.HistogramNormType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.HistogramNormType.L2Hys">
+            <summary>
+            
+            [HOGDescriptor::L2Hys]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.CompositeIndexParams">
+            <summary>
+            ランダム kd-tree と 階層的 k-means tree の組み合わせでインデックスが表現されます．
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.CompositeIndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::CompositeIndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.CompositeIndexParams.#ctor(System.Int32,System.Int32,System.Int32,OpenCvSharp.CPlusPlus.FlannCentersInit,System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="trees">並列な kd-tree の個数．[1..16] の範囲が適切な値です</param>
+            <param name="branching">階層型 k-means tree で利用される branching ファクタ</param>
+            <param name="iterations">k-means tree を作成する際の，k-means クラスタリングステージでの反復数の上限．ここで -1 は，k-means クラスタリングが収束するまで続けられることを意味します</param>
+            <param name="centers_init">k-means クラスタリングの初期中心を選択するアルゴリズム．</param>
+            <param name="cb_index">このパラメータ（クラスタ境界インデックス）は，階層的 k-means tree の探索方法に影響を与えます． cb_index が0の場合，最も近い中心のクラスタが，次に探索される k-means 領域になります．0より大きい値の場合も，領域サイズが考慮されます</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.CompositeIndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.KeyPoint">
+            <summary>
+            特徴点検出器のためのデータ構造体
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.KeyPoint.Pt">
+            <summary>
+            特徴点の座標
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.KeyPoint.Size">
+            <summary>
+            特徴点のサイズ
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.KeyPoint.Angle">
+            <summary>
+            特徴点の向き(度数法)。 向きが定義されない、若しくは計算されない場合には負数。
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.KeyPoint.Response">
+            <summary>
+            特徴点の強さ（もっとも顕著なキーポイントを求めるために使われる）
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.KeyPoint.Octave">
+            <summary>
+            特徴点が見つかったscale-spaceのoctave。サイズと相関がある場合がある。
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.KeyPoint.ClassID">
+            <summary>
+            特徴点のクラス（特徴点分類機または物体検出器において用いられる）
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.#ctor(OpenCvSharp.CvPoint2D32f,System.Single,System.Single,System.Single,System.Int32,System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="pt">特徴点の座標</param>
+            <param name="size">特徴点のサイズ</param>
+            <param name="angle">特徴点の向き(度数法)。 向きが定義されない、若しくは計算されない場合には負数。</param>
+            <param name="response">特徴点の強さ（もっとも顕著なキーポイントを求めるために使われる）</param>
+            <param name="octave">特徴点が見つかったscale-spaceのoctave。サイズと相関がある場合がある。</param>
+            <param name="class_id">特徴点のクラス（特徴点分類機または物体検出器において用いられる）</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.#ctor(System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32,System.Int32)">
+            <summary>
+            初期化
+            </summary>
+            <param name="x">特徴点のx座標</param>
+            <param name="y">特徴点のy座標</param>
+            <param name="size">特徴点のサイズ</param>
+            <param name="angle">特徴点の向き(度数法)。 向きが定義されない、若しくは計算されない場合には負数。</param>
+            <param name="response">特徴点の強さ（もっとも顕著なキーポイントを求めるために使われる）</param>
+            <param name="octave">特徴点が見つかったscale-spaceのoctave。サイズと相関がある場合がある。</param>
+            <param name="class_id">特徴点のクラス（特徴点分類機または物体検出器において用いられる）</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.Equals(OpenCvSharp.CPlusPlus.KeyPoint)">
+            <summary>
+            指定したオブジェクトと等しければtrueを返す 
+            </summary>
+            <param name="obj">比較するオブジェクト</param>
+            <returns>型が同じで、メンバの値が等しければtrue</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.op_Equality(OpenCvSharp.CPlusPlus.KeyPoint,OpenCvSharp.CPlusPlus.KeyPoint)">
+            <summary>
+            == 演算子のオーバーロード
+            </summary>
+            <param name="lhs">左辺値</param>
+            <param name="rhs">右辺値</param>
+            <returns>等しければtrue</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.op_Inequality(OpenCvSharp.CPlusPlus.KeyPoint,OpenCvSharp.CPlusPlus.KeyPoint)">
+            <summary>
+            != 演算子のオーバーロード
+            </summary>
+            <param name="lhs">左辺値</param>
+            <param name="rhs">右辺値</param>
+            <returns>等しくなければtrue</returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.Equals(System.Object)">
+            <summary>
+            Equalsのオーバーライド
+            </summary>
+            <param name="obj">比較するオブジェクト</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.KeyPoint.GetHashCode">
+            <summary>
+            GetHashCodeのオーバーライド
+            </summary>
+            <returns>このオブジェクトのハッシュ値を指定する整数値。</returns>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.Flann.KDTreeIndexParams">
+            <summary>
+            ランダム kd-tree の集合でインデックスが表現され，これは並列に探索されます．
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.Flann.KDTreeIndexParams.SizeOf">
+            <summary>
+            sizeof(cv::flann::KDTreeIndexParams)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.KDTreeIndexParams.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="trees">並列な kd-tree の個数．[1..16] の範囲が適切な値です</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.Flann.KDTreeIndexParams.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="T:OpenCvSharp.CPlusPlus.StereoSGBM">
+            <summary>
+            セミグローバルブロックマッチングアルゴリズムを用てステレオ対応点探索を行うためのクラス
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StereoSGBM.SizeOf">
+            <summary>
+            sizeof(StereoSGBM)
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.CPlusPlus.StereoSGBM._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StereoSGBM.#cctor">
+            <summary>
+            static constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StereoSGBM.#ctor">
+            <summary>
+            デフォルトのパラメータで初期化.
+            実際は numberOfDisparities だけは指定する必要がある.
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StereoSGBM.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            StereoSGBM コンストラクタ
+            </summary>
+            <param name="minDisparity">取り得る最小の視差値．通常は0ですが，平行化のアルゴリズムによって画像が移動する場合があるので，それに応じてこのパラメータを調整する必要があります.</param>
+            <param name="numDisparities">取り得る最大の視差値．常に0より大きい値となります．現在の実装では，この値は16の倍数でなければいけません.</param>
+            <param name="SADWindowSize">マッチングされるブロックのサイズ．必ず奇数 >=1  となります．通常は， 3..11  の範囲内の値になります.</param>
+            <param name="P1">視差のなめらかさを制御するパラメータ．この値が大きくなると，視差がなめらかになります．P1は隣り合うピクセル間で視差が +1 または -1 変化した場合のペナルティです．このアルゴリズムでは， P2 &gt; P2 でなければいけません．</param>
+            <param name="P2">視差のなめらかさを制御するパラメータ．この値が大きくなると，視差がなめらかになります．P2 は，隣り合うピクセル間で視差が 1 よりも大きく 変化した場合のペナルティです．このアルゴリズムでは， P2 &gt; P2 でなければいけません．</param>
+            <param name="disp12MaxDiff">left-right 視差チェックにおけて許容される最大の差（整数のピクセル単位）．チェックを行わない場合は，これを 0 または負の値にしてください.</param>
+            <param name="preFilterCap">事前フィルタにおいて，画像ピクセルを切り捨てる閾値．このアルゴリズムは，まず，各ピクセルのx-微分を求め，その値を [-preFilterCap, preFilterCap] 区間で切り取ります．そして，その結果が Birchfield-Tomasi コスト関数に渡されます.</param>
+            <param name="uniquenessRatio">パーセント単位で表現されるマージン．正しい値を求めるため，求められた最適な（最小の）コスト関数値は，このマージン以上の差で2番目に最適な値に「勝つ」必要があります.</param>
+            <param name="speckleWindowSize">ノイズスペックルや無効なピクセルが考慮されたなめらかな視差領域の最大サイズ．スペックルフィルタを無効にする場合は，これを0にセットしてください．そうでない場合は，50-200 の範囲内の値にします.</param>
+            <param name="speckleRange">それぞれの連結成分における最大視差値．スペックルフィルタリングを行う場合，これは正の値で16の倍数にしてください．通常は，16 または 32 が適切な値です.</param>
+            <param name="fullDP">完全な 2 パス，動的計画法のアルゴリズムを動作させるには，これを true にします．このアルゴリズムは， O(W*H*numDisparities) バイトのメモリを消費します．これは，640x480 のステレオに対しても大きな値で，HD-サイズの画像の場合は莫大な値になります．デフォルトでは，これは false です.</param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StereoSGBM.Release">
+            <summary>
+            リソースの解放
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StereoSGBM.Dispose(System.Boolean)">
+             <summary>
+             リソースの解放
+             </summary>
+             <param name="disposing">
+             trueの場合は、このメソッドがユーザコードから直接が呼ばれたことを示す。マネージ・アンマネージ双方のリソースが解放される。
+             falseの場合は、このメソッドはランタイムからファイナライザによって呼ばれ、もうほかのオブジェクトから参照されていないことを示す。アンマネージリソースのみ解放される。
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.CPlusPlus.StereoSGBM.FindCorrespondence(OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat,OpenCvSharp.CPlusPlus.Mat)">
+            <summary>
+            
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <param name="disp"></param>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.MinDisparity">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.NumberOfDisparities">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.SADWindowSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.PreFilterCap">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.UniquenessRatio">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.P1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.P2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.SpeckleWindowSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.SpeckleRange">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.Disp12MaxDiff">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.CPlusPlus.StereoSGBM.FullDP">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>
