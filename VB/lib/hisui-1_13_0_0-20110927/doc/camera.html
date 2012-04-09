@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<title>カメラ</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+	
+<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>
+<h1>カメラ</h1>
+
+<h2>ICameraインターフェイス</h2>
+<p>Hisui.Graphics.IView インターフェイスの Camera プロパティから、カメラ情報を取得することが出来ます。</p>
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface IView
+  {
+    ICamera Camera { get; }
+  }
+}	
+</pre>
+<p>この ICamera インターフェイスから一部抜粋したものを以下に示します。</p>
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface ICamera
+  {
+    bool Perspective { get; set; }
+    double ViewingAngle { get; set; }
+    Geom.CodSys3d ViewingPos { get; set; }
+    double ViewingScale { get; set; }
+    double FocalDistance { get; }
+    Geom.Size2i ScreenSize { get; }
+    double ViewingDepth { get; }
+    Geom.Size2d ViewingSize { get; }
+    Geom.Box3d ViewingVolume { get; }
+    Geom.Sphere3d WorldSphere { get; }
+	...
+  }
+}
+</pre>
+<p>この中にビューポート変換や投影変換に必要な情報がすべて入っています。</p>
+
+<h2>3つの座標系</h2>
+<p>次の3つの座標系の関係を理解する必要があります。</p>
+<ul>
+	<li>ワールド座標系</li>
+	<li>カメラ座標系</li>
+	<li>スクリーン座標系</li>
+</ul>
+
+<h3>ワールド座標系</h3>
+<p>ワールド座標系は、幾何モデルが描画される座標系です。
+ヒスイではこの座標系をグローバルな座標系と考えます。
+</p>
+
+<h3>カメラ座標系</h3>
+<p>カメラ座標系は、カメラ（視点）に固定された座標系です。幾つか注意すべきポイントがあります。</p>
+<ul>
+	<li>カメラ座標系は、ワールド座標系から見た局所座標系として表現される。</li>
+	<li>カメラ座標系とワールド座標系の間にスケール変換はかかっていない。</li>
+	<li>カメラ座標系の原点は、カメラの注視点（＝ビューボリュームの中心）である。カメラの位置（視点の位置)ではないので注意すること。</li>
+	<li>カメラ座標系はワールド座標系と同じ右手系である。つまり、カメラ座標系のZ軸は、注視点から視点に向かう方向である。
+	一般にはカメラ座標系には左手系が使われることも多いが、ヒスイでは右手系なので注意すること。</li>
+</ul>
+次の ViewingPos プロパティによってカメラ座標系を取得/設定できます。
+<pre class="hisui">Hisui.Geom.CodSys3d ICamera.ViewingPos { get; set; }</pre>
+
+<h3>スクリーン座標系</h3>
+<p>最終的にビューに映し出されたピクセル座標系です。Windowsと同様に左上を原点とします。</p>
+
+<h2>ビューボリューム</h2>
+<h3>WorldSphereとは</h3>
+<p>ICamera には WorldSphere というプロパティがあります。
+これはワールド座標系に定義されているモデルの境界球を表しています。
+ヒスイのカメラは、この境界球が視体積に含まれるように視体積の深さ（d = ViewingDepth）を決定します。</p>
+
+<h3>直交投影の場合</h3>
+<p>Perspective プロパティが false の場合、直交投影となります。</p>
+<img src="camera_screen.png"></img>
+<p>上の図は、カメラ座標系とスクリーン座標系の関係を表しています。
+右上のオレンジ色の矩形がカメラ座標系であり、左下の緑の矩形がスクリーン座標系です。</p>
+<p>s = ViewingScale は uv 面における視体積の大きさを決めるパラメータであり、ビューの拡大/縮小に関係するパラメータです。
+また、(w<sub>s</sub>, h<sub>s</sub>) はスクリーンの大きさです。
+(w, h) はスクリーンのアスペクト比を保ちつつ s = max(w, h) を満たすように決定されます。	
+</p>
+<img src="camera_ortho.png"></img>
+<p>上の図は、直交投影の視体積を横から見た図です。
+視体積の深さ d = ViewingDepth は、モデルの境界球 WorldSphere が収まるように決定されます。
+</p>
+<img src="camera_volume.png"></img>
+<p>直交投影の視体積は上図のようになり、OpenGL に渡される投影変換は次のようになります。</p>
+<pre class="hisui">
+glOrtho( -w, w, -h, h, -d, d );
+</pre>
+
+<h3>透視投影の場合</h3>
+<p>Perspective プロパティが true の場合には透視投影となり、視体積は下図のような錐台になります。</p>
+<img src="camera_perspective.png"></img>
+<p>焦点距離 f = FocalDistance と視野角 α = ViewingAngle の間には次の関係が成り立ちます。</p>
+<blockquote>tan α = s / f</blockquote>
+<p>ここで分数の分子は s であり、tanα = h / f ではないことに注意してください。
+gluPerspective() などに渡す fovy とは異なるので注意が必要です。</p>
+<p>OpenGL に渡される投影変換は次のようになります。</p>
+<pre class="hisui">
+double w' = w * ((f - d) / f);
+double h' = h * ((f - d) / f);
+glFrustum( -w', w', -h', h', f - d, f + d);
+</pre>
+	
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2006, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

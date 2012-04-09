@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / Hello World を作ってみよう</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>Hello World を作ってみよう</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+<p>2008年4月
+</center>
+
+<p>ここでは最も初歩的なチュートリアルとして "Hello World" アプリケーションを作成してみます。メインメニューに "Hello World" メニューを追加して、クリックすると "Hello World" と書かれたメッセージボックスを表示します。
+<p>前提とする条件は次の2つだけです。
+<ul>
+  <li>Visual C# 2008 Express Edition 以上がインストールされていること
+  <li>C# や .NET 開発についてある程度知っていること
+</ul>
+
+<h2>１．まずは環境設定から</h2>
+
+<h3>ヒスイのモジュールを確認しよう</h3>
+<p>bin/ フォルダに下記のようなヒスイのモジュールが含まれています。
+<p><table>
+  <tr>
+    <td>hisui.exe</td>
+    <td>メインプログラム</td></tr>
+  <tr>
+    <td>
+      Hisui.Core.dll<br>
+      Hisui.Ctrl.dll<br>
+      Hisui.Geom.dll<br>
+      Hisui.Graphics.dll<br>
+      Hisui.Gui.dll<br>
+      Hisui.Hix.dll<br>
+      Hisui.OpenGL.dll<br>
+      Hisui.SI.dll<br>
+      Hisui.Testing.dll</td>
+    <td>Hisui本体のアセンブリモジュール</td></tr>
+  <tr>
+	<td>
+		Hisui.Std.dll<br>
+		Hisui.Spatial.dll<br>
+		Hisui.Spatial.Formats.dll<br>
+		Hisui.Spatial.Commands.dll</td>
+	<td>Hisuiの標準プラグイン</td></tr>
+</table>
+<p>bin/ フォルダには上記に挙がっていないモジュールも含まれていますが、チュートリアルでは使用しないので説明は割愛します。
+
+<h3>プロジェクトの作成</h3>
+<p>Visual Studio を起動し、"Windows アプリケーション" プロジェクトを新規作成します。プロジェクト名はなんでも結構ですが、ここでは仮に HelloWorld という名前だとします。次に、作成したプロジェクトの参照設定を行います。以下のヒスイのモジュールを参照設定に追加してください。
+  <br>（このチュートリアルでは Hisui.Spatial.* は使用しないので、参照設定に追加しなくても結構です。ただしその場合は、後述する config.xml からも Hisui.Spatial.* を除去してください。）
+<ul>
+  <li>Hisui.Core.dll
+  <li>Hisui.Ctrl.dll
+  <li>Hisui.Geom.dll
+  <li>Hisui.Graphics.dll
+  <li>Hisui.Gui.dll
+  <li>Hisui.Hix.dll
+  <li>Hisui.OpenGL.dll
+  <li>Hisui.SI.dll
+  <li>Hisui.Testing.dll
+<li>Hisui.Std.dll</li>
+<li>Hisui.Spatial.dll</li>
+<li>Hisui.Spatial.Formats.dll</li>
+<li>Hisui.Spatial.Commands.dll</li>
+</ul>
+
+<h3>メイン関数の作成</h3>
+<p>メイン関数を作成します。Program.cs を開いて、次のように編集します。
+<pre>
+    ...
+    [STAThread]
+    static void Main()
+    {
+      Application.EnableVisualStyles();
+      Application.SetCompatibleTextRenderingDefault( false );
+      <strong>Hisui.SI.SetUp( "config.xml" );</strong>
+      <strong>Application.Run( new Hisui.Gui.MainForm() );</strong>
+    }
+</pre>
+<p>このメイン関数を見て、次のことに気づいたでしょうか。
+<ul>
+  <li>"config.xml" という設定ファイルを読み込むように指定しています。しかし、まだ config.xml は作成していません。今後の手順で config.xml を作成する必要があります。
+  <li>デフォルトで生成される Form1 は使用しておらず、代わりに Hisui.Gui.dll に定義されている MainForm クラスを使用しています。従って Form1.cs は削除して構いません。
+</ul>
+
+<h3>config ファイルの作成</h3>
+<p>XML ファイルをプロジェクトのフォルダに新規作成し、次のように記述します。
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;config&gt;
+  &lt;plugin&gt;
+    &lt;include name=&quot;Hisui.Std.dll&quot;/&gt;
+    &lt;include name=&quot;Hisui.Spatial.dll&quot;/&gt;
+    &lt;include name=&quot;Hisui.Spatial.Commands.dll&quot;/&gt;
+    &lt;include name=&quot;Hisui.Spatial.Formats.dll&quot;/&gt;
+  &lt;/plugin&gt;
+&lt;/config&gt;
+</pre>
+<p>（参照設定の追加で Hisui.Spatial.* を省略した場合は、この config.xml からも Hisui.Spatial.* を除去してください。）
+
+<h3>config.xml ファイルをコピー</h3>
+<p>先ほど作成した config ファイルは、実行ファイルと同じディレクトリに配置する必要があります。
+<p>手動でコピーするのは手間ですしミスが発生しやすいので、自動的に出力ディレクトリにコピーされるように設定しておきましょう。ここでは2通りの方法を説明します。
+
+<h4>(A) 「出力ディレクトリにコピー」プロパティを利用する方法</h4>
+<ol>
+<li>まずプロジェクトに config.xml を追加しておきます。VisualStudioのソリューションエクスプローラにconfig.xmlが表示されます。</li>
+<li>config.xml を選択すると右下にプロパティが表示されます。</li>
+<li>プロパティの「出力ディレクトリにコピー」を「新しい場合はコピーする」に設定します。</li>
+</ol>
+
+<h4>(B) ビルドイベントを利用する方法</h4>
+<p>プロジェクトの設定で "ビルド後に実行するコマンドライン" に次のようにコマンドを設定します。
+<pre>
+copy "$(ProjectDir)"config.xml "$(TargetDir)"
+</pre>
+
+<h3>起動</h3>
+<p>F5キーでデバッグ起動します。次のようにヒスイが起動すれば成功です。
+<p><img src="helloworld01.png" alt="[図01:起動画面]">
+
+
+<h2>２．Hello World を作ろう</h2>
+
+<h3>設定ファイルの編集</h3>
+<p>作成したプロジェクトの名前が HelloWorld だとすると、これから HelloWorld.exe に機能を足していくことになります。この足された機能はプラグインとしてヒスイにロードされる必要があります。ですから、設定ファイル config.xml に次のように書き加えておきましょう。
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;Shift_JIS&quot;?&gt;
+&lt;config&gt;
+  &lt;plugin&gt;
+    ...
+    <strong>&lt;include name=&quot;HelloWorld.exe&quot;/&gt;</strong>
+  &lt;/plugin&gt;
+  ...
+&lt;/config&gt;
+</pre>
+
+
+
+<h3>手順</h3>
+[プロジェクト | クラスの追加] メニューでクラスを新規作成し、次のようにソースを書き足します。
+<pre>
+namespace HelloWorld
+{
+    [Hisui.Ctrl.Command]
+    public class Class1 // ← このクラス名は何でも良い
+    {
+        [Hisui.Ctrl.Command]
+        class Tutorial
+        {
+            [Hisui.Ctrl.Command]
+            static void HelloWorld()
+            {
+                System.Windows.Forms.MessageBox.Show("Hello, World");
+            }
+        }
+    }
+}
+</pre>
+
+<h3>ビルドしてみる</h3>
+<p>次のようなメニューが出るはずです。クリックしてメッセージボックスが表示されれば成功です。
+<p><img src="fig03_01.png" alt="[図03-01: Hello World]">
+
+<h3>解説</h3>
+<p>この辺でプラグインの仕組みを簡単に解説します。肝は、クラスや関数に付与されている Hisui.Ctrl.Command 属性です。ヒスイはプラグインを読み込むと、各クラスの属性を調べます。Hisui.Ctrl.Command 属性が付いたクラスや関数はコマンドであると認識して、その関数をメニューに割り当てるのです。
+<p>ここでは Class1 に Command 属性が付いていますから、ヒスイは Class1 のメンバにコマンドがあるかもしれないと認識します。Class1 は単なるコマンドの「入れ物」に過ぎませんので、Class1 という名前は無視されます。また、Class1 がインスタンス化されることはなく、Class1 は static class でも構いません。
+<p>次に Tutorial クラスが読み込まれます。このように入れ子になったクラスは、サブメニューを保持するメニュー項目として処理されます。したがって、メインメニューには Tutorial という名前のメニューが作られ、そのサブメニューとして HelloWorld メニューが作られます。
+<p>最後に HelloWorld() 関数が処理されます。Command属性の付いた関数はメニュー項目と結び付けられ、メニュークリック時のイベントハンドラとしてその関数が登録されます。重要な注意点として、このようなコマンド関数は static である必要があります。
+
+<h3>要するに・・・</h3>
+<ul>
+  <li>コマンドを定義するクラスには Hisui.Ctrl.Command 属性を付ける
+  <li>コマンド関数は static とし、同様に Hisui.Ctrl.Command 属性を付ける
+  <li>サブメニューにしたいならクラスを入れ子にする
+</ul>
+これだけでコマンドが作れます。
+
+
+
+<h2>３．メニュー名を日本語にしたい</h2>
+Command 属性の引数に、下記のように日本語を設定すれば、それがメニュー名となります。
+<pre>
+  ...
+  [Hisui.Ctrl.Command("チュートリアル")]
+  class Tutorial
+  {
+      [Hisui.Ctrl.Command("こんにちは")]
+      static void HelloWorld()
+      {
+        ...
+</pre>
+<br><img src="fig04_01.png" alt="[図04-01: メニューの日本語化]">
+
+<p>メニュー名は設定ファイルでも変更できます。
+上記修正の代わりに、下記のように config.xml を書き加えてください。
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;Shift_JIS&quot;?&gt;
+&lt;config&gt;
+  &lt;plugin&gt;
+    ...
+  &lt;/plugin&gt;
+  &lt;command&gt;
+    ...
+    <strong>&lt;caption name=&quot;Tutorial&quot;&gt;チュートリアル&lt;/caption&gt;</strong>
+    <strong>&lt;caption name=&quot;Tutorial.HelloWorld&quot;&gt;こんにちは&lt;/caption&gt;</strong>
+  &lt;/command&gt;
+&lt;/config&gt;
+</pre>
+
+
+
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2007, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>

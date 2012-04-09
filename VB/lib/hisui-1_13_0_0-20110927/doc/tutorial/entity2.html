@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / 直線エンティティを自作してみよう (2)</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>直線エンティティを自作してみよう (2)</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+<p>2007年9月
+</center>
+
+<p>このチュートリアルは <a href="entity.html">"直線エンティティを自作してみよう (1)"</a> の続きです。下記の項目について学びます。
+<ul>
+  <li>ハイライト表示のカスタマイズ
+  <li>直線の端点移動
+  <li>Undo/Redo 対応
+</ul>
+
+
+<h2>ハイライト表示のカスタマイズ</h2>
+
+<h3>デフォルトのハイライト表示</h3>
+<p>自作した直線エンティティ MyLine をクリックすると、そのエンティティは選択状態になり、ハイライトされます。ヒスイにおけるデフォルトのハイライト表示は、市松模様のテクスチャ画像を正面からマッピングしたもの、という仕様となっています。しかし、この仕様は適切でない場合も多いと思います。少なくとも直線エンティティの場合にはあまりパッとしたハイライト表示とは言えないでしょう。
+
+<h3>ハイライト表示を自分で定義しよう</h3>
+<p>そこで、ここでは直線エンティティ MyLine のハイライト表示を自分で定義する方法について説明します。下記の仕様で MyLine がハイライトされるように定義してみましょう。
+<ul>
+<li>直線が通常時よりも太く表示される
+<li>直線の端点位置に大きめの赤い点を表示する
+</ul>
+
+<h3>シーンクラスに IHighlight インターフェイスを実装</h3>
+<p>ハイライト表示をカスタマイズするには、シーンクラスに Hisui.Graphics.IHighlight インターフェイスを実装します。MyLine エンティティのシーンクラスとして MyLineScene クラスが定義してあるはずです。その MyLineScene クラスに IHighlight を実装します。
+<pre>
+[Hisui.Graphics.Scene( typeof( MyLine ) )]
+class MyLineScene : Hisui.Graphics.IScene, <strong>Hisui.Graphics.IHighlight</strong>
+{
+  ...
+  <strong>
+  public void PreHighlight(
+    Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+  }
+
+  public void PostHighlight(
+    Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+  }</strong>
+}
+</pre>
+<p>MyLine が選択されると、Draw() メソッドの直前に PreHighlight() メソッドが呼ばれ、Draw() メソッドの直後に PostHighlight() メソッドが呼ばれます。つまり、次の順でメソッドがコールされます。
+<ol>
+  <li>PreHighlight()
+  <li>Draw()
+  <li>PostHighlight()
+</ol>
+
+<h3>選択時は直線を太く描画する</h3>
+<p>下記のように、PreHighlight で LineWidth を太くし、PostHighlight で元に戻します。
+<pre>
+  public void PreHighlight(
+    Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+    <strong>sc.LineWidth *= 4;</strong>
+  }
+
+  public void PostHighlight(
+    Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+    <strong>sc.LineWidth /= 4;</strong>
+  }
+</pre>
+
+<h3>選択時は直線の端点に赤い点を描画する</h3>
+<p>下記のように、PostHighlight で両端点に赤い点を描画します。
+<pre>
+  public void PreHighlight(
+    Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+    sc.LineWidth *= 4;
+  }
+
+  public void PostHighlight(
+    Hisui.Core.IEntry entry, Hisui.Graphics.ISceneContext sc )
+  {
+    sc.LineWidth /= 4;
+    <strong>
+    float size = sc.PointSize;  // 現在の PointSize をバックアップ
+    Color color = sc.Color;     // 現在の Color をバックアップ
+    sc.PointSize = 8;     // 大きめの点
+    sc.Color = Color.Red; // 赤い点
+    GL.glBegin( GL.GL_POINTS );
+    GL.glVertex3d( _line.P1.x, _line.P1.y, _line.P1.z );
+    GL.glVertex3d( _line.P2.x, _line.P2.y, _line.P2.z );
+    GL.glEnd();
+    sc.PointSize = size;  // PointSize を元に戻す
+    sc.Color = color;     // Color を元に戻す</strong>
+  }
+</pre>
+
+<h3>確認してみよう</h3>
+<p>ヒスイを起動して MyLine エンティティを作成し、マウスで選択してみましょう。期待通りのハイライト表示が得られたでしょうか？
+
+
+<h2>直線の端点移動</h2>
+
+<h3>ゴール</h3>
+<p>MyLine エンティティを選択すると、両端点が赤くハイライトされるようになりました。そのハイライトされた端点を、マウスドラッグで移動できるようにしたい、というのが本節のゴールです。ポイントは、特に明示的にコマンドを起動するわけではない、ということです。MyLine エンティティを選択しただけで自動的に端点移動モードがONになるようにしたいのです。
+
+<h3>イベントハンドラの設定</h3>
+<p>ヒスイでは、ver1.4 からエンティティクラス毎にイベントハンドラが登録できるようになりました。この機能を使うと、MyLine エンティティが選択された状態で発生したビューのマウスイベントをハンドリングできるようになります。
+<p>まず、次のように Handlers クラスを新規作成します。Handler 属性が付いているところがポイントです。
+<pre>
+<strong>[Hisui.Ctrl.Handler]
+static class Handlers
+{
+}</strong>
+</pre>
+<p>ここに MouseDown イベントのハンドラを追加してみましょう。
+<pre>
+[Hisui.Ctrl.Handler]
+static class Handlers
+{
+  <strong>[Hisui.Ctrl.Handler( Hisui.Ctrl.EventType.MouseDown )]
+  static bool OnMouseDown( MyLine self, Hisui.Graphics.IView view, MouseEventArgs e )
+  {
+    return true;
+  }</strong>
+}
+</pre>
+<p>幾つかポイントを箇条書きします。
+<ul>
+<li>イベントハンドラは static 関数です。関数名は何でも構いません。
+<li>関数がハンドラであることを示すために Handler 属性が付けられています。
+<li>Handler 属性の引数で MouseDown イベントが指定されています。
+<li>第1引数に MyLine が指定されています。これによってこの関数が MyLine エンティティにバインドされるハンドラであることが分かります。
+<li>第2引数にはイベントセンダであるビューが渡されます。
+<li>第3引数にはイベント引数が渡されます。
+</ul>
+<p>次のように書いて、MouseDown でメッセージボックスが表示されるか確認してみましょう。
+<pre>
+[Hisui.Ctrl.Handler]
+static class Handlers
+{
+  [Hisui.Ctrl.Handler( Hisui.Ctrl.EventType.MouseDown )]
+  static bool OnMouseDown( MyLine self, Hisui.Graphics.IView view, MouseEventArgs e )
+  {
+    <strong>MessageBox.Show( "MouseDown" );</strong>
+    return true;
+  }
+}
+</pre>
+
+<h3>イベントハンドラで端点移動</h3>
+<p>ではいよいよ、端点を移動するイベントハンドラを作成していきます。
+<p>イベントハンドラも、コマンドと同様に IEnumerator&lt;Hisui.Ctrl.IOperation&gt; を返すことが出来ます。つまり、イベントハンドラ内でマウスオペレーションを扱うことが出来るのです。
+<pre>
+  [Hisui.Ctrl.Handler( Hisui.Ctrl.EventType.MouseDown )]
+  static <strong>IEnumerator&lt;Hisui.Ctrl.IOperation&gt;</strong>
+    OnMouseDown( MyLine self, Hisui.Graphics.IView view, MouseEventArgs e )
+  {
+  }
+</pre>
+<p>端点移動は、マウス左ボタンのドラッグで行います。左ボタン以外の MouseDown イベントは無視するようにします。
+<pre>
+  [Hisui.Ctrl.Handler( Hisui.Ctrl.EventType.MouseDown )]
+  static IEnumerator&lt;Hisui.Ctrl.IOperation&gt;
+    OnMouseDown( MyLine self, Hisui.Graphics.IView view, MouseEventArgs e )
+  {
+    <strong>if ( e.Button != MouseButtons.Left ) yield break;</strong>
+  }
+</pre>
+<p>次に、MouseDown の位置に端点があるかどうかを判定します。
+<pre>
+  [Hisui.Ctrl.Handler( Hisui.Ctrl.EventType.MouseDown )]
+  static IEnumerator&lt;Hisui.Ctrl.IOperation&gt;
+    OnMouseDown( MyLine self, Hisui.Graphics.IView view, MouseEventArgs e )
+  {
+    if ( e.Button != MouseButtons.Left ) yield break;
+    <strong>
+    var eyeshot = view.Camera.GetEyeshotLine( e.Location );
+    if ( eyeshot.Distance( self.P1 ) &lt; 8 * view.Camera.LengthPerPixel ) {
+      // ここに P1 をドラッグする処理を記述
+    }
+    else if ( eyeshot.Distance( self.P2 ) &lt; 8 * view.Camera.LengthPerPixel ) {
+      // ここに P2 をドラッグする処理を記述
+    }</strong>
+  }
+</pre>
+<p>P1をドラッグする処理は次のように記述できます。
+<pre>
+    if ( eyeshot.Distance( self.P1 ) &lt; 8 * view.Camera.LengthPerPixel ) {
+      <strong>var p1 = self.P1;
+      var up = new Hisui.Ctrl.LButtonUp( view.Events );
+      up.MouseMove += ( sender, ee ) =&gt;
+        {
+          var pt1 = new Hisui.Geom.Point2i( e.Location );
+          var pt2 = new Hisui.Geom.Point2i( ee.Location );
+          self.P1 = p1 + view.Camera.ScreenToWorld( pt2 - pt1 );
+          view.Refresh();
+        };
+      yield return up;</strong>
+    }
+</pre>
+<p>P2 をドラッグする処理も同様に記述したら、動作を確認してみましょう。選択するだけで端点がドラッグできましたか？
+<p>なお、端点移動の詳細は<a href="putline2.html">「Hisuiチュートリアル / 直線作図機能を作ってみよう (2)」</a>で作成した端点移動コマンドを参考にしてください。
+
+
+
+<h2>Undo/Redo への対応</h2>
+<h3>Undo, Redo してみよう</h3>
+<p>Undo、Redo は次のボタンで操作できます。
+<ul>
+  <li><img src="undo.png" alt="undo"> ... Undo
+  <li><img src="redo.png" alt="redo"> ... Redo
+</ul>
+<p>では直線を作図して、Undo や Redo を試してみましょう。Undo すると作図した直線が削除され、Redo で復活することが分かると思います。
+
+<h3>「端点の移動」の Undo/Redo</h3>
+<p>では「端点の移動」は Undo/Redo できるでしょうか。残念ながらこのままでは Undo/Redo できません。MyLine クラスに Undo/Redo 用の細工が必要です。
+
+<h3>IMemorable インターフェイス</h3>
+<p>MyLine エンティティを Undo/Redo 対応するには、MyLine クラスに Hisui.Core.IMemorable インターフェイスを実装することになります。
+<p>ではここで、IMemorable インターフェイスの定義を見ておきましょう。
+<pre class="hisui">
+namespace Hisui.Core
+{
+  public interface IMemorable
+  {
+    void AddRef();
+    void Release();
+  }
+}
+</pre>
+<p>え？このインターフェイスでどうしてUndo/Redoが実現できるの？と不思議に思われるかと思います。実際のところ、このインターフェイス自体はあまりUndo/Redo機能の実装に寄与していません。このインターフェイスが提供するのは、定義から明らかなように、内部に参照カウンタ機能を保持することのみです。
+<p>なんのための参照カウンタかを簡単に説明します。まず、どんなオブジェクトがUndo/Redo動作を必要とするのか考えてみましょう。すると次のことが分かります。
+<ul>
+  <li>Documentに登録されていない（一時的に利用される）オブジェクトは Undo/Redo の対象とはならない
+  <li>Documentに登録されているオブジェクトはUndo/Redo対象となる
+  <li>Documentに登録されているオブジェクトから参照されているオブジェクトもUndo/Redo対象となる
+</ul>
+<p>つまり、Documentから（直接/間接を問わず）参照されているオブジェクトが Undo/Redo の対象となることが分かります。この Document からの参照の有無をカウントするのが IMemorable インターフェイスの役割なのです。そして参照カウンタが 1 以上の場合に Undo/Redo に必要な状態の記憶や再生などの処理が走ります。
+
+<h3>最も簡単な IMemorable 実装</h3>
+<p>もっともシンプルな実装方法を下記コードに示します。
+<pre>
+class MyLine : Hisui.Geom.IBoundary3d, <strong>Hisui.Core.IMemorable</strong>
+{
+  <strong>readonly Hisui.Core.IMemorable&lt;Hisui.Geom.Point3d&gt; _p1;</strong>
+  <strong>readonly Hisui.Core.IMemorable&lt;Hisui.Geom.Point3d&gt; _p2;</strong>
+
+  public MyLine( Hisui.Geom.Point3d p1, Hisui.Geom.Point3d p2 )
+  {
+    <strike>_p1 = p1</strike>
+    <strike>_p2 = p2</strike>
+    <strong>_p1 = Hisui.CoreUT.Memorable( p1 );</strong>
+    <strong>_p2 = Hisui.CoreUT.Memorable( p2 );</strong>
+  }
+
+  public Hisui.Geom.Point3d P1
+  {
+    <strike>get { return _p1; }</strike>
+    <strong>get { return _p1.Value; }</strong>
+  }
+  public Hisui.Geom.Point3d P2
+  {
+    <strike>get { return _p2; }</strike>
+    <strong>get { return _p2.Value; }</strong>
+  }
+<strong>
+  public void AddRef()
+  {
+    _p1.AddRef();
+    _p2.AddRef();
+  }
+
+  public void Release()
+  {
+    _p1.Release();
+    _p2.Release();
+  }</strong>
+}
+</pre>
+<p>この実装では、メンバ変数を Hisui.Core.IMemorable&lt;T&gt; 型に置き換えてしまい、肝心の Undo/Redo 機能はメンバ変数に委譲する構造となっています。大抵の場合はこのやり方で Undo/Redo 対応が済んでしまうと思います。
+
+<h3>試してみよう</h3>
+<p>以上で Undo/Redo の実装は終了です。早速起動して、端点移動が Undo/Redo できるか試してみましょう。
+
+
+
+
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2010, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>
+

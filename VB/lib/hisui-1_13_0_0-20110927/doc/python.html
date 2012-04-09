@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<title>ヒスイで IronPython を動かそう</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+	
+<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>
+<h1>ヒスイで IronPython を動かそう</h1>
+<p>IronPython とは .NET Framework 上で動作する Python スクリプトです。
+ヒスイには IronPython との連携が用意されており、例えば Python でコマンドを作成することが出来ます。</p>
+
+<h2>IronPython について</h2>
+<p>IronPython とは .NET Framework 上で動作する Python の処理系です。
+IronPython に関する情報は下記の CodePlex のページ（Microsoftが運用するコミュニティサイト）から入手できます。</p>
+<a href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython">http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython</a>
+
+<h2>Pythonコンソールを使う</h2>
+<h3>はじめに</h3>
+<p>ここで説明する Python コンソールの機能はまだ不安定です。
+特に、IntelliSenseライクな補完機能にはまだ多くの不具合が残っており、実用段階には至っていません。
+実験的な機能であることを了承の上、お試しください。</p>
+
+<h3>起動</h3>
+<p>[ツール|pythonコンソール] メニューからコンソールウィンドウを起動することが出来ます。</p>
+<p><img src="python_menu.png"><br>Pythonコンソールの起動メニュー</p>
+<p><img src="python_naga.png"><br>起動した python コンソール "Naga(ナーガ)"</p>
+<p>すると Naga（ナーガ）という Python のコンソールウィンドウが開きます。
+ナーガとはインド神話に登場する蛇の神様です。Python（ニシキヘビ）の連想で命名しました。</p>
+<p>画面は大きく4つのエリアに分かれています。</p>
+<p><table>
+	<tr><th>位置</th><th>名前</th><th>説明</th></tr>
+	<tr><td>上段左</td><td>標準出力欄</td><td>コマンド実行結果の標準出力に使われます</td></tr>
+	<tr><td>上段右</td><td>変数テーブル</td><td>現在定義されている変数一覧を表示します</td></tr>
+	<tr><td>中段</td><td>コマンド入力欄</td><td>ここにコマンドを入力します</td></tr>
+	<tr><td>下段</td><td>入力履歴欄</td><td>コマンドの入力履歴がここに蓄積されます</td></tr>
+</table></p>
+
+<h3>Hello World</h3>
+<p>では、まずは定番の Hello World から始めましょう。中段のコマンド入力欄に</p>
+<pre>print "Hello World"</pre>
+<p>と入力してENTERキーを押してください。すると次の結果が得られます。</p>
+<p><img src="python_helloworld.png"></p>
+<p>上段左の標準出力欄には、Hello World という文字列が表示できていることが分かります。
+また、下段の入力履歴欄には、今入力した print "Hello World" という文字列がそのまま履歴として蓄積されていることが分かります。</p>
+
+<h3>一括実行</h3>
+<p>入力履歴欄は、実は履歴を溜めるだけではなく、ここを直接編集して一括実行することが出来ます。
+例えば入力履歴欄に次のpythonプログラムを打ち込んでみてください。</p>
+<pre>
+list = ["Hello", "Iron", "Python"]
+for s in list:
+  print s
+</pre>
+<p>そしてツールバーの<img src="python_play.png">ボタンを押すと、次の結果が得られます。</p>
+<p><img src="python_scripting.png"></p>
+<p>ここで書いたスクリプトは保存することも出来ますし、別のファイルから読み込んでくることも出来ます。</p>
+
+<h3>ヒスイを触る</h3>
+<p>例えばコマンド入力欄に次のように入力してください。</p>
+<pre>
+print Current.Document.Entries.Count
+</pre>
+<p>これは「ドキュメントのトップレベルに登録されているエントリの数を標準出力にプリントせよ」というプログラムです。
+Current というのは Hisui.Ctrl.Current クラスです。
+このようにして Python スクリプトからヒスイ内部のオブジェクト（クラス）を操作することが出来ます。</p>
+<p>ドキュメントが空の場合には当然上記のプログラムは 0 と出力します。
+STLなどのファイルを読み込んでから実行すれば 1 と出力するはずです。</p>
+
+<h2>Pythonでコマンドを作成する</h2>
+<p>ヒスイには図のような [Scripts|テスト] メニューが組み込まれています。</p>
+<p><img src="python_testmenu.png"></p>
+<p>これは Python によるコマンドのテストスクリプトで、起動すると次のメッセージボックスが表示されます。</p>
+<p><img src="python_testresult.png"></p>
+<p>このスクリプトは bin/python/Scripts/TestScript.py に書かれています。</p>
+<p><img src="python_path.png"></p>
+<p>そのソースコードは下記の通りです。</p>
+<pre>
+import clr
+clr.AddReference( "System.Windows.Forms" )
+from System.Windows.Forms import *
+
+MessageBox.Show( "This is a test script of IronPython.", "Scripts/TestScript.py")
+</pre>
+<p>Pythonスクリプトを配置するフォルダは、config.xmlで指定されています。</p>
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;Shift_JIS&quot;?&gt;
+&lt;config&gt;
+  ...
+  &lt;command&gt;
+    &lt;python dir=&quot;python&quot;/&gt;
+    &lt;caption name=&quot;Scripts.TestScript&quot;&gt;テスト&lt;/caption&gt;
+  &lt;/command&gt;
+&lt;/config&gt;
+</pre>
+<p>このように指定した位置に *.py ファイルを配置すれば、それがメニューとして自動的に登録されます。</p>
+
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2007, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

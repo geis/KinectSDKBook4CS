@@ -1,0 +1,3007 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenCvSharp.MachineLearning</name>
+    </assembly>
+    <members>
+        <member name="T:OpenCvSharp.MachineLearning.CvDTreeParams">
+            <summary>
+            Decision tree training parameters
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTreeParams._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeParams.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeParams.#ctor(System.Int32,System.Int32,System.Single,System.Boolean,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Single[])">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="max_depth">This parameter specifies the maximum possible depth of the tree. That is the training algorithms attempts to split a node while its depth is less than max_depth. The actual depth may be smaller if the other termination criteria are met (see the outline of the training procedure in the beginning of the section), and/or if the tree is pruned. </param>
+            <param name="min_sample_count">A node is not split if the number of samples directed to the node is less than the parameter value. </param>
+            <param name="regression_accuracy">Another stop criteria - only for regression trees. As soon as the estimated node value differs from the node training samples responses by less than the parameter value, the node is not split further. </param>
+            <param name="use_surrogates">If true, surrogate splits are built. Surrogate splits are needed to handle missing measurements and for variable importance estimation. </param>
+            <param name="max_categories">If a discrete variable, on which the training procedure tries to make a split, takes more than max_categories values, the precise best subset estimation may take a very long time (as the algorithm is exponential). Instead, many decision trees engines (including ML) try to find sub-optimal split in this case by clustering all the samples into max_categories clusters (i.e. some categories are merged together). Note that this technique is used only in N(>2)-class classification problems. In case of regression and 2-class classification the optimal split can be found efficiently without employing clustering, thus the parameter is not used in these cases. </param>
+            <param name="cv_folds">If this parameter is >1, the tree is pruned using cv_folds-fold cross validation. </param>
+            <param name="use_1se_rule">If true, the tree is truncated a bit more by the pruning procedure. That leads to compact, and more resistant to the training data noise, but a bit less accurate decision tree. </param>
+            <param name="truncate_pruned_tree">If true, the cut off nodes (with Tn≤CvDTree::pruned_tree_idx) are physically removed from the tree. Otherwise they are kept, and by decreasing CvDTree::pruned_tree_idx (e.g. setting it to -1) it is still possible to get the results from the original un-pruned (or pruned less aggressively) tree. </param>
+            <param name="priors">The array of a priori class probabilities, sorted by the class label value. The parameter can be used to tune the decision tree preferences toward a certain class. For example, if users want to detect some rare anomaly occurrence, the training base will likely contain much more normal cases than anomalies, so a very good classification performance will be achieved just by considering every case as normal. To avoid this, the priors can be specified, where the anomaly probability is artificially increased (up to 0.5 or even greater), so the weight of the misclassified anomalies becomes much bigger, and the tree is adjusted properly. </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeParams.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.MaxCategories">
+            <summary>
+            If a discrete variable, on which the training procedure tries to make a split, takes more than MaxCategories values, 
+            the precise best subset estimation may take a very long time (as the algorithm is exponential). 
+            Instead, many decision trees engines (including ML) try to find sub-optimal split in this case by clustering 
+            all the samples into MaxCategories clusters (i.e. some categories are merged together).
+            Note that this technique is used only in N(>2)-class classification problems. In case of regression and 2-class classification
+            the optimal split can be found efficiently without employing clustering, thus the parameter is not used in these cases. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.MaxDepth">
+            <summary>
+            This parameter specifies the maximum possible depth of the tree. That is the training algorithms attempts to split a node 
+            while its depth is less than max_depth. The actual depth may be smaller if the other termination criteria are met
+            (see the outline of the training procedure in the beginning of the section), and/or if the tree is pruned. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.MinSampleCount">
+            <summary>
+            A node is not split if the number of samples directed to the node is less than the parameter value. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.CvFolds">
+            <summary>
+            If this parameter is >1, the tree is pruned using cv_folds-fold cross validation. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.UseSurrogates">
+            <summary>
+            If true, surrogate splits are built. Surrogate splits are needed to handle missing measurements and for variable importance estimation. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.Use1seRule">
+            <summary>
+            If true, the tree is truncated a bit more by the pruning procedure. 
+            That leads to compact, and more resistant to the training data noise, but a bit less accurate decision tree. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.TruncatePrunedTree">
+            <summary>
+            If true, the cut off nodes (with Tn≤CvDTree::pruned_tree_idx) are physically removed from the tree. 
+            Otherwise they are kept, and by decreasing CvDTree::PrunedTreeIdx (e.g. setting it to -1) 
+            it is still possible to get the results from the original un-pruned (or pruned less aggressively) tree. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.RegressionAccuracy">
+            <summary>
+            Another stop criteria - only for regression trees. As soon as the estimated node value differs 
+            from the node training samples responses by less than the parameter value, the node is not split further. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeParams.Priors">
+            <summary>
+            The array of a priori class probabilities, sorted by the class label value. 
+            The parameter can be used to tune the decision tree preferences toward a certain class. 
+            For example, if users want to detect some rare anomaly occurrence, the training base will likely contain much more normal cases
+            than anomalies, so a very good classification performance will be achieved just by considering every case as normal. 
+            To avoid this, the priors can be specified, where the anomaly probability is artificially increased (up to 0.5 or even greater), 
+            so the weight of the misclassified anomalies becomes much bigger, and the tree is adjusted properly. 
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvStatModel">
+            <summary>
+            Base class for statistical models in ML
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Save(System.String)">
+            <summary>
+            Saves the model to file
+            </summary>
+            <param name="filename"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Save(System.String,System.String)">
+            <summary>
+            Saves the model to file
+            </summary>
+            <param name="filename"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Load(System.String)">
+            <summary>
+            Loads the model from file
+            </summary>
+            <param name="filename"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Load(System.String,System.String)">
+            <summary>
+            Loads the model from file
+            </summary>
+            <param name="filename"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvStatModel.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="node"></param>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.SVMKernelType">
+            <summary>
+            The kernel type of SVM
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMKernelType.Linear">
+            <summary>
+            no mapping is done, linear discrimination (or regression) is done in the original feature space. It is the fastest option. d(x,y) = x•y == (x,y) 
+            [CvSVM::LINEAR]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMKernelType.Poly">
+            <summary>
+            polynomial kernel: d(x,y) = (gamma*(x•y)+coef0)^degree 
+            [CvSVM::POLY]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMKernelType.Rbf">
+            <summary>
+            radial-basis-function kernel; a good choice in most cases: d(x,y) = exp(-gamma*|x-y|^2) 
+            [CvSVM::RBF]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMKernelType.Sigmoid">
+            <summary>
+            sigmoid function is used as a kernel: d(x,y) = tanh(gamma*(x•y)+coef0) 
+            [CvSVM::SIGMOID]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.DTreeDataLayout">
+            <summary>
+            Data layout of decision tree
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.DTreeDataLayout.RowSample">
+            <summary>
+            
+            [CV_ROW_SAMPLE]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.DTreeDataLayout.ColSample">
+            <summary>
+            
+            [CV_COL_SAMPLE]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvPair32s32f">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvPair32s32f.I">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvPair32s32f.Val">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvPair32s32f.#ctor(System.Int32,System.Single)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvBoost">
+            <summary>
+            Boosted tree classifier
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvBoost._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvBoost.SizeOf">
+            <summary>
+            sizeof(CvBoost)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvBoostParams)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat)">
+            <summary>
+            Trains boosted tree classifier
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains boosted tree classifier
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvBoostParams)">
+            <summary>
+            Trains boosted tree classifier
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvBoostParams,System.Boolean)">
+            <summary>
+            Trains boosted tree classifier
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <param name="update"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Predict(OpenCvSharp.CvMat)">
+            <summary>
+            Predicts response for the input sample
+            </summary>
+            <param name="sample">The input sample. </param>
+            <returns>the output class label based on the weighted voting. </returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Predicts response for the input sample
+            </summary>
+            <param name="sample">The input sample. </param>
+            <param name="missing">The optional mask of missing measurements. To handle missing measurements, the weak classifiers must include surrogate splits. </param>
+            <returns>the output class label based on the weighted voting. </returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Predicts response for the input sample
+            </summary>
+            <param name="sample">The input sample. </param>
+            <param name="missing">The optional mask of missing measurements. To handle missing measurements, the weak classifiers must include surrogate splits. </param>
+            <param name="weak_responses">The optional output parameter, a floating-point vector, of responses from each individual weak classifier. The number of elements in the vector must be equal to the slice length. </param>
+            <returns>the output class label based on the weighted voting. </returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvSlice)">
+            <summary>
+            Predicts response for the input sample
+            </summary>
+            <param name="sample">The input sample. </param>
+            <param name="missing">The optional mask of missing measurements. To handle missing measurements, the weak classifiers must include surrogate splits. </param>
+            <param name="weak_responses">The optional output parameter, a floating-point vector, of responses from each individual weak classifier. The number of elements in the vector must be equal to the slice length. </param>
+            <param name="slice">The continuous subset of the sequence of weak classifiers to be used for prediction. By default, all the weak classifiers are used. </param>
+            <returns>the output class label based on the weighted voting. </returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvSlice,System.Boolean)">
+            <summary>
+            Predicts response for the input sample
+            </summary>
+            <param name="sample">The input sample. </param>
+            <param name="missing">The optional mask of missing measurements. To handle missing measurements, the weak classifiers must include surrogate splits. </param>
+            <param name="weak_responses">The optional output parameter, a floating-point vector, of responses from each individual weak classifier. The number of elements in the vector must be equal to the slice length. </param>
+            <param name="slice">The continuous subset of the sequence of weak classifiers to be used for prediction. By default, all the weak classifiers are used. </param>
+            <param name="raw_mode">The last parameter is normally set to false that implies a regular input. If it is true, the method assumes that all the values of the discrete input variables have been already normalized to 0..&lt;num_of_categoriesi&gt;-1 ranges. (as the decision tree uses such normalized representation internally). It is useful for faster prediction with tree ensembles. For ordered input variables the flag is not used. </param>
+            <returns>the output class label based on the weighted voting. </returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Prune(OpenCvSharp.CvSlice)">
+            <summary>
+            Removes specified weak classifiers
+            </summary>
+            <param name="slice"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.GetWeights">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.GetSubtreeWeights">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.GetWeakResponse">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.GetParams">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.GetWeakPredictors">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoost.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="node"></param>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvSVM">
+            <summary>
+            Support Vector Machines
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvSVM._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvSVM.SizeOf">
+            <summary>
+            sizeof(CvSVM)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.#ctor(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvSVMParams)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.GetDefaultGrid(OpenCvSharp.MachineLearning.SVMParamType)">
+            <summary>
+            Generates a grid for SVM parameters
+            </summary>
+            <param name="param_id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.GetSupportVectorCount">
+            <summary>
+            Retrieves the number of support vectors
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.GetSupportVector(System.Int32)">
+            <summary>
+            Retrieves the particular vector
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.GetParams">
+            <summary>
+            Returns current SVM parameters
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.GetVarCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Predict(OpenCvSharp.CvMat)">
+            <summary>
+            Predicts the response for sample
+            </summary>
+            <param name="sample"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains SVM
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains SVM
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains SVM
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvSVMParams)">
+            <summary>
+            Trains SVM
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.TrainAuto(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvSVMParams)">
+            <summary>
+            Trains SVM with optimal parameters
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.TrainAuto(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvSVMParams,System.Int32)">
+            <summary>
+            Trains SVM with optimal parameters
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+            <param name="k_fold">Cross-validation parameter. The training set is divided into k_fold subsets, one subset being used to train the model, the others forming the test set. So, the SVM algorithm is executed k_fold times. </param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.TrainAuto(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvSVMParams,System.Int32,OpenCvSharp.MachineLearning.CvParamGrid,OpenCvSharp.MachineLearning.CvParamGrid,OpenCvSharp.MachineLearning.CvParamGrid,OpenCvSharp.MachineLearning.CvParamGrid,OpenCvSharp.MachineLearning.CvParamGrid,OpenCvSharp.MachineLearning.CvParamGrid)">
+            <summary>
+            Trains SVM with optimal parameters
+            </summary>
+            <param name="train_data"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+            <param name="k_fold">Cross-validation parameter. The training set is divided into k_fold subsets, one subset being used to train the model, the others forming the test set. So, the SVM algorithm is executed k_fold times. </param>
+            <param name="C_grid"></param>
+            <param name="gamma_grid"></param>
+            <param name="p_grid"></param>
+            <param name="nu_grid"></param>
+            <param name="coef_grid"></param>
+            <param name="degree_grid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVM.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="node"></param>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvSVMParams">
+            <summary>
+            SVM training parameters
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVMParams.#ctor(OpenCvSharp.MachineLearning.WCvSVMParams)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVMParams.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvSVMParams.#ctor(OpenCvSharp.MachineLearning.SVMType,OpenCvSharp.MachineLearning.SVMKernelType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,OpenCvSharp.CvMat,OpenCvSharp.CvTermCriteria)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="_svm_type">Type of SVM</param>
+            <param name="_kernel_type">The kernel type</param>
+            <param name="_degree">for poly</param>
+            <param name="_gamma">for poly/rbf/sigmoid</param>
+            <param name="_coef0">for poly/sigmoid</param>
+            <param name="_C">for SVMType.CSvc, SVMType.EpsSvr and SVMType.NuSvr</param>
+            <param name="_nu">for SVMType.NuSvc, SVMType.OneClass and SVMType.NuSvr</param>
+            <param name="_p">for SVMType.EpsSvr</param>
+            <param name="_class_weights">for SVMType.CSvc</param>
+            <param name="_term_crit">Termination criteria</param>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.NativeStruct">
+            <summary>
+            Native struct
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.SVMType">
+            <summary>
+            Type of SVM
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.KernelType">
+            <summary>
+            The kernel type
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.Degree">
+            <summary>
+            for poly
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.Gamma">
+            <summary>
+            for poly/rbf/sigmoid
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.Coef0">
+            <summary>
+            for poly/sigmoid
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.C">
+            <summary>
+            for SVMType.CSvc, SVMType.EpsSvr and SVMType.NuSvr
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.Nu">
+            <summary>
+            for SVMType.NuSvc, SVMType.OneClass and SVMType.NuSvr
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.P">
+            <summary>
+            for SVMType.EpsSvr
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.ClassWeights">
+            <summary>
+            for SVMType.CSvc
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvSVMParams.TermCrit">
+            <summary>
+            Termination criteria
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams">
+            <summary>
+            Parameters of MLP training algorithm
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.#ctor(OpenCvSharp.CvTermCriteria,OpenCvSharp.MachineLearning.MLPTrainingMethod,System.Double)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="term_crit">The termination criteria for the training algorithm. It identifies how many iterations is done by the algorithm (for sequential backpropagation algorithm the number is multiplied by the size of the training set) and how much the weights could change between the iterations to make the algorithm continue. </param>
+            <param name="train_method">The training algorithm to use</param>
+            <param name="param1"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.#ctor(OpenCvSharp.CvTermCriteria,OpenCvSharp.MachineLearning.MLPTrainingMethod,System.Double,System.Double)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="term_crit">The termination criteria for the training algorithm. It identifies how many iterations is done by the algorithm (for sequential backpropagation algorithm the number is multiplied by the size of the training set) and how much the weights could change between the iterations to make the algorithm continue. </param>
+            <param name="train_method">The training algorithm to use</param>
+            <param name="param1"></param>
+            <param name="param2"></param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.SizeOf">
+            <summary>
+            sizeof(CvANN_MLP_TrainParams)
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.NativeStruct">
+            <summary>
+            Native struct
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.TermCrit">
+            <summary>
+            The termination criteria for the training algorithm. 
+            It identifies how many iterations is done by the algorithm (for sequential backpropagation algorithm the number is multiplied by the size of the training set) 
+            and how much the weights could change between the iterations to make the algorithm continue. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.TrainMethod">
+            <summary>
+            The training algorithm to use
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.BpDwScale">
+            <summary>
+            (Backpropagation only): The coefficient to multiply the computed weight gradient by. 
+            The recommended value is about 0.1. The parameter can be set via param1 of the constructor. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.BpMomentScale">
+            <summary>
+            (Backpropagation only): The coefficient to multiply the difference between weights on the 2 previous iterations. 
+            This parameter provides some inertia to smooth the random fluctuations of the weights. It can vary from 0 (the feature is disabled) to 1 and beyond. 
+            The value 0.1 or so is good enough. The parameter can be set via param2 of the constructor. 		
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.RpDw0">
+            <summary>
+            (RPROP only): Initial magnitude of the weight delta. 
+            The default value is 0.1. This parameter can be set via param1 of the constructor. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.RpDwPlus">
+            <summary>
+            (RPROP only): The increase factor for the weight delta. 
+            It must be >1, default value is 1.2 that should work well in most cases, according to the algorithm's author. 
+            The parameter can only be changed explicitly by modifying the structure member. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.RpDwMinus">
+            <summary>
+            (RPROP only): The decrease factor for the weight delta. 
+            It must be &lt;1, default value is 0.5 that should work well in most cases, according to the algorithm's author.
+            The parameter can only be changed explicitly by modifying the structure member. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.RpDwMin">
+            <summary>
+            (RPROP only): The minimum value of the weight delta. 
+            It must be &gt;0, the default value is FLT_EPSILON. The parameter can be set via param2 of the constructor. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams.RpDwMax">
+            <summary>
+            (RPROP only): The maximum value of the weight delta. 
+            It must be >1, the default value is 50. The parameter can only be changed explicitly by modifying the structure member. 
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.MLPTrainingFlag">
+            <summary>
+            The MLP training algorithm to use
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPTrainingFlag.Zero">
+            <summary>
+            No flags
+            [0]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPTrainingFlag.UpdateWeights">
+            <summary>
+            1 - algorithm updates the network weights, rather than computes them from scratch 
+            (in the latter case the weights are initialized using Nguyen-Widrow algorithm).
+            [CvANN_MLP::UPDATE_WEIGHTS]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPTrainingFlag.NoInputScale">
+            <summary>
+            algorithm does not normalize the input vectors. 
+            If this flag is not set, the training algorithm normalizes each input feature independently, 
+            shifting its mean value to 0 and making the standard deviation =1. If the network is assumed to be updated frequently, 
+            the new training data could be much different from original one. In this case user should take care of proper normalization.
+            [CvANN_MLP::NO_INPUT_SCALE]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPTrainingFlag.NoOutputScale">
+            <summary>
+            algorithm does not normalize the output vectors. 
+            If the flag is not set, the training algorithm normalizes each output features independently, 
+            by transforming it to the certain range depending on the activation function used.
+            [CvANN_MLP::NO_OUTPUT_SCALE]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvDTreeTrainData">
+            <summary>
+            Decision tree node
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTreeTrainData._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.#ctor(System.IntPtr)">
+            <summary>
+            Initializes from pointer
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvDTreeParams,System.Boolean,System.Boolean)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <param name="shared"></param>
+            <param name="add_labels"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.SetData(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.SetData(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.SetData(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvDTreeParams,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <param name="shared"></param>
+            <param name="add_labels"></param>
+            <param name="update_data"></param>
+            <returns></returns>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTreeTrainData.SizeOf">
+            <summary>
+            sizeof(CvDTreeTrainData) 
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetNumClasses">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetVarType(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="vi"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetWorkVarCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetClassLabels(OpenCvSharp.MachineLearning.CvDTreeNode,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="n"></param>
+            <param name="labels_buf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetOrdResponses(OpenCvSharp.MachineLearning.CvDTreeNode,System.Single[],System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="n"></param>
+            <param name="values_buf"></param>
+            <param name="sample_indices_buf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetLabels(OpenCvSharp.MachineLearning.CvDTreeNode,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="n"></param>
+            <param name="labels_buf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetCatVarData(OpenCvSharp.MachineLearning.CvDTreeNode,System.Int32,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="n"></param>
+            <param name="vi"></param>
+            <param name="cat_values_buf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetOrdVarData(OpenCvSharp.MachineLearning.CvDTreeNode,System.Int32,System.Single[],System.Int32[],System.Single[][],System.Int32[][],System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="n"></param>
+            <param name="vi"></param>
+            <param name="ord_values_buf"></param>
+            <param name="sorted_indices_buf"></param>
+            <param name="ord_values"></param>
+            <param name="sorted_indices"></param>
+            <param name="sample_indices_buf"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeTrainData.GetChildBufIdx(OpenCvSharp.MachineLearning.CvDTreeNode)">
+            <summary>
+            
+            </summary>
+            <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.SampleCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.VarAll">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.VarCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.MaxCCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.OrdVarCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.CatVarCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.HaveLabels">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.HavePriors">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.IsClassifier">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.BufCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.BufSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.Shared">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.Rng">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.CatCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.CatOfs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.CatMap">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.Counts">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.Buf">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.Direction">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.SplitBuf">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.VarIdx">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.VarType">
+            <summary>
+            i-th element =
+            k&lt;0  - ordered, 
+            k&gt;=0 - categorical, see k-th element of cat_* arrays
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeTrainData.Priors">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.SVMParamType">
+            <summary>
+            SVM params type
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMParamType.C">
+            <summary>
+            [CvSVM::C]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMParamType.Gamma">
+            <summary>
+            [CvSVM::GAMMA]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMParamType.P">
+            <summary>
+            [CvSVM::P]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMParamType.Nu">
+            <summary>
+            [CvSVM::NU]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMParamType.Coef">
+            <summary>
+            [CvSVM::COEF]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMParamType.Degree">
+            <summary>
+            [CvSVM::DEGREE]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.EMStartStep">
+            <summary>
+            The initial step the algorithm starts from
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.EMStartStep.E">
+            <summary>
+            The algorithm starts with E-step. 
+            At least, the initial values of mean vectors, CvEMParams.Means must be passed. 
+            Optionally, the user may also provide initial values for weights (CvEMParams.Weights) 
+            and/or covariation matrices (CvEMParams.Covs).
+            [CvEM::START_E_STEP]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.EMStartStep.M">
+            <summary>
+            The algorithm starts with M-step. The initial probabilities p_i,k must be provided.
+            [CvEM::START_M_STEP]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.EMStartStep.Auto">
+            <summary>
+            No values are required from the user, k-means algorithm is used to estimate initial mixtures parameters. 
+            [CvEM::START_AUTO_STEP]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvNormalBayesClassifier">
+            <summary>
+            Bayes classifier for normally distributed data
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvNormalBayesClassifier._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.SizeOf">
+            <summary>
+            sizeof(CvNormalBayesClassifier)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.#ctor(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Bayes classifier for normally distributed data
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Predicts the response for sample(s)
+            </summary>
+            <param name="sample">Unkown samples (l*n)</param>
+            <param name="results">Classes for known samples (l*1)</param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains the model
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains the model
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <param name="var_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains the model
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,System.Boolean)">
+            <summary>
+            Trains the model
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="update">Adds known samples to model(true) or makes a new one(false)</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvNormalBayesClassifier.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="node"></param>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvKNearest">
+            <summary>
+            K nearest neighbors classifier
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvKNearest._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvKNearest.SizeOf">
+            <summary>
+            sizeof(CvKNearest)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.#ctor(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,System.Boolean,System.Int32)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <param name="sample_idx"></param>
+            <param name="is_regression"></param>
+            <param name="max_k">Maximum number of neighbors to return</param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,System.Boolean,System.Int32,System.Boolean)">
+            <summary>
+            Trains the model
+            </summary>
+            <param name="train_data">Known samples (m*n)</param>
+            <param name="responses">Classes for known samples (m*1)</param>
+            <param name="sample_idx"></param>
+            <param name="is_regression"></param>
+            <param name="max_k">Maximum number of neighbors to return</param>
+            <param name="update_base">Adds known samples to model(true) or makes a new one(false)</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.FindNearest(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat,System.Single[][],OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Finds the K nearest neighbors of samples
+            </summary>
+            <param name="samples">Known samples (l*n)</param>
+            <param name="k">max neighbors to find</param>
+            <param name="results"></param>
+            <param name="neighbors"></param>
+            <param name="neighbor_responses">Neighbors for each samples (l*k)</param>
+            <param name="dist">Distance from each sample to neighbors</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.GetMaxK">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.GetVarCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.GetSampleCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.IsRegression">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvKNearest.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvBoostParams">
+            <summary>
+            Boosting training parameters
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvBoostParams._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostParams.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostParams.#ctor(OpenCvSharp.MachineLearning.BoostType,System.Int32,System.Double,System.Int32,System.Boolean,System.Single[])">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="boost_type">Boosting type</param>
+            <param name="weak_count">The number of weak classifiers to build. </param>
+            <param name="weight_trim_rate">he weight trimming ratio, within 0..1. If the parameter is ≤0 or >1, the trimming is not used, all the samples are used at each iteration. The default value is 0.95. </param>
+            <param name="max_depth">This parameter specifies the maximum possible depth of the tree. That is the training algorithms attempts to split a node while its depth is less than max_depth. The actual depth may be smaller if the other termination criteria are met (see the outline of the training procedure in the beginning of the section), and/or if the tree is pruned. </param>
+            <param name="use_surrogates">If true, surrogate splits are built. Surrogate splits are needed to handle missing measurements and for variable importance estimation. </param>
+            <param name="priors">The array of a priori class probabilities, sorted by the class label value. The parameter can be used to tune the decision tree preferences toward a certain class. For example, if users want to detect some rare anomaly occurrence, the training base will likely contain much more normal cases than anomalies, so a very good classification performance will be achieved just by considering every case as normal. To avoid this, the priors can be specified, where the anomaly probability is artificially increased (up to 0.5 or even greater), so the weight of the misclassified anomalies becomes much bigger, and the tree is adjusted properly. </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostParams.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvBoostParams.SizeOf">
+            <summary>
+            sizeof(CvBoostParams)
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvBoostParams.BoostType">
+            <summary>
+            Boosting type
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvBoostParams.WeakCount">
+            <summary>
+            The number of weak classifiers to build. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvBoostParams.SplitCriteria">
+            <summary>
+            Splitting criteria, used to choose optimal splits during a weak tree construction
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvBoostParams.WeightTrimRate">
+            <summary>
+            The weight trimming ratio, within 0..1. 
+            If the parameter is ≤0 or >1, the trimming is not used, 
+            all the samples are used at each iteration. The default value is 0.95. 
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.MLInvoke">
+            <summary>
+            ml functions that declared by DllImport
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLInvoke.DllExtern">
+            <summary>
+            DLL file name
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.MLInvoke.#cctor">
+            <summary>
+            このクラスを最初に参照した時に1度だけ Unmanaged権限チェックを行う
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.MLInvoke.TryPInvoke">
+            <summary>
+            Checks whether PInvoke functions can be called
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.MLPTrainingMethod">
+            <summary>
+            The MLP training algorithm to use
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPTrainingMethod.BACKPROP">
+            <summary>
+            sequential backpropagation algorithm
+            [CvANN_MLP_TrainParams::BACKPROP]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPTrainingMethod.RPROP">
+            <summary>
+            RPROP algorithm, default value
+            [CvANN_MLP_TrainParams::RPROP]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvDTreeSplit">
+            <summary>
+            Decision tree node split
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTreeSplit.SizeOf">
+            <summary>
+            sizeof(CvDTreeSplit) 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.CvPtr">
+            <summary>
+            Data pointer (CvDTreeSplit*)
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.VarIdx">
+            <summary>
+            Index of the variable used in the split 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.Inversed">
+            <summary>
+            When true, the inverse split rule is used (i.e. left and right branches are exchanged in the expressions below) 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.Quality">
+            <summary>
+            The split quality, a positive number. 
+            It is used to choose the best primary split, then to choose and sort the surrogate splits. 
+            After the tree is constructed, it is also used to compute variable importance.  
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.Next">
+            <summary>
+            Pointer to the next split in the node split list. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.Subset">
+            <summary>
+            Bit array indicating the value subset in case of split on a categorical variable.
+            The rule is: if var_value in subset then next_node&lt;-left else next_node&lt;-right
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.OrdC">
+            <summary>
+            The threshold value in case of split on an ordered variable.
+            The rule is: if var_value &lt; c then next_node&lt;-left else next_node&lt;-right
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeSplit.OrdSplitPoint">
+            <summary>
+            Used internally by the training algorithm. 
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.PartMode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.PartMode.Count">
+            <summary>
+            [CV_COUNT]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.PartMode.Portion">
+            <summary>
+            [CV_PORTION]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvEM">
+            <summary>
+            EM model
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvEM._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvEM.SizeOf">
+            <summary>
+            sizeof(CvEM)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.#ctor(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvEMParams,OpenCvSharp.CvMat)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="samples"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+            <param name="labels"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.GetNClusters">
+            <summary>
+            Returns the number of mixtures
+            </summary>
+            <returns>the number of mixtures</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.GetMeans">
+            <summary>
+            Returns initial mixture means a_k
+            </summary>
+            <returns>initial mixture means a_k</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.GetCovs">
+            <summary>
+            Returns initial mixture covariation matrices S_k
+            </summary>
+            <returns>initial mixture covariation matrices S_k</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.GetCovsPtr">
+            <summary>
+            Returns initial mixture covariation matrices S_k
+            </summary>
+            <returns>initial mixture covariation matrices S_k</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.GetWeights">
+            <summary>
+            Returns initial mixture weights π_k
+            </summary>
+            <returns>initial mixture weights π_k</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.GetProbs">
+            <summary>
+            Returns initial probabilities p_i,k,
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Predicts the response for sample
+            </summary>
+            <param name="sample"></param>
+            <param name="probs"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Train(OpenCvSharp.CvMat)">
+            <summary>
+            Estimates Gaussian mixture parameters from the sample set
+            </summary>
+            <param name="samples"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Estimates Gaussian mixture parameters from the sample set
+            </summary>
+            <param name="samples"></param>
+            <param name="sample_idx"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvEMParams)">
+            <summary>
+            Estimates Gaussian mixture parameters from the sample set
+            </summary>
+            <param name="samples"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvEMParams,OpenCvSharp.CvMat)">
+            <summary>
+            Estimates Gaussian mixture parameters from the sample set
+            </summary>
+            <param name="samples"></param>
+            <param name="sample_idx"></param>
+            <param name="params"></param>
+            <param name="labels"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEM.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvBoostTree">
+            <summary>
+            Weak tree classifier
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvDTree">
+            <summary>
+            Decision tree
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTree._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTree.SizeOf">
+            <summary>
+            sizeof(CvDTree)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.#ctor(System.IntPtr)">
+            <summary>
+            Initializes by pointer
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat)">
+            <summary>
+            Trains decision tree
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains decision tree
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvDTreeParams)">
+            <summary>
+            Trains decision tree
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Train(OpenCvSharp.MachineLearning.CvDTreeTrainData,OpenCvSharp.CvMat)">
+            <summary>
+            Trains decision tree
+            </summary>
+            <param name="train_data"></param>
+            <param name="subsample_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Predict(OpenCvSharp.CvMat)">
+            <summary>
+            Returns the leaf node of decision tree corresponding to the input vector
+            </summary>
+            <param name="sample"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Returns the leaf node of decision tree corresponding to the input vector
+            </summary>
+            <param name="sample"></param>
+            <param name="missing_data_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat,System.Boolean)">
+            <summary>
+            Returns the leaf node of decision tree corresponding to the input vector
+            </summary>
+            <param name="sample"></param>
+            <param name="missing_data_mask"></param>
+            <param name="preprocessed_input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.GetVarImportance">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.GetRoot">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.GetPrunedTreeIdx">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.GetData">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="fs"></param>
+            <param name="node"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode,OpenCvSharp.MachineLearning.CvDTreeTrainData)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="fs"></param>
+            <param name="node"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Write(OpenCvSharp.CvFileStorage)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="fs"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="fs"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTree.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvBoostTree._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvBoostTree.SizeOf">
+            <summary>
+            sizeof(CvForestTrees)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.#ctor(System.IntPtr)">
+            <summary>
+            Initializes by pointer
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.Train(OpenCvSharp.MachineLearning.CvDTreeTrainData,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvBoost)">
+            <summary>
+            Trains decision tree
+            </summary>
+            <param name="train_data"></param>
+            <param name="subsample_idx"></param>
+            <param name="ensemble"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.Scale(System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode,OpenCvSharp.MachineLearning.CvBoost,OpenCvSharp.MachineLearning.CvDTreeTrainData)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>		
+            <param name="node"></param>
+            <param name="ensemble"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvBoostTree.Clear">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvForestTree">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvForestTree._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvForestTree.SizeOf">
+            <summary>
+            sizeof(CvForestTrees)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvForestTree.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvForestTree.#ctor(System.IntPtr)">
+            <summary>
+            Initializes by pointer
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvForestTree.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvForestTree.Train(OpenCvSharp.MachineLearning.CvDTreeTrainData,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvRTrees)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="subsample_idx"></param>
+            <param name="forest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvForestTree.GetVarCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvForestTree.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode,OpenCvSharp.MachineLearning.CvRTrees,OpenCvSharp.MachineLearning.CvDTreeTrainData)">
+            <summary>
+            
+            </summary>
+            <param name="fs"></param>
+            <param name="node"></param>
+            <param name="forest"></param>
+            <param name="data"></param>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvTrainTestSplit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvTrainTestSplit._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvTrainTestSplit.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvTrainTestSplit.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="train_sample_count"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvTrainTestSplit.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="train_sample_count"></param>
+            <param name="mix"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvTrainTestSplit.#ctor(System.Single)">
+            <summary>
+            
+            </summary>
+            <param name="train_sample_portion"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvTrainTestSplit.#ctor(System.Single,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="train_sample_portion"></param>
+            <param name="mix"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvTrainTestSplit.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvTrainTestSplit.SizeOf">
+            <summary>
+            sizeof(CvTrainTestSplit)
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvTrainTestSplit.TrainSamplePart_Count">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvTrainTestSplit.TrainSamplePart_Portion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvTrainTestSplit.TrainSamplePartMode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvTrainTestSplit.Mix">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvRTParams">
+            <summary>
+            Training Parameters of Random Trees
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvRTParams._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTParams.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTParams.#ctor(System.Int32,System.Int32,System.Single,System.Boolean,System.Int32,System.Single[],System.Boolean,System.Int32,OpenCvSharp.CvTermCriteria)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="max_depth">This parameter specifies the maximum possible depth of the tree. That is the training algorithms attempts to split a node while its depth is less than max_depth. The actual depth may be smaller if the other termination criteria are met (see the outline of the training procedure in the beginning of the section), and/or if the tree is pruned. </param>
+            <param name="min_sample_count">A node is not split if the number of samples directed to the node is less than the parameter value. </param>
+            <param name="regression_accuracy">Another stop criteria - only for regression trees. As soon as the estimated node value differs from the node training samples responses by less than the parameter value, the node is not split further. </param>
+            <param name="use_surrogates">If true, surrogate splits are built. Surrogate splits are needed to handle missing measurements and for variable importance estimation. </param>
+            <param name="max_categories">If a discrete variable, on which the training procedure tries to make a split, takes more than max_categories values, the precise best subset estimation may take a very long time (as the algorithm is exponential). Instead, many decision trees engines (including ML) try to find sub-optimal split in this case by clustering all the samples into max_categories clusters (i.e. some categories are merged together). Note that this technique is used only in N(>2)-class classification problems. In case of regression and 2-class classification the optimal split can be found efficiently without employing clustering, thus the parameter is not used in these cases. </param>
+            <param name="priors">The array of a priori class probabilities, sorted by the class label value. The parameter can be used to tune the decision tree preferences toward a certain class. For example, if users want to detect some rare anomaly occurrence, the training base will likely contain much more normal cases than anomalies, so a very good classification performance will be achieved just by considering every case as normal. To avoid this, the priors can be specified, where the anomaly probability is artificially increased (up to 0.5 or even greater), so the weight of the misclassified anomalies becomes much bigger, and the tree is adjusted properly. </param>
+            <param name="calc_var_importance">If it is set, then variable importance is computed by the training procedure. To retrieve the computed variable importance array, call the method CvRTrees::get_var_importance(). </param>
+            <param name="nactive_vars">The number of variables that are randomly selected at each tree node and that are used to find the best split(s). </param>
+            <param name="term_crit">Termination criteria for growing the forest: term_crit.max_iter is the maximum number of trees in the forest (see also max_tree_count parameter of the constructor, by default it is set to 50) term_crit.epsilon is the sufficient accuracy (OOB error). </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTParams.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvRTParams.CalcVarImportance">
+            <summary>
+            If it is set, then variable importance is computed by the training procedure. To retrieve the computed variable importance array, call the method CvRTrees::get_var_importance(). 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvRTParams.NactiveVars">
+            <summary>
+            The number of variables that are randomly selected at each tree node and that are used to find the best split(s). 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvRTParams.TermCrit">
+            <summary>
+            Termination criteria for growing the forest: 
+            term_crit.max_iter is the maximum number of trees in the forest (see also max_tree_count parameter of the constructor, by default it is set to 50)
+            term_crit.epsilon is the sufficient accuracy (OOB error). 
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.EMCovMatType">
+            <summary>
+            The type of the mixture covariation matrices
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.EMCovMatType.Spherical">
+            <summary>
+            A covariation matrix of each mixture is a scaled identity matrix, μk*I, 
+            so the only parameter to be estimated is μk. The option may be used in special cases, 
+            when the constraint is relevant, or as a first step in the optimization 
+            (e.g. in case when the data is preprocessed with PCA). The results of such preliminary estimation 
+            may be passed again to the optimization procedure, this time with cov_mat_type=Diagonal. 
+            [CvEM::COV_MAT_SPHERICAL]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.EMCovMatType.Diagonal">
+            <summary>
+            A covariation matrix of each mixture may be arbitrary diagonal matrix with positive diagonal elements, 
+            that is, non-diagonal elements are forced to be 0's, so the number of free parameters is d for each matrix. 
+            This is most commonly used option yielding good estimation results.
+            [CvEM::COV_MAT_DIAGONAL]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.EMCovMatType.Generic">
+            <summary>
+            A covariation matrix of each mixture may be arbitrary symmetrical positively defined matrix, 
+            so the number of free parameters in each matrix is about d^2/2. 
+            It is not recommended to use this option, unless there is pretty accurate 
+            initial estimation of the parameters and/or a huge number of training samples.
+            [CvEM::COV_MAT_GENERIC]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvANN_MLP">
+            <summary>
+            MLP model
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvANN_MLP._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvANN_MLP.SizeOf">
+            <summary>
+            sizeof(CvANN_MLP)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.#ctor(OpenCvSharp.CvMat)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="layer_sizes">The integer vector specifies the number of neurons in each layer including the input and output layers. </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.MLPActivationFunc)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="layer_sizes">The integer vector specifies the number of neurons in each layer including the input and output layers. </param>
+            <param name="activ_func">Specifies the activation function for each neuron</param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.#ctor(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.MLPActivationFunc,System.Double,System.Double)">
+            <summary>
+            Training constructor
+            </summary>
+            <param name="layer_sizes">The integer vector specifies the number of neurons in each layer including the input and output layers. </param>
+            <param name="activ_func">Specifies the activation function for each neuron</param>
+            <param name="f_param1">Free parameter α of the activation function</param>
+            <param name="f_param2">Free parameter β of the activation function</param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Create(OpenCvSharp.CvMat)">
+            <summary>
+            Constructs the MLP with the specified topology
+            </summary>
+            <param name="layer_sizes">The integer vector specifies the number of neurons in each layer including the input and output layers. </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Create(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.MLPActivationFunc)">
+            <summary>
+            Constructs the MLP with the specified topology
+            </summary>
+            <param name="layer_sizes">The integer vector specifies the number of neurons in each layer including the input and output layers. </param>
+            <param name="activ_func">Specifies the activation function for each neuron</param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Create(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.MLPActivationFunc,System.Double,System.Double)">
+            <summary>
+            Constructs the MLP with the specified topology
+            </summary>
+            <param name="layer_sizes">The integer vector specifies the number of neurons in each layer including the input and output layers. </param>
+            <param name="activ_func">Specifies the activation function for each neuron</param>
+            <param name="f_param1">Free parameter α of the activation function</param>
+            <param name="f_param2">Free parameter β of the activation function</param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains/updates MLP
+            </summary>
+            <param name="inputs">A floating-point matrix of input vectors, one vector per row. </param>
+            <param name="outputs">A floating-point matrix of the corresponding output vectors, one vector per row. </param>
+            <param name="sample_weights">(RPROP only) The optional floating-point vector of weights for each sample. Some samples may be more important than others for training, e.g. user may want to gain the weight of certain classes to find the right balance between hit-rate and false-alarm rate etc. </param>
+            <returns>the number of done iterations.</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains/updates MLP
+            </summary>
+            <param name="inputs">A floating-point matrix of input vectors, one vector per row. </param>
+            <param name="outputs">A floating-point matrix of the corresponding output vectors, one vector per row. </param>
+            <param name="sample_weights">(RPROP only) The optional floating-point vector of weights for each sample. Some samples may be more important than others for training, e.g. user may want to gain the weight of certain classes to find the right balance between hit-rate and false-alarm rate etc. </param>
+            <param name="sample_idx">The optional integer vector indicating the samples (i.e. rows of _inputs and _outputs) that are taken into account. </param>
+            <returns>the number of done iterations.</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams)">
+            <summary>
+            Trains/updates MLP
+            </summary>
+            <param name="inputs">A floating-point matrix of input vectors, one vector per row. </param>
+            <param name="outputs">A floating-point matrix of the corresponding output vectors, one vector per row. </param>
+            <param name="sample_weights">(RPROP only) The optional floating-point vector of weights for each sample. Some samples may be more important than others for training, e.g. user may want to gain the weight of certain classes to find the right balance between hit-rate and false-alarm rate etc. </param>
+            <param name="sample_idx">The optional integer vector indicating the samples (i.e. rows of _inputs and _outputs) that are taken into account. </param>
+            <param name="params">The training params.</param>
+            <returns>the number of done iterations.</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Train(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvANN_MLP_TrainParams,OpenCvSharp.MachineLearning.MLPTrainingFlag)">
+            <summary>
+            Trains/updates MLP
+            </summary>
+            <param name="inputs">A floating-point matrix of input vectors, one vector per row. </param>
+            <param name="outputs">A floating-point matrix of the corresponding output vectors, one vector per row. </param>
+            <param name="sample_weights">(RPROP only) The optional floating-point vector of weights for each sample. Some samples may be more important than others for training, e.g. user may want to gain the weight of certain classes to find the right balance between hit-rate and false-alarm rate etc. </param>
+            <param name="sample_idx">The optional integer vector indicating the samples (i.e. rows of _inputs and _outputs) that are taken into account. </param>
+            <param name="params">The training params.</param>
+            <param name="flags">The various parameters to control the training algorithm.</param>
+            <returns>the number of done iterations.</returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Predicts response for the input sample
+            </summary>
+            <param name="inputs">The input sample. </param>
+            <param name="outputs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.GetLayerCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.GetLayerSizes">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvANN_MLP.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="fs"></param>
+            <param name="node"></param>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvEMParams">
+            <summary>
+            Parameters of EM algorithm
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEMParams.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEMParams.#ctor(System.Int32,OpenCvSharp.MachineLearning.EMCovMatType,OpenCvSharp.MachineLearning.EMStartStep,OpenCvSharp.CvTermCriteria,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="_nclusters">The number of mixtures. Some of EM implementation could determine the optimal number of mixtures within a specified value range, but that is not the case in ML yet. </param>
+            <param name="_cov_mat_type">The type of the mixture covariation matrices</param>
+            <param name="_start_step">The initial step the algorithm starts from</param>
+            <param name="_term_crit">Termination criteria of the procedure. </param>
+            <param name="_probs">Initial probabilities p_i,k; are used (and must be not null) only when start_step=EMStartStep.E. </param>
+            <param name="_weights">Initial mixture weights π_k; are used (if not null) only when start_step=EMStartStep.E. </param>
+            <param name="_means">Initial mixture means a_k; are used (and must be not null) only when start_step=EMStartStep.E. </param>
+            <param name="_covs">Initial mixture covariation matrices S_k; are used (if not null) only when start_step=EMStartStep.E. </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvEMParams.Finalize">
+            <summary>
+            Destructor
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.NativeStruct">
+            <summary>
+            Native struct
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.NClusters">
+            <summary>
+            The number of mixtures. 
+            (Some of EM implementation could determine the optimal number of mixtures within a specified value range, but that is not the case in ML yet.)
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.CovMatType">
+            <summary>
+            The type of the mixture covariation matrices
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.StartStep">
+            <summary>
+            The initial step the algorithm starts from
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.Probs">
+            <summary>
+            Initial probabilities p_i,k; are used (and must be not null) only when start_step=EMStartStep.E. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.Weights">
+            <summary>
+            Initial mixture weights πk; are used (if not null) only when start_step=EMStartStep.E. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.Means">
+            <summary>
+            Initial mixture means a_k; are used (and must be not null) only when start_step=EMStartStep.E.
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.Covs">
+            <summary>
+            Initial mixture covariation matrices S_k; are used (if not null) only when start_step=EMStartStep.E.
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.CovsPtr">
+            <summary>
+            Initial mixture covariation matrices S_k; are used (if not null) only when start_step=EMStartStep.E.
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvEMParams.TermCrit">
+            <summary>
+            Termination criteria of the procedure. 
+            EM algorithm stops either after a certain number of iterations (term_crit.Iter), 
+            or when the parameters change too little (no more than term_crit.Epsilon) from iteration to iteration. 
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.BoostType">
+            <summary>
+            Data layout of decision tree
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostType.Discrete">
+            <summary>
+            Discrete AdaBoost
+            [CvBoost::DISCRETE]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostType.Real">
+            <summary>
+            Real AdaBoost
+            [CvBoost::REAL]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostType.Logit">
+            <summary>
+            LogitBoost
+            [CvBoost::LOGIT]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostType.Gentle">
+            <summary>
+            Gentle AdaBoost
+            [CvBoost::GENTLE]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.SVMType">
+            <summary>
+            Type of SVM
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMType.CSvc">
+            <summary>
+            n-class classification (n>=2), allows imperfect separation of classes with penalty multiplier C for outliers.
+            [CvSVM::C_SVC]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMType.NuSvc">
+            <summary>
+            n-class classification with possible imperfect separation. Parameter nu (in the range 0..1, the larger the value, the smoother the decision boundary) is used instead of C.
+            [CvSVM::NU_SVC]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMType.OneClass">
+            <summary>
+            one-class SVM. All the training data are from the same class, SVM builds a boundary that separates the class from the rest of the feature space.
+            [CvSVM::ONE_CLASS]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMType.EpsSvr">
+            <summary>
+            regression. The distance between feature vectors from the training set and the fitting hyper-plane must be less than p. For outliers the penalty multiplier C is used.
+            [CvSVM::EPS_SVR]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.SVMType.NuSvr">
+            <summary>
+            regression; nu is used instead of p. 
+            [CvSVM::NU_SVR]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvERTrees">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvRTrees">
+            <summary>
+            Random Trees
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvRTrees._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvRTrees.SizeOf">
+            <summary>
+            sizeof(CvRTrees)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.#ctor(System.IntPtr)">
+            <summary>
+            Initializes by pointer
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat)">
+            <summary>
+            Trains Random Trees model
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Trains Random Trees model
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="comp_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Train(OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.DTreeDataLayout,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvRTParams)">
+            <summary>
+            Trains Random Trees model
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="comp_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Predict(OpenCvSharp.CvMat)">
+            <summary>
+            Predicts the output for the input sample
+            </summary>
+            <param name="sample"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Predict(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Predicts the output for the input sample
+            </summary>
+            <param name="sample"></param>
+            <param name="missing"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetVarImportance">
+            <summary>
+            Retrieves the variable importance array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetProximity(OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Retrieves proximity measure between two training samples
+            </summary>
+            <param name="sample_1"></param>
+            <param name="sample_2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetProximity(OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            Retrieves proximity measure between two training samples
+            </summary>
+            <param name="sample_1"></param>
+            <param name="sample_2"></param>
+            <param name="missing1"></param>
+            <param name="missing2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetActiveVarMask">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetRng">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetTreeCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.GetTree(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Clear">
+            <summary>
+            Deallocates memory and resets the model state
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Write(OpenCvSharp.CvFileStorage,System.String)">
+            <summary>
+            Writes the model to file storage
+            </summary>
+            <param name="storage"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvRTrees.Read(OpenCvSharp.CvFileStorage,OpenCvSharp.CvFileNode)">
+            <summary>
+            Reads the model from file storage
+            </summary>
+            <param name="fs"></param>
+            <param name="node"></param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvERTrees._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.#ctor(System.IntPtr)">
+            <summary>
+            Initializes by pointer
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvERTrees.SizeOf">
+            <summary>
+            sizeof(CvERTrees)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.CvMat,System.Int32,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.CvMat,OpenCvSharp.MachineLearning.CvRTParams)">
+            <summary>
+            
+            </summary>
+            <param name="train_data"></param>
+            <param name="tflag"></param>
+            <param name="responses"></param>
+            <param name="var_idx"></param>
+            <param name="sample_idx"></param>
+            <param name="var_type"></param>
+            <param name="missing_mask"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.MachineLearning.CvMLData)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.Train(OpenCvSharp.MachineLearning.CvMLData,OpenCvSharp.MachineLearning.CvRTParams)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvERTrees.GrowForest(OpenCvSharp.CvTermCriteria)">
+            <summary>
+            
+            </summary>
+            <param name="term_crit"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvMLData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvMLData._disposed">
+            <summary>
+            Track whether Dispose has been called
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">
+            If disposing equals true, the method has been called directly or indirectly by a user's code. Managed and unmanaged resources can be disposed.
+            If false, the method has been called by the runtime from inside the finalizer and you should not reference other objects. Only unmanaged resources can be disposed.
+            </param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvMLData.SizeOf">
+            <summary>
+            sizeof(CvMLData)
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.ReadCsv(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetValues">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetResponses">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetMissing">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetResponseIdx">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.SetResponseIdx(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="idx"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetTrainSampleIdx">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetTestSampleIdx">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.MixTrainAndTestIdx">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.SetTrainTestSplit(OpenCvSharp.MachineLearning.CvTrainTestSplit)">
+            <summary>
+            
+            </summary>
+            <param name="spl"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetVarIdx">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.ChangeVarIdx(System.Int32,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="vi"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetVarTypes">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetVarType(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="var_idx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.SetVarTypes(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="str"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.ChangeVarType(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="var_idx"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.SetDelimiter(System.Byte)">
+            <summary>
+            
+            </summary>
+            <param name="ch"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetDelimiter">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.SetMissCh(System.Byte)">
+            <summary>
+            
+            </summary>
+            <param name="ch"></param>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvMLData.GetMissCh">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.BoostSplitCriteria">
+            <summary>
+            Splitting criteria, used to choose optimal splits during a weak tree construction
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostSplitCriteria.Default">
+            <summary>
+            Use the default criteria for the particular boosting method.
+            [CvBoost::DEFAULT]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostSplitCriteria.Gini">
+            <summary>
+            Use Gini index. This is default option for Real AdaBoost; may be also used for Discrete AdaBoost.
+            [CvBoost::GINI]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostSplitCriteria.Misclass">
+            <summary>
+            Use misclassification rate. This is default option for Discrete AdaBoost; may be also used for Real AdaBoost.
+            [CvBoost::MISCLASS]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.BoostSplitCriteria.Sqerr">
+            <summary>
+            Use least squares criteria. This is default and the only option for LogitBoost and Gentle AdaBoost.最小二乗基準を用いる．
+            [CvBoost::SQERR]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvParamGrid">
+            <summary>
+            A grid for the SVM algorithm.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvParamGrid.MinVal">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvParamGrid.MaxVal">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvParamGrid.Step">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvParamGrid.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvParamGrid.Check">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.MLPActivationFunc">
+            <summary>
+            Splitting criteria, used to choose optimal splits during a weak tree construction
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPActivationFunc.Identity">
+            <summary>
+            
+            [CvANN_MLP::IDENTITY]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPActivationFunc.SigmoidSym">
+            <summary>
+            U
+            [CvANN_MLP::SIGMOID_SYM]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.MLPActivationFunc.Gaussian">
+            <summary>
+            
+            [CvANN_MLP::GAUSSIAN]
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.MachineLearning.CvDTreeNode">
+            <summary>
+            Decision tree node
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.MachineLearning.CvDTreeNode.#ctor(System.IntPtr)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="ptr"></param>
+        </member>
+        <member name="F:OpenCvSharp.MachineLearning.CvDTreeNode.SizeOf">
+            <summary>
+            sizeof(CvDTreeNode) 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.CvPtr">
+            <summary>
+            Data pointer (CvDTreeNode*)
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.ClassIdx">
+            <summary>
+            The assigned to the node normalized class index (to 0..class_count-1 range), it is used internally in classification trees and tree ensembles. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Tn">
+            <summary>
+            The tree index in a ordered sequence of trees. The indices are used during and after the pruning procedure. 
+            The root node has the maximum value Tn  of the whole tree, child nodes have Tn less than or equal to the parent's Tn, 
+            and the nodes with Tn≤CvDTree::pruned_tree_idx are not taken into consideration at the prediction stage (the corresponding branches are considered as cut-off), 
+            even if they have not been physically deleted from the tree at the pruning stage. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Value">
+            <summary>
+            When true, the inverse split rule is used (i.e. left and right branches are exchanged in the expressions below) 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Parent">
+            <summary>
+            Pointers to the parent node
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Left">
+            <summary>
+            Pointers to the left node
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Right">
+            <summary>
+            Pointers to the right node
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Split">
+            <summary>
+            Pointer to the first (primary) split. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.SampleCount">
+            <summary>
+            The number of samples that fall into the node at the training stage. 
+            It is used to resolve the difficult cases - when the variable for the primary split is missing, 
+            and all the variables for other surrogate splits are missing too,
+            the sample is directed to the left if left-&lt;sample_count&lt;right-&lt;sample_count and to the right otherwise. 
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.MachineLearning.CvDTreeNode.Depth">
+            <summary>
+            The node depth, the root node depth is 0, the child nodes depth is the parent's depth + 1. 
+            </summary>
+        </member>
+    </members>
+</doc>

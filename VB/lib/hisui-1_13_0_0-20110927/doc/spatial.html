@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<title>Hisui.Spatial: ヒスイでポリゴンデータをラクラク操作</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+
+<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>	
+<h1>Hisui.Spatial: ヒスイでポリゴンデータをラクラク操作</h1>
+<p>Hisui.Spatial.dll にはポリゴンスープやポリゴンメッシュなどのエンティティが定義されています。
+これらのエンティティの使い方を解説します。</p>
+
+<p>これらのエンティティを理解するためには、まず Hisui.Core ネームスペースに定義されている
+Hisui.Core.IStorage, Hisui.Core.IStorage&lt;T&gt; インターフェイスを理解する必要があります。</p>
+
+<p>Hisui.Spatial.dll に定義されているエンティティ一覧は次の通りです。</p>
+<p><table>
+	<tr><th>エンティティ</th><th>説明</th></tr>
+	<tr>
+		<td>ITriangleSoup, IPolygonSoup</td>
+		<td>三角形群または多角形群</td>
+	</tr><tr>
+		<td>ISurface, ICurve</td>
+		<td>曲面・曲線のインターフェイス</td>
+	</tr><tr>
+		<td>IPolygonMesh</td>
+		<td>ポリゴンメッシュ。</td>
+	</tr><tr>
+		<td>IPolyline</td>
+		<td>折れ線（ポリライン）</td>
+	</tr><tr>
+		<td>IShell, IPolygonShell</td>
+		<td>ハーフエッジによる位相構造</td>
+	</tr>
+</table></p>
+
+<h2>IStorage, IStorage&lt;T&gt;</h2>
+<p>Hisui.Core.IStorage&lt;T&gt; インターフェイスは、
+int型のID（キー）とT型の値を対応付けるコレクションクラスのインターフェイスです。
+キーが int 型に固定された Dictionary クラスと思えば良いでしょう。</p>
+<p>メッシュの頂点群やファセット群などは IStorage&lt;T&gt; を利用してコレクションされています。</p>
+
+<pre class="hisui">
+namespace Hisui.Core {
+
+public struct Item&lt;T&gt;
+{
+  public int ID ;
+  public T Value ;
+}
+
+public interface IStorage
+{
+  int Count { get ; }
+  IEnumerable&lt;int&gt; IDs { get ; }
+  bool IsReadOnly { get; }
+  bool Remove( int id ) ;
+  bool Contains( int id ) ;
+  void Clear() ;
+}
+
+public interface IStorage&lt;T&gt; : IStorage
+{
+  IEnumerable&lt;T&gt; Values { get ; }
+  IEnumerable&lt;Item&lt;T&gt;&gt; Items { get ; }
+  T this[int id] { get ; set ; }
+  bool Find( int id, out T val ) ;
+  int  Put( T val ) ;
+}
+	
+}
+</pre>
+<h3>ポイント</h3>
+<ul>
+	<li>IDは1以上の整数です。0 は無効（NULL）です。</li>
+	<li>Put() すると ID が返ってきますが、シーケンシャルに連続した値が帰ってくることは保証されません。</li>
+</ul>
+
+<h2>ITriangleSoup, IPolygonSoup</h2>
+<p>三角形群や多角形群を表すエンティティです。</p>
+<p>トポロジ情報は一切保持していない構造で、面と面の接続関係は保証されていません。
+面と面の間には隙間がある可能性もありますし、頂点が隣接面と共有されていない可能性もあります。
+</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface ITriangleSoup
+    : Core.IStorage&lt;Triangle&gt;
+    , Geom.IBoundary3d
+  { }
+  
+  public interface IPolygonSoup
+    : Core.IStorage&lt;IPolygon&gt;
+    , Geom.IBoundary3d
+  { }
+}
+</pre>
+<ul>
+	<li>IStorage&lt;T&gt; を継承して Triangle や IPolygon をコレクションしています。</li>
+	<li>Geom.IBoundary3d を継承してエンティティの境界ボックス・境界球の情報を保持しています。</li>
+</ul>
+<p>インスタンスの生成には Hisui.Core.Factory を利用します。</p>
+<pre>
+using Hisui.Spatial;
+ITriangleSoup tsoup = Hisui.Core.Factory.NewInstance&lt;ITriangleSoup&gt;();
+IPolygonSoup psoup = Hisui.Core.Factory.NewInstance&lt;IPolygonSoup&gt;();
+</pre>
+<p>Hisui.Core.Factory はごく簡単なDIコンテナと考えてください。</p>
+
+<h2>ISurface, ICurve</h2>
+<p>ヒスイの曲面、曲線を定義するインターフェイスです。</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface ISurface : Core.IBuild, Geom.IBoundary3d
+  {
+    IPolygonMesh Polygonized { get; }
+  }
+  
+  public interface ICurve : Core.IBuild, Geom.IBoundary3d
+  {
+    IPolyline Polygonized { get; }
+  }
+}
+</pre>
+<p>この曲面・曲線の定義はヒスイの大きな特徴の一つです。
+どちらも Polygonized というプロパティを持っていることが分かります。
+つまり、ヒスイでは曲面･曲線を次のように定義していることになります。
+</p>
+<ul>
+	<li>曲面とは IPolygonMesh にポリゴン化できるものである</li>
+	<li>曲線とは IPolyline に折れ線化できるものである</li>
+</ul>
+<p>CADでよく使用されるパラメトリック曲面（NURBS曲面など）は、パラメータ (u, v) に対して3次元座標
+(x, y, z) を一つ対応させるもの、と定義されます。
+これに比べてヒスイの曲面の定義は、ポリゴン化できるものは何でも曲面として扱うことが出来るため、
+パラメトリック曲面以外の曲面も含めたより広範な曲面が表現できると考えています。</p>
+<p>IBuild インターフェイスについては<a href="buildtree.html">「BreathCount とビルドグラフ」</a>を参照してください。
+Build() メソッドが呼ばれると内部で保持している IPolygonMesh オブジェクトが更新されます。</p>
+
+<h2>IPolygonMesh</h2>
+<p>多角形のメッシュ構造を表すエンティティです。
+IPolygonSoup と違い、頂点の共有情報が含まれています。
+基本的な構造は wavefront obj 形式とよく似ています。</p>
+<ul>
+	<li>Pointsプロパティで頂点列を保持します</li>
+	<li>Normalsプロパティで法線ベクトル列を保持します</li>
+	<li>Facetsプロパティでファセット列を保持します</li>
+	<li>ファセットは頂点や法線を反時計回りにIDで保持します</li>
+</ul>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface IPolygonMesh : ISurface
+  {
+    IPoints Points { get; }
+    IDirections Normals { get; }
+    IFacets Facets { get; }
+    IPolygonSoup Polygons { get; }
+  }
+}
+</pre>
+<p>IPolygonMesh が ISurface を継承していることに注目してください。
+ISurface の定義は Polygonized プロパティで IPolygonMesh を返すことでしたから、
+IPolygonMesh と ISurface は相補的に定義されていることが分かります。
+IPolygonMesh.Polygonized プロパティは、return this と実装されます。</p>
+<p>以下に IPoints, IDirections, IFacets の定義を示します。
+いずれも Hisui.Core.IStorage&lt;T&gt; を利用して定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface IPoints
+    : Core.IStorage&lt;Geom.Point3d&gt;
+    , Geom.IBoundary3d
+    , System.ICloneable
+  { }
+  
+  public interface IDirections : Core.IStorage&lt;Geom.Direction3d&gt; { }
+  
+  public interface IFacets : Core.IStorage&lt;IFacet&gt;  { }
+}
+</pre>
+<p>インスタンスの生成には Hisui.Core.Factory を利用します。</p>
+<pre>
+using Hisui.Spatial;
+IPolygonMesh mesh = Hisui.Core.Factory.NewInstance&lt;IPolygonMesh&gt;();
+</pre>
+
+<h2>IPolyline</h2>
+<p>折れ線を表すエンティティです。３次元点座標の列として定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface IPolyline : ICurve, IEnumerable&lt;Geom.Point3d&gt;
+  {
+    bool IsLoop { get; }
+    int Count { get; }
+    Geom.Point3d this[int i] { get; set; }
+    void Add( Geom.Point3d p );
+    void Clear();
+    bool RemoveAt( int i );
+  }
+}
+</pre>
+<p>インスタンスの生成には Hisui.Core.Factory を利用します。</p>
+<pre>
+using Hisui.Spatial;
+IPolyline polyline = Hisui.Core.Factory.NewInstance&lt;IPolyline&gt;();
+</pre>
+
+<h2>IShell, IPolygonShell</h2>
+<p>ハーフエッジ構造の位相情報を保持するエンティティです。
+ハーフエッジ構造とは下図のような位相構造です。
+その名の通りハーフエッジは2本の対で1本のエッジを表します。
+図のように頂点から隣接頂点へ向かう矢印をイメージすると分かりやすいでしょう。</p>
+<p align="center"><a href="spatial_halfedge.png">
+	<img src="spatial_halfedge.png" width="512" style="border:0"></a></p>
+<p>ハーフエッジは次の IHalfEdge インターフェイスで定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface IHalfEdge
+  {
+    IHalfEdge Mate  { get ; }  ... 対になっているハーフエッジ
+    IHalfEdge Next  { get ; }  ... 同じループ上の前方向のハーフエッジ
+    IHalfEdge Prev  { get ; }  ... 同じループ上の後方向のハーフエッジ
+    IHalfEdge Right { get ; }  ... 同じ頂点上の右側のハーフエッジ
+    IHalfEdge Left  { get ; }  ... 同じ頂点上の左側のハーフエッジ
+    int Vertex      { get ; } 
+    int Normal      { get ; } 
+    int Edge        { get ; } 
+    int Loop        { get ; } 
+  }
+}
+</pre>
+<p>任意の IHalfEdge オブジェクト he に対して次の条件が常に成り立ちます。</p>
+<ul>
+	<li>he.Mate.Mate == he</li>
+	<li>he.Next.Loop == he.Prev.Loop == he.Loop</li>
+	<li>he.Next.Prev == he.Prev.Next == he</li>
+	<li>he.Right.Vertex == he.Left.Vertex == he.Vertex</li>
+	<li>he.Right.Left == he.Left.Right == he</li>
+	<li>he.Next == he.Mate.Right</li>
+	<li>he.Prev == he.Left.Mate</li>
+	<li>he.Right == he.Mate.Next</li>
+	<li>he.Left == he.Prev.Mate</li>
+</ul>
+<p>この IHalfEdge を用いて IShell は次のように定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface IShell
+  {
+    int VertexCount { get; }
+    int LoopCount { get; }
+    int EdgeCount { get; }
+
+    IEnumerable&lt;IHalfEdge&gt; Vertices { get; }
+    IEnumerable&lt;IHalfEdge&gt; Loops { get; }
+    IEnumerable&lt;IHalfEdge&gt; Edges { get; }
+
+    IHalfEdge GetVertex( int vid );
+    IHalfEdge GetLoop( int lid );
+    IHalfEdge GetEdge( int eid );
+
+    IEnumerable&lt;IHalfEdge&gt; AroundVertex( int vid );
+    IEnumerable&lt;IHalfEdge&gt; AroundVertex( IHalfEdge he );
+    IEnumerable&lt;IHalfEdge&gt; AroundLoop( int lid );
+    IEnumerable&lt;IHalfEdge&gt; AroundLoop( IHalfEdge he );
+
+    IHalfEdge InsertVertex( IHalfEdge he );
+    IHalfEdge InsertLoop( IHalfEdge he );
+    IHalfEdge SplitVertex( IHalfEdge he1, IHalfEdge he2 );
+    IHalfEdge SplitLoop( IHalfEdge he1, IHalfEdge he2 );
+    IHalfEdge MergeVertex( IHalfEdge he );
+    IHalfEdge MergeLoop( IHalfEdge he );
+  }
+}
+</pre>
+<p>IShell は頂点、ループ、エッジの3種類の位相要素を保持しますが、それらへのアクセスはすべて IHalfEdge
+を介して行われます。
+また、IShell には幾何情報が一切含まれていません。
+つまり IShell は幾何情報からは完全に独立した純粋な位相情報となっています。</p>
+<p>次の IPolygonShell は幾何情報の IPolygonMesh と位相情報の IShell を合わせた構造となっています。</p>
+<pre class="hisui">
+namespace Hisui.Spatial
+{
+  public interface IPolygonShell
+    : IShell
+    , IPolygonMesh
+    , System.ICloneable
+  {
+    bool IsLegalTriangleEdgeCollapse( IHalfEdge he );
+    bool IsLegalTriangleEdgeSwap( IHalfEdge he );
+    bool IsLegalTriangleEdgeSplit( IHalfEdge he );
+
+    IHalfEdge CollapseTriangleEdge( IHalfEdge he );
+    IHalfEdge SplitTriangleEdge( IHalfEdge he );
+    IHalfEdge SwapTriangleEdge( IHalfEdge he );
+    IHalfEdge SplitTriangleFacet( IHalfEdge he );
+
+    IHalfEdge RemoveFacet( int facet );
+    IPolygonShell RemoveConnectingShell( IHalfEdge he );
+    void Reverse();
+  }
+}
+</pre>
+<p>IShell と IPolygonMesh を多重継承している点がポイントです。
+IShell が位相情報を担い、IPolygonMesh が幾何情報を担っています。</p>
+<p>CollapseTriangleEdge() などは三角形メッシュ専用のオイラー操作で、ファセットが三角形の場合にしか使用できません。</p>
+<p>IPolygonMesh に位相情報を付与するためには次のようにコーディングします。</p>
+<pre>
+IPolygonMesh mesh;
+IPolygonShell shell = Hisui.Spatial.Util.Convert.ToPolygonShell( mesh );
+</pre>
+
+
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2007, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

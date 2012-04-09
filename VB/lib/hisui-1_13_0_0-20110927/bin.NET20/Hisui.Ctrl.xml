@@ -1,0 +1,1471 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.Ctrl</name>
+    </assembly>
+    <members>
+        <member name="T:Hisui.Ctrl.Command">
+            <summary>
+            <see cref="T:Hisui.Ctrl.ICommand"/> インターフェイスの実装のための抽象ベースクラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.ICommand">
+            <summary>
+            コマンドを表すインターフェイスです。
+            典型的な使われ方として、メニューをクリックイベントでバインドされた
+            <see cref="T:Hisui.Ctrl.ICommand"/> オブジェクトの <c>Run()</c> メソッドが呼び出されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.ICommand.QueryOption(System.Object,Hisui.Ctrl.IContext)">
+            <summary>
+            コマンドオプションを問合せます。
+            コマンドが実行可能かどうかや、チェック状態などが取得されます。
+            </summary>
+            <param name="target">コマンドの対象となるエンティティ。
+            <c>target.GetType()</c> は <see cref="P:Hisui.Ctrl.ICommand.TargetType"/> 型（あるいはその派生型）となります。
+            <see cref="P:Hisui.Ctrl.ICommand.TargetType"/> が <c>typeof( void )</c> の場合は <c>null</c> を指定します。</param>
+            <param name="con">コマンドコンテキスト</param>
+            <returns>コマンドオプションの問合せ結果</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.ICommand.Run(System.Object,Hisui.Ctrl.IContext)">
+            <summary>
+            コマンドを実行します。
+            </summary>
+            <param name="target">コマンドの対象となるエンティティ。
+            <c>target.GetType()</c> は <see cref="P:Hisui.Ctrl.ICommand.TargetType"/> 型（あるいはその派生型）となります。
+            <see cref="P:Hisui.Ctrl.ICommand.TargetType"/> が <c>typeof( void )</c> の場合は <c>null</c> を指定します。</param>
+            <param name="con">コマンドコンテキスト</param>
+        </member>
+        <member name="P:Hisui.Ctrl.ICommand.TargetType">
+            <summary>
+            コマンドが関連付けられているエンティティの型を返します。
+            特定のエンティティ型とは無関係なコマンドの場合は <c>typeof( void )</c> を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Command.QueryOption(System.Object,Hisui.Ctrl.IContext)">
+            <summary>
+            コマンドオプションを問合せます。
+            コマンドが実行可能かどうかや、チェック状態などが取得されます。
+            </summary>
+            <param name="target">コマンドの対象となるエンティティ。
+            <c>target.GetType()</c> は <see cref="P:Hisui.Ctrl.Command.TargetType"/> 型（あるいはその派生型）となります。
+            <see cref="P:Hisui.Ctrl.Command.TargetType"/> が <c>typeof( void )</c> の場合は <c>null</c> を指定します。</param>
+            <param name="con">コマンドコンテキスト</param>
+            <returns>コマンドオプションの問合せ結果</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Command.Run(System.Object,Hisui.Ctrl.IContext)">
+            <summary>
+            <see cref="M:Hisui.Ctrl.ICommand.Run(System.Object,Hisui.Ctrl.IContext)"/> の実装です。
+            <see cref="M:Hisui.Ctrl.Command.Execute(System.Object,Hisui.Ctrl.IContext)"/> 関数を呼び出し、<c>true</c> が返ってきた場合にヒストリを <c>Commit()</c> します。
+            エラーがスローされた場合にはヒストリを <c>Cancel()</c> します。
+            </summary>
+            <param name="target">コマンドの対象となるエンティティ。
+            <c>target.GetType()</c> は <see cref="P:Hisui.Ctrl.Command.TargetType"/> 型（あるいはその派生型）となります。
+            <see cref="P:Hisui.Ctrl.Command.TargetType"/> が <c>typeof( void )</c> の場合は <c>null</c> を指定します。</param>
+            <param name="con">コマンドコンテキスト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Command.Execute(System.Object,Hisui.Ctrl.IContext)">
+            <summary>
+            <see cref="M:Hisui.Ctrl.Command.Run(System.Object,Hisui.Ctrl.IContext)"/> 関数から呼び出されます。
+            この関数をオーバーライドしてコマンドの実行内容を実装します。
+            </summary>
+            <param name="target">コマンドの対象となるエンティティ。
+            <c>target.GetType()</c> は <see cref="P:Hisui.Ctrl.Command.TargetType"/> 型（あるいはその派生型）となります。
+            <see cref="P:Hisui.Ctrl.Command.TargetType"/> が <c>typeof( void )</c> の場合は <c>null</c> を指定します。</param>
+            <param name="con">コマンドコンテキスト</param>
+            <returns>コマンドが成功した場合に true</returns>
+        </member>
+        <member name="P:Hisui.Ctrl.Command.TargetType">
+            <summary>
+            コマンドが関連付けられているエンティティの型を返します。
+            特定のエンティティ型とは無関係なコマンドの場合は <c>typeof( void )</c> を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.CommandAttribute">
+            <summary>
+            メソッドやクラスなどからコマンドを生成する場合にこの属性を付与します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandAttribute.Caption">
+            <summary>
+            コマンドをUIに表示するときのキャプション文字列です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandAttribute.Iterative">
+            <summary>
+            繰り返しコマンドかどうかを表すフラグです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandAttribute.ShortcutKeys">
+            <summary>
+            コマンドを起動するショートカットキーを取得/設定します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandAttribute.#ctor(System.String,System.Boolean)">
+            <summary>
+            コマンド属性を構築します。
+            </summary>
+            <param name="caption">コマンドのキャプション文字列</param>
+            <param name="iterative">繰り返しコマンドかどうか</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandAttribute.#ctor">
+            <summary>
+            コマンド属性を構築します。<see cref="F:Hisui.Ctrl.CommandAttribute.Caption"/> は null、<see cref="F:Hisui.Ctrl.CommandAttribute.Iterative"/> は false に初期化されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandAttribute.#ctor(System.String)">
+            <summary>
+            コマンド属性を構築します。<see cref="F:Hisui.Ctrl.CommandAttribute.Iterative"/> は false に初期化されます。
+            </summary>
+            <param name="caption">コマンドのキャプション文字列</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandAttribute.#ctor(System.Boolean)">
+            <summary>
+            コマンド属性を構築します。<see cref="F:Hisui.Ctrl.CommandAttribute.Caption"/> は null に初期化されます。
+            </summary>
+            <param name="iterative">繰り返しコマンドかどうか</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandAttribute.CreateCommand(System.Reflection.MemberInfo)">
+            <summary>
+            この属性が付けられた <see cref="T:System.Reflection.MemberInfo"/> から <see cref="T:Hisui.Ctrl.ICommand"/> オブジェクトを生成します。
+            デフォルト実装ではメソッドからコマンドオブジェクトが生成されます。
+            この属性クラスを継承しこのメソッドをオーバーライドすることで、生成されるコマンドをカスタマイズすることが可能です。
+            </summary>
+            <param name="member">属性が付けられた<see cref="T:System.Reflection.MemberInfo"/></param>
+            <returns>生成されたコマンドオブジェクト</returns>
+        </member>
+        <member name="T:Hisui.Ctrl.CommandHelper">
+            <summary>
+            頻繁に必要になるコマンドの実装をより容易にするためのヘルパークラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandHelper.ConfirmDocumentDestruction">
+            <summary>
+            現在のドキュメントを破棄して良いかどうか確認のダイアログを表示する関数です。
+            ドキュメントが変更されている場合に「～は更新されています。保存しますか。」という確認メッセージを表示します。
+            「キャンセル」を押された場合のみ false が返ります。
+            </summary>
+            <returns>キャンセルボタンを押された場合は false</returns>
+        </member>
+        <member name="T:Hisui.Ctrl.CommandInvokedEventArgs">
+            <summary>
+            <see cref="E:Hisui.Ctrl.CommandRegistry.CommandInvoked"/> のイベント引数クラスです。
+            実行されたコマンドに関する情報を格納します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandInvokedEventArgs.CommandTarget">
+            <summary>
+            コマンドが実行されたターゲットエンティティです。
+            エンティティに関連付けられていないコマンドの場合は null が設定されています。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandInvokedEventArgs.CommandName">
+            <summary>
+            コマンド名です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandInvokedEventArgs.#ctor(System.Object,System.String)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="target">コマンドのターゲットエンティティ</param>
+            <param name="name">コマンド名</param>
+        </member>
+        <member name="T:Hisui.Ctrl.CommandInvokingEventArgs">
+            <summary>
+            <see cref="E:Hisui.Ctrl.CommandRegistry.CommandInvoking"/> のイベント引数クラスです。
+            これから実行されるコマンドに関する情報を格納します。
+            </summary>
+            <remarks>
+            このクラスは <see cref="T:System.ComponentModel.CancelEventArgs"/> を継承して定義されています。
+            イベントハンドラで <see cref="P:System.ComponentModel.CancelEventArgs.Cancel"/> プロパティに
+            true を設定すると、コマンドの実行を直前でキャンセルすることが出来ます。
+            </remarks>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandInvokingEventArgs.CommandTarget">
+            <summary>
+            コマンドが実行されたターゲットエンティティです。
+            エンティティに関連付けられていないコマンドの場合は null が設定されています。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandInvokingEventArgs.CommandName">
+            <summary>
+            コマンド名です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandInvokingEventArgs.#ctor(System.Object,System.String)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="target">コマンドのターゲットエンティティ</param>
+            <param name="name">コマンド名</param>
+        </member>
+        <member name="T:Hisui.Ctrl.CommandOption">
+            <summary>
+            コマンドオプション。
+            コマンド関数の引数として受け取る場合と、<see cref="M:Hisui.Ctrl.ICommand.QueryOption(System.Object,Hisui.Ctrl.IContext)"/> メソッドの戻り値として受け取る場合があります。
+            </summary>
+            <remarks>
+            次のような使い方が典型的です。
+            <code>
+            [Hisui.Ctrl.Command]
+            static void Hogehoge( Hisui.Ctrl.IContext con, Hisui.Ctrl.CommandOption opt )
+            {
+              if ( opt.QueryRunnable ) {
+                // ここに来た場合はコマンドの実行ではなく、このコマンドが実行可能かどうかの問合せモード。
+                // opt にコマンドの実行可能性などのフラグを設定して return する。
+                opt.QueryRunnable = コマンドが実行可能な条件; // 実行可能な場合は true、不可の場合は false を設定して返す。
+                opt.IsChecked = コマンドのチェック状態;       // 省略可
+                return;
+              }
+              // ここにコマンドの本来の実行処理を実装する。
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandOption.QueryRunnable">
+            <summary>
+            コマンド関数の引数の場合、コマンドが実行可能かどうかの問合せモードかどうかを表します。
+            <see cref="M:Hisui.Ctrl.ICommand.QueryOption(System.Object,Hisui.Ctrl.IContext)"/> の戻り値の場合、当該コマンドが実行可能かどうかを表します。
+            フレームワークはこの値を元にメニューやボタンの <c>Enabled</c> プロパティを制御します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.CommandOption.IsChecked">
+            <summary>
+            コマンドのチェック状態です。
+            フレームワークはこの値を元に、メニューのチェック状態やトグルボタンの押し下げ状態を制御します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.CommandRegistry">
+            <summary>
+            <see cref="T:Hisui.Ctrl.ICommand"/> オブジェクトを登録、管理するクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.GetNamesAndCaptions(System.Type)">
+            <summary>
+            指定した型をターゲットとして登録されたコマンドを検索し、コマンド名をキーとしてキャプション文字列を格納するツリー構造を取得します。
+            </summary>
+            <param name="target">コマンドのターゲット型</param>
+            <returns>コマンド名をキーとしてキャプション文字列を格納するツリー構造</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.GetNamesAndCaptions(System.Type,System.Boolean)">
+            <summary>
+            指定した型をターゲットとして登録されたコマンドを検索し、コマンド名をキーとしてキャプション文字列を格納するツリー構造を取得します。
+            </summary>
+            <param name="target">コマンドのターゲット型</param>
+            <param name="exceptObject">true を指定するとターゲットに<c>typeof( object )</c>が指定されているコマンドは検索対象から除外します</param>
+            <returns>コマンド名をキーとしてキャプション文字列を格納するツリー構造</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.GetNamesAndCaptions(System.Type,System.String)">
+            <summary>
+            指定した型をターゲットとして登録されたコマンドを検索し、コマンド名をキーとしてキャプション文字列を格納するツリー構造を取得します。
+            </summary>
+            <param name="target">コマンドのターゲット型</param>
+            <param name="path">このパス配下の枝を取得されます</param>
+            <returns>コマンド名をキーとしてキャプション文字列を格納するツリー構造</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.GetNamesAndCaptions(System.Type,System.String,System.Boolean)">
+            <summary>
+            指定した型をターゲットとして登録されたコマンドを検索し、コマンド名をキーとしてキャプション文字列を格納するツリー構造を取得します。
+            </summary>
+            <param name="target">コマンドのターゲット型</param>
+            <param name="path">このパス配下の枝を取得されます</param>
+            <param name="exceptObject">true を指定するとターゲットに<c>typeof( object )</c>が指定されているコマンドは検索対象から除外します</param>
+            <returns>コマンド名をキーとしてキャプション文字列を格納するツリー構造</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.FindCommand(System.Type,System.String)">
+            <summary>
+            コマンドを検索します。
+            </summary>
+            <param name="target">コマンドのターゲット型</param>
+            <param name="name">コマンド名</param>
+            <returns>見つかったコマンド。見つからない場合は null。</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.FindCommand(System.Object,System.String)">
+            <summary>
+            コマンドを検索します。
+            <paramref name="target"/> の型やそのベースクラス、実装するインターフェイスを順に辿りコマンドを探索します。
+            </summary>
+            <param name="target">ターゲットのオブジェクト</param>
+            <param name="name">コマンド名</param>
+            <returns>見つかったコマンド。見つからない場合は null。</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.FindCaption(System.String)">
+            <summary>
+            コマンドに関連付けられたキャプション文字列を取得します。
+            キャプションが設定されていない場合は null を返します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>キャプション文字列。見つからない場合は null。</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.FindShortcutKeys(System.String)">
+            <summary>
+            コマンドに関連付けられたショートカットキーを取得します。
+            ショートカットキーが設定されていない場合は <see cref="F:System.Windows.Forms.Keys.None"/> を返します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>ショートカットキー。見つからない場合は <see cref="F:System.Windows.Forms.Keys.None"/>。</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.Collect(System.String)">
+            <summary>
+            コマンド名が一致する <see cref="T:Hisui.Ctrl.ICommand"/> オブジェクトを全て列挙します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns><paramref name="name"/>に関連付けられたコマンド列</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.PutCommand(System.String,Hisui.Ctrl.ICommand)">
+            <summary>
+            コマンドを登録します。
+            既に同一名かつ同一ターゲットのコマンドが存在している場合は、新たに指定されたコマンドで上書きされます。
+            </summary>
+            <param name="fullname">コマンド名</param>
+            <param name="command">コマンドオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.RemoveCommand(System.Type,System.String)">
+            <summary>
+            コマンドを削除します。
+            </summary>
+            <param name="target">コマンドのターゲット型</param>
+            <param name="name">コマンド名</param>
+            <returns>削除されたかどうか</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.RemoveCommands(System.String)">
+            <summary>
+            指定された名前に関連付けられた複数のコマンド（ターゲット型が異なるもの）を全て削除します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>削除されたコマンド数</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.PutCaption(System.String,System.String)">
+            <summary>
+            キャプション文字列を設定します。
+            指定されたコマンド名に対するキャプションが既に設定済み場合は、新たに指定されたキャプションで上書きされます。
+            </summary>
+            <param name="fullname">コマンド名</param>
+            <param name="caption">キャプション文字列</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.PutShortcutKeys(System.String,System.Windows.Forms.Keys)">
+            <summary>
+            ショートカットキーを設定します。
+            指定されたコマンド名に対するショートカットキーが既に設定済みの場合は、新たに指定されたキーで上書きされます。
+            </summary>
+            <param name="fullname"></param>
+            <param name="shortcut"></param>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.Run(System.Object,System.String)">
+            <summary>
+            コマンドを起動します。
+            </summary>
+            <param name="target">ターゲット</param>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが起動された場合 true。何らかの理由で起動できなかった場合は false。</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.Run(System.String)">
+            <summary>
+            コマンドを起動します。
+            <see cref="P:Hisui.Ctrl.Current.Self"/> あるいは選択エントリに付与されたエレメントをターゲットとしてコマンドを起動します。
+            <see cref="P:Hisui.Ctrl.Current.Self"/> が null の場合はグローバルコマンドを起動します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが起動された場合 true。何らかの理由で起動できなかった場合は false。</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.QueryOption(System.Object,System.String)">
+            <summary>
+            指定したコマンドからコマンドオプションを取得します。
+            </summary>
+            <param name="target">コマンドのターゲット</param>
+            <param name="name">コマンド名</param>
+            <returns>取得されたコマンドオプション</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.QueryOption(System.String)">
+            <summary>
+            指定したコマンドからコマンドオプションを取得します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>取得されたコマンドオプション</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.ContainsGlobalCommand(System.String)">
+            <summary>
+            指定されたコマンド名のグローバルコマンドが登録されているかどうか調べます。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが存在するかどうか</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.ContainsCommand(System.Object,System.String)">
+            <summary>
+            指定されたターゲットとコマンド名に対応するコマンドが登録されているかどうか調べます。
+            </summary>
+            <param name="target">コマンドのターゲット</param>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが存在するかどうか</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.CommandRegistry.ContainsCommand(System.String)">
+            <summary>
+            指定されたコマンド名のコマンドが登録されているかどうか調べます。
+            ターゲットの型は問わず、名前が一致するコマンドが見つかれば true を返します。
+            </summary>
+            <param name="name">コマンド名</param>
+            <returns>コマンドが存在するかどうか</returns>
+        </member>
+        <member name="E:Hisui.Ctrl.CommandRegistry.CommandInvoking">
+            <summary>
+            コマンドが実行される直前に発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.CommandRegistry.CommandInvoked">
+            <summary>
+            コマンドが実行された直後に発生するイベントです。
+            より正確には、<see cref="M:Hisui.Ctrl.ICommand.Run(System.Object,Hisui.Ctrl.IContext)"/> が実行された直後に発生します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.CommandRegistry.NamesAndCaptions">
+            <summary>
+            コマンド名をキーとしてキャプション文字列を格納するツリー構造を取得します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.CompositeOperation">
+            <summary>
+            <see cref="T:Hisui.Ctrl.IOperation"/> の列（<see cref="T:System.Collections.Generic.IEnumerator`1"/>）をひとつのオペレーションとして束ねるクラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.IOperation">
+            <summary>
+            マウス等によるユーザーオペレーションを表すインターフェイスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.IOperation.Run(System.Action)">
+            <summary>
+            必要なイベントハンドラの設定などを行い、オペレーションを開始します。
+            オペレーションが完了したとき（終了するとき）に <paramref name="terminate"/> が呼び出されます。
+            </summary>
+            <param name="terminate">オペレーション終了時に呼び出される関数</param>
+        </member>
+        <member name="M:Hisui.Ctrl.IOperation.Abort">
+            <summary>
+            オペレーションを終了させます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.IOperation.Suspend">
+            <summary>
+            オペレーションを一時的に停止（サスペンド）します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.IOperation.Resume">
+            <summary>
+            サスペンドされていたオペレーションを復帰させます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IOperation.IsAttached">
+            <summary>
+            オペレーションが動作中の場合に true を返します。
+            オペレーションが起動していない場合やサスペンド状態の場合は false を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IOperation.IsEntered">
+            <summary>
+            オペレーションが起動されている場合に true を返します。
+            サスペンドされている場合でも true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IOperation.IsSuspended">
+            <summary>
+            オペレーションがサスペンド状態かどうかを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CompositeOperation.#ctor(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation})">
+            <summary>
+            コンストラクタ。<see cref="T:Hisui.Ctrl.IOperation"/> の列を元に構築します。
+            </summary>
+            <remarks>
+            このコンストラクタ呼出の時点で、<paramref name="operations"/> に対して既に <c>MoveNext()</c> メソッドが
+            呼び出し済みであり <c>operations.Current != null</c> の条件をみたしている必要があります。
+            </remarks>
+            <param name="operations">オペレーションの列</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CompositeOperation.Run(System.Action)">
+            <summary>
+            コンストラクタで設定されたオペレーションの列からまず先頭のオペレーションを取り出し、起動します。
+            最初のオペレーションが終了すると次のオペレーションに遷移します。
+            列のすべてのオペレーションが終了すると <paramref name="terminate"/> が呼ばれます。
+            </summary>
+            <param name="terminate">オペレーション終了時に呼び出される関数</param>
+        </member>
+        <member name="M:Hisui.Ctrl.CompositeOperation.Abort">
+            <summary>
+            オペレーションを終了させます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CompositeOperation.Suspend">
+            <summary>
+            オペレーションを一時的に停止（サスペンド）します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.CompositeOperation.Resume">
+            <summary>
+            サスペンドされていたオペレーションを復帰させます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.CompositeOperation.IsAttached">
+            <summary>
+            オペレーションが動作中の場合に true を返します。
+            オペレーションが起動していない場合やサスペンド状態の場合は false を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.CompositeOperation.IsEntered">
+            <summary>
+            オペレーションが起動されている場合に true を返します。
+            サスペンドされている場合でも true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.CompositeOperation.IsSuspended">
+            <summary>
+            オペレーションがサスペンド状態かどうかを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.IContext">
+            <summary>
+            コマンドの実行中のみ有効なコンテキストオブジェクトを表すインターフェイスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.IContext.Invalidate">
+            <summary>
+            ビューを無効化して再描画を促します。
+            実際の再描画処理は次のペイントイベントで行われます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.IContext.Refresh">
+            <summary>
+            ビューを強制的に即時再描画します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.ActiveEntries">
+            <summary>
+            <c>this.Document.ActiveEntries</c> を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.Selected">
+            <summary>
+            <c>this.Document.SelectedEntry</c> を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.Document">
+            <summary>
+            <see cref="P:Hisui.Core.Document.Current"/> を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.View">
+            <summary>
+            現在のアクティブなビューを取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.Events">
+            <summary>
+            <see cref="P:Hisui.Ctrl.IContext.Document"/> に関連付けられたビューの <see cref="T:Hisui.Graphics.IViewEvents"/> を返します。
+            ビューで生じたイベントをハンドリングできます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.Cursor">
+            <summary>
+            現在のコマンド中に有効なマウスカーソルを set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.IContext.UseWaitCursor">
+            <summary>
+            マウスカーソルを待機中にするかどうかを set/get します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.IContext.Abort">
+            <summary>
+            コマンドがアボートされたときに発生するイベントです。
+            アボート時はまずこの <see cref="E:Hisui.Ctrl.IContext.Abort"/> イベントが発生し、次に <see cref="E:Hisui.Ctrl.IContext.Termination"/> イベントが発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.IContext.Termination">
+            <summary>
+            コマンドが終了したときに発生するイベントです。
+            コマンドがアボートされた場合にもこのイベントは発生します。
+            </summary>
+        </member>
+        <member name="M:Hisui.CtrlUT.BindToCommandByTag(System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStrip"/> の各要素の Click イベントに <see cref="F:Hisui.CtrlUT.CommandInvocationEventHandler"/> をアタッチします。
+            これにより、<see cref="T:System.Windows.Forms.ToolStripItem"/> をクリックすると <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/>
+            プロパティに設定されたコマンドが起動されるようになります。
+            </summary>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.CtrlUT.BindToCommandByTag(System.Windows.Forms.ToolStripItem)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> の Click イベントに <see cref="F:Hisui.CtrlUT.CommandInvocationEventHandler"/> をアタッチします。
+            これにより、<see cref="T:System.Windows.Forms.ToolStripItem"/> をクリックすると <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/>
+            プロパティに設定されたコマンドが起動されるようになります。
+            </summary>
+            <param name="item">ツールボタンやメニューなど</param>
+        </member>
+        <member name="M:Hisui.CtrlUT.BindToCommandByTag(System.Object,System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStrip"/> の各要素の Click イベントに <see cref="F:Hisui.CtrlUT.CommandInvocationEventHandler"/> をアタッチします。
+            これにより、<see cref="T:System.Windows.Forms.ToolStripItem"/> をクリックすると <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/>
+            プロパティに設定されたコマンドが起動されるようになります。
+            </summary>
+            <param name="target">コマンド起動のターゲット</param>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.CtrlUT.BindToCommandByTag(System.Object,System.Windows.Forms.ToolStripItem)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> の Click イベントに <see cref="F:Hisui.CtrlUT.CommandInvocationEventHandler"/> をアタッチします。
+            これにより、<see cref="T:System.Windows.Forms.ToolStripItem"/> をクリックすると <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/>
+            プロパティに設定されたコマンドが起動されるようになります。
+            </summary>
+            <param name="target">コマンド起動のターゲット</param>
+            <param name="item">ツールボタンやメニューなど</param>
+        </member>
+        <member name="F:Hisui.CtrlUT.CommandInvocationEventHandler">
+            <summary>
+            （主に）<see cref="T:System.Windows.Forms.ToolStripItem"/> のクリックイベントのためのハンドラ関数です。
+            <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/> プロパティからコマンド文字列を取得し、<see cref="M:Hisui.Ctrl.CommandRegistry.Run(System.String)"/>
+            を呼び出してコマンドを起動します。
+            </summary>
+        </member>
+        <member name="M:Hisui.CtrlUT.GetCommandInvocationEventHandler(System.Object)">
+            <summary>
+            （主に）<see cref="T:System.Windows.Forms.ToolStripItem"/> のクリックイベントのためのハンドラ関数です。
+            <see cref="P:System.Windows.Forms.ToolStripItem.Tag"/> プロパティからコマンド文字列を取得し、<see cref="M:Hisui.Ctrl.CommandRegistry.Run(System.String)"/>
+            を呼び出してコマンドを起動します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.Current">
+            <summary>
+            現在アクティブな様々なインスタンスを静的プロパティとして集めたクラスです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Document">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Core.Document"/> を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Entries">
+            <summary>
+            現在選択されているエントリ（複数）を取得します。
+            <c>Current.Document.SelectedEntries</c> と同義です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Entry">
+            <summary>
+            現在選択されているエントリ（一つ）を取得します。
+            <c>Current.Document.SelectedEntry</c> と同義です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Entity">
+            <summary>
+            現在選択されているエンティティを取得します。
+            <see cref="P:Hisui.Ctrl.Current.Entry"/> が null でない場合は <c>Current.Entry.Entity</c> と同義です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Self">
+            <summary>
+            現在アクティブなオブジェクトを取得します。
+            </summary>
+            <remarks>
+            この<see cref="P:Hisui.Ctrl.Current.Self"/>プロパティから取得されるオブジェクトは次のようにして決まります。
+            <list type="number">
+            <item><description>ユーザーによって<see cref="P:Hisui.Ctrl.Current.Self"/>に null でないオブジェクトが設定されている場合は、それを返します。</description></item>
+            <item><description>複数のエントリが選択されている場合は<see cref="P:Hisui.Ctrl.Current.Entries"/>を返します。</description></item>
+            <item><description>単一のエントリが選択されていて、そのエンティティが null でない場合はそのエンティティを返します。</description></item>
+            <item><description>単一のエントリが選択されていて、そのエンティティが null の場合はエントリ自身を返します。</description></item>
+            <item><description>上記以外は null を返します。</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.DocumentViews">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.DocumentViews"/> を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.View">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Graphics.IView"/> を取得します。
+            マウスでビューをクリックすることでアクティブなビューが切り替わります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Context">
+            <summary>
+            現在アクティブな <see cref="T:Hisui.Ctrl.IContext"/> を取得します。
+            何らかのコマンドが起動中の場合には、そのコマンド起動中のみ有効なコンテキストを取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.Driver">
+            <summary>
+            アクティブな <see cref="T:Hisui.Ctrl.OperationDriver"/> を取得します。
+            ユーザーオペレーションを含むコマンドはこの <see cref="P:Hisui.Ctrl.Current.Driver"/> によって駆動されます。
+            </summary>
+            <remarks>
+            この <see cref="T:Hisui.Ctrl.OperationDriver"/> は <see cref="P:Hisui.Core.Builder.Tasks"/> に登録されているため、
+            <see cref="M:Hisui.Core.Builder.Build"/> によるビルドの対象となります。
+            </remarks>
+        </member>
+        <member name="P:Hisui.Ctrl.Current.ErrorHandler">
+            <summary>
+            アクティブなエラーハンドラを set/get します。
+            このエラーハンドラは、コマンドなどで予期しない例外がスローされた場合にそのハンドラとして使用されます。
+            デフォルトでは例外の内容をメッセージボックスで表示するシンプルなハンドラが設定されています。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.Operation">
+            <summary>
+            <see cref="T:Hisui.Ctrl.IOperation"/> インターフェイスの実装クラスです。
+            <see cref="T:Hisui.Graphics.IViewEvents"/> や <see cref="T:Hisui.Graphics.ISceneHolder"/> も実装しており、
+            イベント処理やシーンの登録なども行えます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.#ctor(Hisui.Graphics.IViewEvents)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="events">操作対象のビューのイベント群</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.#ctor(System.Windows.Forms.Control)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="control">操作対象のコントロール</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.#ctor(Hisui.Graphics.IView)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="view">操作対象のビュー</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.#ctor(Hisui.Graphics.DocumentViews)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="docviews">操作対象の <see cref="T:Hisui.Graphics.DocumentViews"/></param>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.#ctor(Hisui.Ctrl.IContext)">
+            <summary>
+            コンストラクタ。
+            </summary>
+            <param name="con">現在のコンテキスト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.#ctor">
+            <summary>
+            デフォルトコンストラクタ。<see cref="P:Hisui.Ctrl.Current.DocumentViews"/> を操作対象として構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.Run(System.Action)">
+            <summary>
+            必要なイベントハンドラの設定などを行い、オペレーションを開始します。
+            オペレーションが完了したとき（終了するとき）に <paramref name="terminate"/> が呼び出されます。
+            </summary>
+            <param name="terminate">オペレーション終了時に呼び出される関数</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.Abort">
+            <summary>
+            オペレーションを終了させます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.Suspend">
+            <summary>
+            オペレーションを一時的に停止（サスペンド）します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Operation.Resume">
+            <summary>
+            サスペンドされていたオペレーションを復帰させます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.Cursor">
+            <summary>
+            このオペレーションがアクティブなときに有効なマウスカーソルを set/get します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Attached">
+            <summary>
+            オペレーションがイベントにアタッチされてアクティブになったときに発生するイベントです。
+            <see cref="M:Hisui.Ctrl.Operation.Resume"/>されたときにも発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Detached">
+            <summary>
+            オペレーションがイベントからデタッチされて非アクティブになったときに発生するイベントです。
+            <see cref="M:Hisui.Ctrl.Operation.Suspend"/>されたときにも発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Entered">
+            <summary>
+            オペレーションが起動されたときに発生するイベントです。
+            <see cref="M:Hisui.Ctrl.Operation.Resume"/>では発生しません。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Exited">
+            <summary>
+            オペレーションが終了したときに発生するイベントです。
+            <see cref="M:Hisui.Ctrl.Operation.Suspend"/>では発生しません。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Suspended">
+            <summary>
+            オペレーションが<see cref="M:Hisui.Ctrl.Operation.Suspend"/>されたときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Resumed">
+            <summary>
+            オペレーションが<see cref="M:Hisui.Ctrl.Operation.Resume"/>されたときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.IsAttached">
+            <summary>
+            オペレーションが動作中の場合に true を返します。
+            オペレーションが起動していない場合やサスペンド状態の場合は false を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.IsEntered">
+            <summary>
+            オペレーションが起動されている場合に true を返します。
+            サスペンドされている場合でも true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.IsSuspended">
+            <summary>
+            オペレーションがサスペンド状態かどうかを返します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.MouseDown">
+            <summary>
+            マウスのボタンを押したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.MouseUp">
+            <summary>
+            マウスのボタンを離したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.MouseClick">
+            <summary>
+            クリックしたときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.MouseDoubleClick">
+            <summary>
+            ダブルクリックしたときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.MouseMove">
+            <summary>
+            マウスを動かしたときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.MouseWheel">
+            <summary>
+            マウスのホイールを回したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.KeyDown">
+            <summary>
+            キーボードのキーを押したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.KeyUp">
+            <summary>
+            キーボードのキーを離したときに発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.KeyPress">
+            <summary>
+            文字キーを押したときに発生します。
+            <see cref="E:Hisui.Ctrl.Operation.KeyDown"/> の後、<see cref="E:Hisui.Ctrl.Operation.KeyUp"/> の前に発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.PreviewKeyDown">
+            <summary>
+            キーボードのキーを押したときに <see cref="E:Hisui.Ctrl.Operation.KeyDown"/> より前に発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.SizeChanged">
+            <summary>
+            ビューのサイズが変更されると発生します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Ctrl.Operation.Paint">
+            <summary>
+            ビューが描画されるときに発生します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.WorldScenes">
+            <summary>
+            ワールド座標系のシーンコレクションです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.CameraScenes">
+            <summary>
+            カメラ座標系のシーンコレクションです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.BackgroundScenes">
+            <summary>
+            スクリーン座標系の背景シーンコレクションです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Operation.ForgroundScenes">
+            <summary>
+            スクリーン座標系の前景シーンコレクションです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.EventType">
+            <summary>
+            <see cref="T:Hisui.Ctrl.IHandler"/> や <see cref="T:Hisui.Ctrl.HandlerRegistry"/> が扱うイベント種別を表す列挙型です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.None">
+            <summary>無効なイベント種別を意味します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.MouseDown">
+            <summary>マウスボタン押し下げると発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.MouseUp">
+            <summary>マウスボタンを離すと発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.MouseMove">
+            <summary>マウスを動かすと発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.MouseWheel">
+            <summary>マウスのホイールを回すと発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.MouseClick">
+            <summary>マウスをクリックすると発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.MouseDoubleClick">
+            <summary>マウスをダブルクリックすると発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.KeyDown">
+            <summary>キーを押し下げると発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.KeyUp">
+            <summary>キーを離すと発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.KeyPress">
+            <summary>文字キーを押すと発生するイベントです。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.SizeChanged">
+            <summary>現在は未対応のため使用できません。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.EntrySelect">
+            <summary>現在は未対応のため使用できません。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.EventType.EntryDeselect">
+            <summary>現在は未対応のため使用できません。</summary>
+        </member>
+        <member name="T:Hisui.Ctrl.HandlerAttribute">
+            <summary>
+            メソッドからイベントハンドラを生成する場合にこの属性を付与します。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.HandlerAttribute.EventType">
+            <summary>
+            ハンドラをアタッチするイベント種別です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.HandlerAttribute.#ctor(Hisui.Ctrl.EventType)">
+            <summary>
+            イベント種別を指定して属性を構築します。
+            </summary>
+            <param name="eventType">メソッドをアタッチするイベント種別</param>
+        </member>
+        <member name="M:Hisui.Ctrl.HandlerAttribute.#ctor">
+            <summary>
+            ハンドラが定義されているクラスには引数なしで構築した属性を付与します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.LButtonClick">
+            <summary>
+            マウスの左ボタンクリックを検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseClick">
+            <summary>
+            マウスのクリック操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseOperation">
+            <summary>
+            マウス操作を扱うための <see cref="T:Hisui.Ctrl.IOperation"/> 実装クラスです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.MouseOperation.Filter">
+            <summary>
+            検出するマウス操作を返します。
+            この <see cref="P:Hisui.Ctrl.MouseOperation.Filter"/> に含まれるマウス操作を検出するとこのオペレーションはアボートされます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.MouseOperation.EventSender">
+            <summary>
+            直前に発生したマウスイベントの発生元を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.MouseOperation.EventArgs">
+            <summary>
+            直前に発生したマウスイベントのイベント引数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.MouseOperation.EventType">
+            <summary>
+            直前に発生したマウスイベントの種別を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.MouseOperation.ModifierKeys">
+            <summary>
+            直前に発生したマウスイベントで押されていた修飾キーを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.LButtonUp">
+            <summary>
+            マウスの左ボタンを離す操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseUp">
+            <summary>
+            マウスのボタンを離す操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseOperations">
+            <summary>
+            マウス操作の種別を表す列挙型です。ビット演算子（<c>|</c>）で合成することが可能です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.None">
+            <summary>操作なしを表します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.MouseClick">
+            <summary>マウスのクリック操作を表します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.MouseMove">
+            <summary>マウスの移動操作を表します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.MouseDown">
+            <summary>マウスのボタン押し下げ操作を表します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.MouseUp">
+            <summary>マウスのボタンを離す操作を表します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.MouseWheel">
+            <summary>マウスのホイールを回す操作を表します。</summary>
+        </member>
+        <member name="F:Hisui.Ctrl.MouseOperations.All">
+            <summary>マウスのすべての操作を表します。</summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseDown">
+            <summary>
+            マウスのボタン押し下げ操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseMove">
+            <summary>
+            マウスの移動操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MouseWheel">
+            <summary>
+            マウスのホイールを回す操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.RButtonClick">
+            <summary>
+            マウスの右ボタンクリックを検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MButtonClick">
+            <summary>
+            マウスの中ボタンクリックを検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.LButtonDown">
+            <summary>
+            マウスの左ボタン押し下げ操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.RButtonDown">
+            <summary>
+            マウスの右ボタン押し下げ操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MButtonDown">
+            <summary>
+            マウスの中ボタン押し下げ操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.RButtonUp">
+            <summary>
+            マウスの右ボタンを離す操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.MButtonUp">
+            <summary>
+            マウスの中ボタンを離す操作を検出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.OperationDriver">
+            <summary>
+            <see cref="T:Hisui.Ctrl.IOperation"/> を駆動するクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Run(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation})">
+            <summary>
+            オペレーションの列を起動します。
+            トップレベルで動作中の <see cref="P:Hisui.Ctrl.OperationDriver.ActiveOperation"/> はアボートされます。
+            </summary>
+            <remarks>
+            オペレーションの列 <paramref name="operations"/> は内部で <see cref="T:Hisui.Ctrl.CompositeOperation"/> に変換されます。
+            </remarks>
+            <param name="operations">起動するオペレーションの列</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Run(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation},Hisui.Ctrl.IContext)">
+            <summary>
+            オペレーションの列を起動します。
+            トップレベルで動作中の <see cref="P:Hisui.Ctrl.OperationDriver.ActiveOperation"/> はアボートされます。
+            </summary>
+            <remarks>
+            オペレーションの列 <paramref name="operations"/> は内部で <see cref="T:Hisui.Ctrl.CompositeOperation"/> に変換されます。
+            </remarks>
+            <param name="operations">起動するオペレーションの列</param>
+            <param name="con">コンテキストオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Run(Hisui.Ctrl.IOperation)">
+            <summary>
+            オペレーションを起動します。
+            トップレベルで動作中の <see cref="P:Hisui.Ctrl.OperationDriver.ActiveOperation"/> はアボートされます。
+            </summary>
+            <param name="operation">起動するオペレーション</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Run(Hisui.Ctrl.IOperation,Hisui.Ctrl.IContext)">
+            <summary>
+            オペレーションを起動します。
+            トップレベルで動作中の <see cref="P:Hisui.Ctrl.OperationDriver.ActiveOperation"/> はアボートされます。
+            </summary>
+            <param name="operation">起動するオペレーション</param>
+            <param name="con">コンテキストオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Interrupt(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation})">
+            <summary>
+            オペレーションの列を起動します。
+            現在トップレベルで動作中のオペレーションはサスペンドされます。
+            </summary>
+            <remarks>
+            オペレーションの列 <paramref name="operations"/> は内部で <see cref="T:Hisui.Ctrl.CompositeOperation"/> に変換されます。
+            <para><see cref="M:Hisui.Ctrl.OperationDriver.Run(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation})"/> と違って、現在トップレベルで動作中のオペレーションはアボートされません。
+            代わりにスタックに<see cref="M:Hisui.Ctrl.OperationDriver.Push"/>され、動作が一時停止（サスペンド）されます。</para>
+            <para><paramref name="operation"/>が終了するとサスペンドされたオペレーションが復帰（レジューム）され、
+            再びトップレベルで動作するようになります。</para>
+            </remarks>
+            <param name="operations">起動するオペレーションの列</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Interrupt(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation},Hisui.Ctrl.IContext)">
+            <summary>
+            オペレーションの列を起動します。
+            現在トップレベルで動作中のオペレーションはサスペンドされます。
+            </summary>
+            <remarks>
+            オペレーションの列 <paramref name="operations"/> は内部で <see cref="T:Hisui.Ctrl.CompositeOperation"/> に変換されます。
+            <para><see cref="M:Hisui.Ctrl.OperationDriver.Run(System.Collections.Generic.IEnumerator{Hisui.Ctrl.IOperation},Hisui.Ctrl.IContext)"/> と違って、現在トップレベルで動作中のオペレーションはアボートされません。
+            代わりにスタックに<see cref="M:Hisui.Ctrl.OperationDriver.Push"/>され、動作が一時停止（サスペンド）されます。</para>
+            <para><paramref name="operation"/>が終了するとサスペンドされたオペレーションが復帰（レジューム）され、
+            再びトップレベルで動作するようになります。</para>
+            </remarks>
+            <param name="operations">起動するオペレーションの列</param>
+            <param name="con">コンテキストオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Interrupt(Hisui.Ctrl.IOperation)">
+            <summary>
+            オペレーションを起動します。
+            現在トップレベルで動作中のオペレーションはサスペンドされます。
+            </summary>
+            <remarks>
+            <see cref="M:Hisui.Ctrl.OperationDriver.Run(Hisui.Ctrl.IOperation)"/> と違って、現在トップレベルで動作中のオペレーションはアボートされません。
+            代わりにスタックに<see cref="M:Hisui.Ctrl.OperationDriver.Push"/>され、動作が一時停止（サスペンド）されます。
+            <para><paramref name="operation"/>が終了するとサスペンドされたオペレーションが復帰（レジューム）され、
+            再びトップレベルで動作するようになります。</para>
+            </remarks>
+            <param name="operation">起動するオペレーション</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Interrupt(Hisui.Ctrl.IOperation,Hisui.Ctrl.IContext)">
+            <summary>
+            オペレーションを起動します。
+            現在トップレベルで動作中のオペレーションはサスペンドされます。
+            </summary>
+            <remarks>
+            <see cref="M:Hisui.Ctrl.OperationDriver.Run(Hisui.Ctrl.IOperation,Hisui.Ctrl.IContext)"/> と違って、現在トップレベルで動作中のオペレーションはアボートされません。
+            代わりにスタックに<see cref="M:Hisui.Ctrl.OperationDriver.Push"/>され、動作が一時停止（サスペンド）されます。
+            <para><paramref name="operation"/>が終了するとサスペンドされたオペレーションが復帰（レジューム）され、
+            再びトップレベルで動作するようになります。</para>
+            </remarks>
+            <param name="operation">起動するオペレーション</param>
+            <param name="con">コンテキストオブジェクト</param>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Push">
+            <summary>
+            トップレベルで動作中のオペレーションをスタックにプッシュし、一段動作レベルを下げます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Pop">
+            <summary>
+            スタックからオペレーションを取り出しトップレベルで動作させます。
+            動作中だったトップレベルのオペレーションはアボートされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.OperationDriver.Abort">
+            <summary>
+            現在トップレベルで動作中のオペレーションをアボートします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.OperationDriver.IsActive">
+            <summary>
+            トップレベルのオペレーションが動作中の場合 true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.OperationDriver.ActiveOperation">
+            <summary>
+            現在トップレベルで動作中のオペレーションを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.OperationDriver.Sources">
+            <summary>
+            現在トップレベルで動作中のオペレーション（正確にはセッション）を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.Pick">
+            <summary>
+            ピック処理によって得られた結果を格納するクラスです。
+            また、static 関数としてピック処理を行う関数やピック関連のユーティリティが定義されています。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.Pick.APERTURE">
+            <summary>
+            ピック処理の当たり判定で使用されるマウスカーソル周りの正方形領域の大きさです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.Pick.HitObject">
+            <summary>
+            ピックされたオブジェクトです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.Pick.HitPosition">
+            <summary>
+            ピック処理でマウスカーソルと対象物が当たった位置です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Pick.GetApertureRect(Hisui.Geom.Point2i,System.Int32)">
+            <summary>
+            ピック処理の当たり判定で使用するためのマウスカーソル周りの正方形領域を構築します。
+            </summary>
+            <param name="mouse">マウスカーソルの位置</param>
+            <param name="aperture">正方形領域の大きさ（辺の長さ）</param>
+            <returns>正方形領域</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Pick.GetApertureRect(Hisui.Geom.Point2i)">
+            <summary>
+            ピック処理の当たり判定で使用するためのマウスカーソル周りの正方形領域を構築します。
+            正方形領域の大きさはデフォルト値 <see cref="F:Hisui.Ctrl.Pick.APERTURE"/> となります。
+            </summary>
+            <param name="mouse">マウスカーソルの位置</param>
+            <returns>正方形領域</returns>
+        </member>
+        <member name="T:Hisui.Ctrl.ToolStripBuilder">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStrip"/> とコマンドを関連付ける処理が定義された静的クラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripBuilder.Build(System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> のTextプロパティやToolTipTextプロパティを設定します。
+            また Enabled プロパティや Checked プロパティを現在の状態に合わせて更新します。
+            </summary>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripBuilder.Build(System.Windows.Forms.ToolStripItem)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> のTextプロパティやToolTipTextプロパティを設定します。
+            また Enabled プロパティや Checked プロパティを現在の状態に合わせて更新します。
+            </summary>
+            <param name="item">ツールボタンやメニューなど</param>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripBuilder.Build(System.Object,System.Windows.Forms.ToolStrip)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> のTextプロパティやToolTipTextプロパティを設定します。
+            また Enabled プロパティや Checked プロパティを現在の状態に合わせて更新します。
+            </summary>
+            <param name="target">選択中のターゲットオブジェクト</param>
+            <param name="ts">ツールバーやメニューバーなど</param>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripBuilder.Build(System.Object,System.Windows.Forms.ToolStripItem)">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStripItem"/> のTextプロパティやToolTipTextプロパティを設定します。
+            また Enabled プロパティや Checked プロパティを現在の状態に合わせて更新します。
+            </summary>
+            <param name="target">選択中のターゲットオブジェクト</param>
+            <param name="item">ツールボタンやメニューなど</param>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripBuilder.GetShortcutKeysString(System.Windows.Forms.Keys)">
+            <summary>
+            ショートカットキーを表す文字列を生成します。
+            </summary>
+            <param name="shortcut">ショートカットキー</param>
+            <returns>生成された文字列</returns>
+        </member>
+        <member name="T:Hisui.Ctrl.ToolStripRegistry">
+            <summary>
+            コマンドと関連付ける <see cref="T:System.Windows.Forms.ToolStrip"/> を登録しておくクラスです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips">
+            <summary>
+            <see cref="T:System.Windows.Forms.ToolStrip"/> のリストです。
+            このリストに追加された <see cref="T:System.Windows.Forms.ToolStrip"/> は <see cref="M:Hisui.Ctrl.ToolStripRegistry.Update"/> 関数によって状態が更新されます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Ctrl.ToolStripRegistry.ToolStripsWithTargets">
+            <summary>
+            コマンド起動ターゲットと <see cref="T:System.Windows.Forms.ToolStrip"/> のペアのリストです。
+            このリストに追加された <see cref="T:System.Windows.Forms.ToolStrip"/> は <see cref="M:Hisui.Ctrl.ToolStripRegistry.Update"/> 関数によって状態が更新されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripRegistry.Update">
+            <summary>
+            <see cref="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips"/> の要素の状態をコマンドの状態に合わせて更新します。
+            全ての要素に対して <see cref="M:Hisui.Ctrl.ToolStripBuilder.Build(System.Windows.Forms.ToolStrip)"/> を呼び出します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripRegistry.RegisterToPluginLoader">
+            <summary>
+            <see cref="T:Hisui.Core.PluginLoader"/> に登録し、プラグインとして読み込まれた 
+            <see cref="T:System.Windows.Forms.ToolStrip"/> が <see cref="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips"/> に追加されるようにします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.ToolStripRegistry.Import(System.Type)">
+            <summary>
+            フォームに配置された <see cref="T:System.Windows.Forms.ToolStrip"/> を取り出し、コマンドと関連付けて <see cref="F:Hisui.Ctrl.ToolStripRegistry.ToolStrips"/> に格納します。
+            </summary>
+            <param name="toolbar"><see cref="T:System.Windows.Forms.ToolStrip"/>が配置されたフォーム</param>
+        </member>
+        <member name="T:Hisui.Ctrl.Tree`1">
+            <summary>
+            ツリー状のデータ構造を表します。
+            ツリーのノード <see cref="T:Hisui.Ctrl.Tree`1.INode"/> は階層ごとに一意の名前と、型 <typeparamref name="T"/> の値をペアで保持します。
+            </summary>
+            <typeparam name="T">ツリーのノードが保持する値の型</typeparam>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.#ctor">
+            <summary>
+            空のツリー構造を構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.#ctor(Hisui.Ctrl.Tree{`0}.INodeCollection)">
+            <summary>
+            <paramref name="nodes"/> を保持するツリー構造を構築します。
+            </summary>
+            <param name="nodes">ツリーのルートノード群</param>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.Find(System.String)">
+            <summary>
+            パス文字列 <paramref name="path"/> で特定されるノードを返します。
+            対応するノードが存在しない場合は null を返します。
+            </summary>
+            <param name="path">パス文字列（ノード名を階層順にドット区切りで連結したもの）</param>
+            <returns>対応するノード</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.Remove(System.String)">
+            <summary>
+            パス文字列 <paramref name="path"/> で特定されるノードを削除します。
+            対応するノードが存在しない場合は false を返します。
+            </summary>
+            <param name="path">パス文字列（ノード名を階層順にドット区切りで連結したもの）</param>
+            <returns>削除できた場合は true</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.Put(System.String,`0)">
+            <summary>
+            パス文字列 <paramref name="path"/> をキーとし、<paramref name="item"/> を値として保持するノードを追加します。
+            </summary>
+            <param name="path">パス文字列（ノード名を階層順にドット区切りで連結したもの）</param>
+            <param name="item">追加する値</param>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.Nodes">
+            <summary>
+            ルートノード群を取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.AllNodes">
+            <summary>
+            全てのノードを、パス文字列と <see cref="T:Hisui.Ctrl.Tree`1.INode"/> のペアとして列挙します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.Tree`1.INode">
+            <summary>
+            ツリー構造のノードを表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.INode.Name">
+            <summary>
+            階層内でノードを識別するための名前です。ツリー構造の同一階層では一意である必要があります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.INode.Path">
+            <summary>
+            ツリー内でノードを一意に識別するパス文字列です。
+            パス文字列とはノード名を階層順にドット区切りで連結したものです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.INode.Item">
+            <summary>
+            ノードに関連付けられた値を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.INode.Parent">
+            <summary>
+            親ノードを取得します。ルートノードの場合は null を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.INode.Nodes">
+            <summary>
+            子ノードのコレクションを取得します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Ctrl.Tree`1.INodeCollection">
+            <summary>
+            ツリー構造のノードのコレクションです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.INodeCollection.Add(System.String)">
+            <summary>
+            ノードを生成・追加します。
+            </summary>
+            <param name="name">ノードの名前</param>
+            <returns>生成されたノード</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.INodeCollection.Find(System.String)">
+            <summary>
+            ノードを名前で検索します。ノードが存在しない場合は null を返します。
+            </summary>
+            <param name="name">ノード名</param>
+            <returns>見つかったノード</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.INodeCollection.Remove(Hisui.Ctrl.Tree{`0}.INode)">
+            <summary>
+            ノードを削除します。
+            </summary>
+            <param name="node">削除するノード</param>
+            <returns>指定されたノードがコレクションに含まれていない場合は false</returns>
+        </member>
+        <member name="M:Hisui.Ctrl.Tree`1.INodeCollection.Contains(Hisui.Ctrl.Tree{`0}.INode)">
+            <summary>
+            ノードがコレクションに含まれるかどうか判定します。
+            </summary>
+            <param name="node">判定するノード</param>
+            <returns>含まれる場合 true</returns>
+        </member>
+        <member name="P:Hisui.Ctrl.Tree`1.INodeCollection.Owner">
+            <summary>
+            このコレクションを保持する親ノードを取得します。
+            ルートノード群の場合は null を返します。
+            </summary>
+        </member>
+    </members>
+</doc>

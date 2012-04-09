@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<config>
+  <plugin>
+    <include name="Hisui.Std.dll"/>
+    <include name="Hisui.Spatial.dll"/>
+    <include name="Hisui.Spatial.Formats.dll"/>
+    <include name="Hisui.Spatial.Commands.dll"/>
+    <include name="Hisui.Python.dll"/>
+  </plugin>
+  <command>
+    <python dir="python"/>
+    <caption name="Scripts.TestScript">テスト</caption>
+  </command>
+</config>

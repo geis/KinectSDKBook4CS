@@ -1,0 +1,2107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.Spatial</name>
+    </assembly>
+    <members>
+        <member name="T:Hisui.Spatial.AbstractCurve">
+            <summary>
+            曲線の抽象クラスを表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.AbstractGeometry">
+            <summary>
+            曲線、折れ線、曲面からなる幾何抽象クラスを表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IGeometry">
+            <summary>
+            幾何要素を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ICurve">
+            <summary>
+            折れ線(<see cref="T:Hisui.Spatial.IPolyline"/>)化できる曲線インターフェースを表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.AbstractCurve.Polygonized">
+            <summary>
+            折れ線化します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolyline">
+            <summary>
+            折れ線インターフェースを表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IPolyline.Add(Hisui.Geom.Point3d)">
+            <summary>
+            構成点の追加。
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="M:Hisui.Spatial.IPolyline.Add(System.Double,System.Double,System.Double)">
+            <summary>
+            構成点の追加。
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+        </member>
+        <member name="M:Hisui.Spatial.IPolyline.AddRange(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3d})">
+            <summary>
+            指定した3次元位置座標点群を追加します。
+            </summary>
+            <param name="points"></param>
+        </member>
+        <member name="M:Hisui.Spatial.IPolyline.RemoveAt(System.Int32)">
+            <summary>
+            指定した i 番目の構成点を除去します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.IPolyline.IsLoop">
+            <summary>
+            ループ(閉回路)かオープンループ(開回路)かを表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolyline.Count">
+            <summary>
+            構成する点数。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolyline.Item(System.Int32)">
+            <summary>
+            指定したi番目の構成点の set/get です。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.IPolyline.StartPos">
+            <summary>
+            開始点の set/get です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolyline.EndPos">
+            <summary>
+            終点の set/get です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolyline.Segments">
+            <summary>
+            3次元線分として取り出します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.AbstractSurface">
+            <summary>
+            曲面抽象クラスを表します。ポリゴン化が可能です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ISurface">
+            <summary>
+            多面体(ポリゴン)化できる曲面インターフェースを表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.ISurface.Polygonized">
+            <summary>
+            ポリゴン化します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.Convert">
+            <summary>
+            型を変換するクラスを表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToParametricPolygonShell(Hisui.Spatial.IParametricPolygonMesh)">
+            <summary>
+            パラメトリックポリゴンメッシュをパラメトリックポリゴンシェルに変換します。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToPolygonShell(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            ポリゴンメッシュをポリゴンシェルに変換します。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.CopyMeshToShell(Hisui.Spatial.IPolygonMesh,Hisui.Spatial.IPolygonShell)">
+            <summary>
+            指定したポリゴンメッシュを指定したポリゴンシェルに変換してコピーします。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToParametricTriangleShell(Hisui.Spatial.IParametricPolygonMesh)">
+            <summary>
+            パラメトリックポリゴンメッシュをパラメトリック三角形メッシュに変換してから、パラメトリックポリゴンシェルにします。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleShell(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            ポリゴンメッシュを三角形シェルに変換してから、ポリゴンシェルにします。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleShell(Hisui.Spatial.IPolygonShell)">
+            <summary>
+            ポリゴンシェルを三角形シェルに変換してから、ポリゴンシェルにします。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleMesh(Hisui.Spatial.ITriangleSoup,Hisui.Spatial.IPointsMap)">
+            <summary>
+            三角形群を指定したポイントマップ(点の対応付け)を使って、三角形メッシュに変換し、ポリゴンシェルにします。
+            </summary>
+            <param name="self"></param>
+            <param name="map"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleMesh(Hisui.Spatial.ITriangleSoup)">
+            <summary>
+            三角形群を三角形メッシュに変換して、ポリゴンメッシュにします。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleMesh(Hisui.Spatial.ITriangleSoup,System.Double)">
+            <summary>
+            三角形群を指定した許容差内にある点は同一とみなして、三角形メッシュに変換し、ポリゴンメッシュにします。
+            </summary>
+            <param name="self"></param>
+            <param name="tole">同一点とみなす許容差</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleMesh(Hisui.Spatial.ITriangleSoup,System.Int32)">
+            <summary>
+            三角形群を指定したボクセルの分解能内に入る点は同一とみなして、三角形メッシュに変換し、ポリゴンメッシュにします。
+            </summary>
+            <param name="self"></param>
+            <param name="mergeVoxelResolution">同一とみなすボクセルの分解能</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToParametricTriangleMesh(Hisui.Spatial.IParametricPolygonMesh)">
+            <summary>
+            パラメトリックポリゴンメッシュをパラメトリック三角形メッシュに変換します。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleMesh(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            ポリゴンメッシュを三角形メッシュに変換します。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangleSoup(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            ポリゴンメッシュを三角形群に変換します。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToPolygonSoup(Hisui.Spatial.ITriangleSoup)">
+            <summary>
+            三角形群を多角形群に変換します。
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToSceneTriangleMesh(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            ポリゴンメッシュをシーンオブジェクトの三角形メッシュに変換します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToSceneParametricTriangleMesh(Hisui.Spatial.IParametricPolygonMesh)">
+            <summary>
+            パラメトリックポリゴンメッシュをシーンオブジェクトのパラメトリック三角形メッシュに変換します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Convert.ToTriangles(Hisui.Spatial.IFacet)">
+            <summary>
+            ファセットを三角形のシーケンスに変換します。
+            </summary>
+            <param name="facet"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hisui.Spatial.Copy">
+            <summary>
+            Spatial 関連のオブジェクトのコピー一般のインターフェースを表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Storage``1(Hisui.Core.IStorage{``0},Hisui.Core.IStorage{``0})">
+            <summary>
+            タイプ<typeparamref name="T"/>のストレージの一つ一つに対してIDをキーにして値をコピー(新しく作って追加)します。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Storage``1(Hisui.Core.IStorage{``0},Hisui.Core.IStorage{``0},Hisui.Core.IStorage{System.Int32})">
+            <summary>
+            IDをキーにして、値をコピーします。IDに該当するものがあれば上書き、なければ追加します。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <param name="mapping"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Points(Hisui.Spatial.IPoints,Hisui.Spatial.IPoints)">
+            <summary>
+            3次元位置座標点群に対してコピーを行います。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Points(Hisui.Spatial.IPoints)">
+            <summary>
+            指定した点群に対して、新しく点群のインスタンスを生成して、コピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.UVPoints(Hisui.Spatial.IUVPoints,Hisui.Spatial.IUVPoints)">
+            <summary>
+            UVポイント群をコピーします。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.UVPoints(Hisui.Spatial.IUVPoints)">
+            <summary>
+            UVポイント群から、新たにインスタンスを生成してコピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Directions(Hisui.Spatial.IDirections,Hisui.Spatial.IDirections)">
+            <summary>
+            3次元方位群のコピーをします。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Directions(Hisui.Spatial.IDirections)">
+            <summary>
+            3次元方位群から、新たにインスタンスを生成してコピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Colors(Hisui.Spatial.IColors)">
+            <summary>
+            色の集まりから、新たにインスタンスを生成してコピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.TriangleSoup(Hisui.Spatial.ITriangleSoup,Hisui.Spatial.ITriangleSoup)">
+            <summary>
+            三角形群をコピーします。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.TriangleSoup(Hisui.Spatial.ITriangleSoup)">
+            <summary>
+            三角形群から、新たにインスタンスを生成してコピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PolygonSoup(Hisui.Spatial.IPolygonSoup,Hisui.Spatial.IPolygonSoup)">
+            <summary>
+            多角形群のコピーをします。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PolygonSoup(Hisui.Spatial.IPolygonSoup)">
+            <summary>
+            多角形群から、新たにインスタンスを生成してコピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PointCloud(Hisui.Spatial.IPointCloud,Hisui.Spatial.IPointCloud)">
+            <summary>
+            ポイントクラウド(大量点群)の点、法線、色をコピーをします。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PointCloud(Hisui.Spatial.IPointCloud)">
+            <summary>
+            ポイントクラウドから、新たにインスタンスを生成して、点、法線、色をコピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Facets(Hisui.Spatial.IFacets)">
+            <summary>
+            ファセット群から、新たにインスタンスを生成して、コピーします。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PolygonMesh(Hisui.Spatial.IPolygonMesh,Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            ポリゴンメッシュのコピーをします。該当する構成要素がない場合は新たに作ります。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PolygonMesh(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            指定したポリゴンメッシュの点群、法線群、色の集まり、ファセット群をすべてコピーして新しくポリゴンメッシュを生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.ParametricPolygonMesh(Hisui.Spatial.IParametricPolygonMesh)">
+            <summary>
+            指定したパラメトリックポリゴンメッシュをコピーして新たにパラメトリックポリゴンメッシュを生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PolygonShell(Hisui.Spatial.IPolygonShell,Hisui.Spatial.IPolygonShell)">
+            <summary>
+            指定した元のポリゴンシェルをコピー先のポリゴンシェルにコピーし、そのマッピングを返します。
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.PolygonShell(Hisui.Spatial.IPolygonShell)">
+            <summary>
+            指定したポリゴンシェルをコピーして、新たにポリゴンシェルを生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Copy.Polyline(Hisui.Spatial.IPolyline)">
+            <summary>
+            指定した折れ線をコピーして、新たに折れ線を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hisui.Spatial.IFacets">
+            <summary>
+            ファセット(面分)の集合インターフェースを表します。点配列や法線配列の追加が行えます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IHalfEdge">
+            <summary>
+            ハーフエッジ位相構造を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ILineMesh">
+            <summary>
+            点と線分からなるメッシュ上のラインインターフェイスを表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ILocal">
+            <summary>
+            局所座標系を表すインターフェースです。3次元領域を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IMeshPolyline">
+            <summary>
+            ポリゴンメッシュの上にある折れ線インターフェースです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IMeshPolyline.Mesh">
+            <summary>
+            折れ線の乗っているポリゴンメッシュの get をします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IMeshPolyline.Points">
+            <summary>
+            折れ線の乗っているポリゴンメッシュの点群の get をします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IMeshPolyline.Edges">
+            <summary>
+            折れ線を構成するエッジの get をします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IMeshPolyline.Vertices">
+            <summary>
+            頂点IDリストの get をします。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ISegments">
+            <summary>
+            ハーフエッジ構造における端点の頂点IDとらなる線分を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IModel">
+            <summary>
+            モデルインターフェースを表し、見えるかどうかが set/get できます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygonMesh">
+            <summary>
+            ポリゴンメッシュインターフェースを表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonMesh.Reverse">
+            <summary>
+            表裏を反転します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.Points">
+            <summary>
+            頂点座標を格納します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.Normals">
+            <summary>
+            法線ベクトルを格納します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.Facets">
+            <summary>
+            ファセットを格納します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.Polygons">
+            <summary>
+            このメッシュ形状を <see cref="T:Hisui.Spatial.IPolygonSoup"/> として取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.Colors">
+            <summary>
+            頂点またはファセットに付ける色を格納します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.NormalsBinding">
+            <summary>
+            法線ベクトルと頂点/ファセットの対応関係を set/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMesh.ColorsBinding">
+            <summary>
+            色と頂点/ファセットの対応関係を set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IParametricPolygonMesh">
+            <summary>
+            パラメリック曲面でありUV値をもつポリゴンメッシュのインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVPolygonMesh">
+            <summary>
+            UV平面内のポリゴンメッシュを表します。UVポイント群とファセットをもち、UVポリゴン群に変換できます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVGeometry">
+            <summary>
+            UVポイント、UV曲線、UV折れ線、UV多角形、UV多角形メッシュ、UV多角形シェル、およびUV多角形群からなるUV幾何要素を表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IParametricSurface">
+            <summary>
+            パラメトリック曲面を表すインターフェースです。ポリゴン化可能です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IParametricSurface.Polygonized">
+            <summary>
+            ポリゴン化します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IShell">
+            <summary>
+            ハーフエッジ構造によるトポロジを持つシェルのインターフェースを表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.InsertVertex(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            エッジを分割して頂点を挿入
+            </summary>
+            <remarks>
+            事後条件：
+              ret.Vertex ... 追加された頂点
+              ret.Edge   ... 追加されたエッジ
+            </remarks>
+            <param name="he">挿入する位置</param>
+            <returns>挿入された頂点</returns>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.InsertLoop(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            エッジを縦に裂いてループを挿入します。
+            </summary>
+            <remarks>
+            事後条件：
+              ret.Loop ... 追加されたループ
+              ret.Edge ... 追加されたエッジ
+            </remarks>
+            <param name="he">挿入する位置</param>
+            <returns>挿入されたループ</returns>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.SplitVertex(Hisui.Spatial.IHalfEdge,Hisui.Spatial.IHalfEdge)">
+            <summary>
+            頂点を2つに分割します。
+            </summary>
+            <remarks>
+            事前条件：
+              he1.Vertex == he2.Vertex
+              he1.Loop != he2.Loop
+              
+            事後条件：
+              ret.Loop  ... 追加されたループ
+              ret.Edge  ... 追加されたエッジ
+            </remarks>
+            <param name="he1"></param>
+            <param name="he2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.SplitLoop(Hisui.Spatial.IHalfEdge,Hisui.Spatial.IHalfEdge)">
+            <summary>
+            ループを2つに分割します。
+            </summary>
+            <remarks>
+            事前条件：
+              he1.Loop == he2.Loop
+              he1.Vertex != he2.Vertex
+              
+            事後条件：
+              ret.Loop  ... 追加されたループ
+              ret.Edge  ... 追加されたエッジ
+            </remarks>
+            <param name="he1"></param>
+            <param name="he2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.MergeVertex(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            2つの頂点をマージします。
+            </summary>
+            <remarks>
+            he.Vertex ... 削除される頂点
+            he.Edge   ... 削除されるエッジ
+            </remarks>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.MergeLoop(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            2つのループをマージします。
+            </summary>
+            <remarks>
+            he.Loop ... 削除されるループ
+            he.Edge ... 削除されるエッジ
+            </remarks>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.Reverse">
+            <summary>
+            シェル全体を反転します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IShell.ReverseConnectingShell(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            引数のエッジ he に接続する要素を反転
+            </summary>
+            <param name="he"></param>
+            <returns>向きが反転した全てのエッジ</returns>
+        </member>
+        <member name="P:Hisui.Spatial.IShell.Data">
+            <summary>
+            内部データを返します。トポロジの不整合を生む可能性があるので濫用は控えること。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygonShell">
+            <summary>
+            ハーフエッジ構造によるトポロジを持つポリゴンシェルのインターフェースです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.IsLegalTriangleEdgeCollapse(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジの(三角形)エッジコラプス(縮約)がトポロジを壊さないときに true を返します。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.IsLegalTriangleEdgeSwap(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジの(三角形)エッジスワップ(交代)がトポロジを壊さないときに true を返します。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.IsLegalTriangleEdgeSplit(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジの(三角形)エッジスプリット(分割)がトポロジを壊さないときに true を返します。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.CollapseTriangleEdge(Hisui.Spatial.IHalfEdge)">
+            <summary>
+             指定したハーフエッジの(三角形)エッジコラプス(縮約)を行います。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.SplitTriangleEdge(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジの(三角形)エッジスプリット(分割)を行います。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.SwapTriangleEdge(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジの(三角形)エッジスワップ(交代)を行います。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.SplitTriangleFacet(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジの(三角形)ファセットスプリット(分割)を行います。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.RemoveFacet(System.Int32)">
+            <summary>
+            指定したファセットの除去をします。
+            </summary>
+            <param name="facet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonShell.RemoveConnectingShell(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジに接続するシェルを除去します。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygonSoup">
+            <summary>
+            多角形群(ばらばらのポリゴンの集まり)インターフェースを表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonSoup.Put(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した点群を多角形として追加します。
+            </summary>
+            <param name="polygon"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hisui.Spatial.IPoint">
+            <summary>
+            3次元の点を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPoint.Cod">
+            <summary>
+            3次元位置座標点として get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPointCloud">
+            <summary>
+            点群と法線群と色の集まりからなる、ポイントクラウド(大量点群)を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPointCloud.Points">
+            <summary>
+            構成点群を get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPointCloud.Normals">
+            <summary>
+            法線ベクトル群を get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPointCloud.Colors">
+            <summary>
+            色の集まりを get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPoints">
+            <summary>
+            点群を表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPointsSubset">
+            <summary>
+            3次元の点のサブセット(部分集合)を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPointsSubset.Source">
+            <summary>
+            元の(母集団である)点の集まりを get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygonMeshSubset">
+            <summary>
+            ポリゴンメッシュのサブセット(部分集合)を表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygonMeshSubset.PutFacetRef(System.Int32)">
+            <summary>
+            参照IDの追加をします。
+            </summary>
+            <param name="fid"></param>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygonMeshSubset.Source">
+            <summary>
+            母集団であるポリゴンメッシュを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ITriangleSoup">
+            <summary>
+            三角形群（ばらばらの三角形の集まり）を表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVPoints">
+            <summary>
+            UVポイントを表します。UV平面内における2次元の点です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVPolygonSoup">
+            <summary>
+            UV多角形群(UV平面内のポリゴンスープ)を表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVPolyline">
+            <summary>
+            UV平面内での折れ線を表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVCurve">
+            <summary>
+            UV平面内の曲線を表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IUVPolyline.Add(Hisui.Geom.Point2d)">
+            <summary>
+            指定した2次元位置座標点を追加します。
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="M:Hisui.Spatial.IUVPolyline.AddRange(System.Collections.Generic.IEnumerable{Hisui.Geom.Point2d})">
+            <summary>
+            指定した2次元位置座標点のシーケンスを追加します。
+            </summary>
+            <param name="points"></param>
+        </member>
+        <member name="M:Hisui.Spatial.IUVPolyline.RemoveAt(System.Int32)">
+            <summary>
+            指定した i 番目のUVポイントを除きます。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolyline.IsLoop">
+            <summary>
+            ループかどうかを表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolyline.Count">
+            <summary>
+            全構成点数です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolyline.Item(System.Int32)">
+            <summary>
+            i 番目の点の get/set です。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolyline.StartPos">
+            <summary>
+            開始点の get/set です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolyline.EndPos">
+            <summary>
+            終点の get/set です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IVectors">
+            <summary>
+            3次元ベクトルを表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IFacet">
+            <summary>
+            頂点、法線、稜線を有するファセット(面分)インターフェースを表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVFacet">
+            <summary>
+            UV空間上の頂点を結ぶファセット(面分)インターフェースを表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.Factory">
+            <summary>
+            Spatial で用いるオブジェクトを生成する「工場」です。
+            </summary>
+            <summary>
+            Spacial で用いるオブジェクトを生成する「工場」です。
+            </summary>
+            <summary>
+            Spatial で用いるオブジェクトを生成する「工場」です。
+            </summary>
+            <summary>
+            Spatial で用いるオブジェクトを生成する「工場」です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePoint(Hisui.Geom.Point3d)">
+            <summary>
+            指定した3次元位置座標点から点を生成します。
+            </summary>
+            <param name="cod"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePoint(System.Func{Hisui.Geom.Point3d})">
+            <summary>
+            指定した3次元位置座標点を生成するメソッドから点を生成します。
+            </summary>
+            <param name="getPoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePoints(System.Collections.Generic.IEnumerable{Hisui.Core.Item{Hisui.Geom.Point3d}})">
+            <summary>
+            指定した3次元位置座標点とIDのペアのシーケンスから点群を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePoints(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3d})">
+            <summary>
+            3次元位置座標点のシーケンスから点群を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePoints(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した3次元位置座標点配列から点群を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointsF">
+            <summary>
+            単精度版の点群を生成します。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointsF(System.Collections.Generic.IEnumerable{Hisui.Core.Item{Hisui.Geom.Point3f}})">
+            <summary>
+            指定した単精度版3次元位置座標点とIDのペアのシーケンスから点群を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointsF(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3f})">
+            <summary>
+            指定した単精度版3次元位置座標点のシーケンスから点群を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointsF(Hisui.Geom.Point3f[])">
+            <summary>
+            指定した単精度版3次元位置座標点配列から点群を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointCloud(System.Collections.Generic.IEnumerable{Hisui.Geom.PointNormal3d})">
+            <summary>
+            指定した法線付3次元位置座標点のシーケンスから大量点群(ポイントクラウド)を生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.IPointCloud"/>
+            </remarks>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateShell(Hisui.Spatial.IShellData)">
+            <summary>
+            指定したシェルのデータからシェルを生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.IShell"/>
+            </remarks>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateStorage``1">
+            <summary>
+            IGeometry の全ての型 T のストレージを生成します。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateLineMesh(Hisui.Spatial.IPoints)">
+            <summary>
+            指定した点群からメッシュ状のラインを生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.ILineMesh"/>
+            </remarks>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IPoints)">
+            <summary>
+            指定した点群から3次元の点のサブセットを生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.IPointsSubset"/>
+            </remarks>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IPoints,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            指定した点群と参照IDのシーケンスから3次元の点のサブセットを生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="refs">参照IDシーケンス</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IPoints,System.Predicate{Hisui.Geom.Point3d})">
+            <summary>
+            指定した点群と、指定した3次元位置座標点に対する適合条件から3次元の点のサブセットを生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="match">3次元位置座標点に対する適合条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IFacets)">
+            <summary>
+            指定したファセットの集合からファセットのサブセット(部分集合)を生成します。
+            </summary>
+            <param name="facets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IFacets,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            指定したファセットの集合と参照IDのシーケンスからファセットのサブセット(部分集合)を生成します。
+            </summary>
+            <param name="facets"></param>
+            <param name="refs">参照IDシーケンス</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            指定したポリゴンメッシュからポリゴンメッシュのサブセットを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IPolygonMesh,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            指定したポリゴンメッシュと参照ファセットIDのシーケンスからポリゴンメッシュのサブセットを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="facetrefs">参照ファセットIDシーケンス</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSubset(Hisui.Spatial.IPolygonMeshSubset,System.Predicate{Hisui.Spatial.IFacet})">
+            <summary>
+            指定したポリゴンメッシュのサブセットから、指定したファセットの適合条件にあうポリゴンメッシュのサブセットを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="match">ファセットの適合条件</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonMap(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            指定したポリゴンメッシュからポリゴンのカラーマッピングを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonSoupByFacets(Hisui.Spatial.IPoints,Hisui.Spatial.IFacets)">
+            <summary>
+            指定した点群とファセット群から多角形群(ポリゴンスープ)を生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="facets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVFacetsByFacets(Hisui.Spatial.IFacets)">
+            <summary>
+            指定したファセット群をラップした <see cref="T:Hisui.Spatial.IUVFacets"/> オブジェクトを生成します。
+            </summary>
+            <param name="facets">ラップ元のファセット群</param>
+            <returns>ラッパー</returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolygonSoupByFacets(Hisui.Spatial.IUVPoints,Hisui.Spatial.IUVFacets)">
+            <summary>
+            指定したUV点群とファセット群からUV多角形群(UV平面内のポリゴンスープ)を生成します。
+            </summary>
+            <param name="uvpoints"></param>
+            <param name="uvfacets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonMesh(Hisui.Spatial.IPoints)">
+            <summary>
+            指定した点群からポリゴンメッシュ(多角形メッシュ)を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonMesh(Hisui.Spatial.IPoints,Hisui.Spatial.IFacets)">
+            <summary>
+            指定した点群とファット群からポリゴン(多角形)メッシュを生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="facets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonMesh(Hisui.Spatial.IPoints,Hisui.Spatial.IDirections,Hisui.Spatial.IColors,Hisui.Spatial.IFacets)">
+            <summary>
+            指定した点群、法線群、カラーの集まり、ファセット群からポリゴン(多角形)メッシュを生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="normals"></param>
+            <param name="colors"></param>
+            <param name="facets"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateParametricPolygonMesh(Hisui.Spatial.IPolygonMesh,Hisui.Spatial.IUVPoints)">
+            <summary>
+            指定したポリゴンメッシュとUVポイントからパラメトリック多角形メッシュを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="uvpoints"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonShell(Hisui.Spatial.IShellData,Hisui.Spatial.IPoints)">
+            <summary>
+            指定したシェルのデータと点群と法線群と色の集まりから、ポリゴンメッシュを生成します。
+            </summary>
+            <param name="shell"></param>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygonShell(Hisui.Spatial.IShellData,Hisui.Spatial.IPoints,Hisui.Spatial.IDirections,Hisui.Spatial.IColors)">
+            <summary>
+            指定したシェルのデータと点群と法線群と色の集まりからポリゴンメッシュを生成します。
+            </summary>
+            <param name="shell"></param>
+            <param name="points"></param>
+            <param name="normals"></param>
+            <param name="colors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolyline(Hisui.Spatial.IPoints)">
+            <summary>
+            指定した点群からポリゴンメッシュ上の折れ線を生成します。
+            非推奨。Factory.CreateMeshPolyline を使ってください。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolyline(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            指定したポリゴンメッシュからポリゴンメッシュ状の折れ線を生成します。
+            </summary>
+            <param name="mesh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolyline(Hisui.Spatial.IPolygonMesh,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            指定したポリゴンメッシュと頂点IDのシーケンスからポリゴンメッシュ上の折れ線を生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="vertices"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolyline(Hisui.Spatial.IPolygonMesh,System.Int32[])">
+            <summary>
+            指定したポリゴンメッシュと頂点ID配列から、ポリゴンメッシュ上の折れ線を生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="vertices"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolylineLoop(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            指定したポリゴンメッシュから、ポリゴンメッシュ上の折れ線ループを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolylineLoop(Hisui.Spatial.IPolygonMesh,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            指定したポリゴンメッシュと頂点IDのシーケンスから、ポリゴンメッシュ上の折れ線ループを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="vertices"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateMeshPolylineLoop(Hisui.Spatial.IPolygonMesh,System.Int32[])">
+            <summary>
+            指定したポリゴンメッシュと頂点ID配列から、ポリゴンメッシュ上の折れ線ループを生成します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="vertices"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointCloud(Hisui.Spatial.IPoints,Hisui.Spatial.IDirections)">
+            <summary>
+            指定した点群と法線群から大量点群(ポイントクラウド)を生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.IPointCloud"/>
+            </remarks>
+            <param name="points"></param>
+            <param name="normals"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointCloud(Hisui.Spatial.IPoints,Hisui.Spatial.IColors)">
+            <summary>
+            指定した点群と色の集まりから、大量点群(ポイントクラウド)を生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.IPointCloud"/>
+            </remarks>
+            <param name="points"></param>
+            <param name="colors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePointCloud(Hisui.Spatial.IPoints,Hisui.Spatial.IDirections,Hisui.Spatial.IColors)">
+            <summary>
+            指定した点群と法線群と色の集まりから、大量点群(ポイントクラウド)を生成します。
+            </summary>
+            <remarks>
+            <seealso cref="T:Hisui.Spatial.IPointCloud"/>
+            </remarks>
+            <param name="points"></param>
+            <param name="normals"></param>
+            <param name="colors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolyline(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3d},System.Boolean)">
+            <summary>
+            指定した3次元位置座標のシーケンスと、ループかどうかの指定から、折れ線を生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="isLoop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolyline(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した3次元位置座標点配列から折れ線を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolyline(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3d})">
+            <summary>
+            指定した3次元位置座標点のシーケンスから折れ線を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolylineLoop(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した3次元位置座標点配列から折れ線ループを生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolylineLoop(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3d})">
+            <summary>
+            指定した3次元位置座標点のシーケンスから折れ線ループを生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPoints(Hisui.Geom.Point2d[])">
+            <summary>
+            指定した2次元位置座標点配列からUV平面内の点群(UVポイント群)を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPoints(System.Collections.Generic.IEnumerable{Hisui.Geom.Point2d})">
+            <summary>
+            指定した2次元位置座標点のシーケンスからUV平面内の点(UVポイント)群を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolyline(System.Collections.Generic.IEnumerable{Hisui.Geom.Point2d},System.Boolean)">
+            <summary>
+            指定した2次元位置座標点のシーケンスと、ループかどうか指定から、UV平面内の折れ線を生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="isLoop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolyline(Hisui.Geom.Point2d[])">
+            <summary>
+            指定した2次元位置座標点配列からUV平面内の折れ線を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolyline(System.Collections.Generic.IEnumerable{Hisui.Geom.Point2d})">
+            <summary>
+            指定した2次元位置座標点のシーケンスから、UV平面内の折れ線を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolylineLoop(Hisui.Geom.Point2d[])">
+            <summary>
+            指定した2次元位置座標例列からUV平面内の折れ線ループを生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolylineLoop(System.Collections.Generic.IEnumerable{Hisui.Geom.Point2d})">
+            <summary>
+            指定した2次元位置座標点のシーケンスからUV平面内の折れ線ループを生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateLocal``1(``0,Hisui.Geom.CodSys3d)">
+            <summary>
+            指定した3次元領域型 T のオブジェクトと3次元局所座標系から、局所座標系を生成します。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="codsys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateLocal``1(``0)">
+            <summary>
+            指定した3次元領域型 T のオブジェクトから局所座標系を生成します。
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateLocal(Hisui.Geom.IBoundary3d,Hisui.Geom.CodSys3d)">
+            <summary>
+            指定した3次元領域と3次元局所座標系から、局所座標系を生成します。
+            </summary>
+            <param name="obj"></param>
+            <param name="codsys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateLocal(Hisui.Geom.IBoundary3d)">
+            <summary>
+            指定した3次元領域から、局所座標系を生成します。
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSurface(System.Func{Hisui.Spatial.IPolygonMesh},System.Collections.Generic.IEnumerable{Hisui.Core.IBreath})">
+            <summary>
+            指定したポリゴンメッシュ生成メソッドと、IBreath (論理時間のタイムスタンプ)のシーケンスから曲面を生成します。
+            </summary>
+            <param name="builder">ポリゴンメッシュ生成メソッド</param>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSurface(System.Func{Hisui.Spatial.IPolygonMesh},Hisui.Core.IBreath[])">
+            <summary>
+            指定したポリゴンメッシュ生成メソッドと IBreath (論理時間のタイムスタンプ)の配列から曲面を生成します。
+            </summary>
+            <param name="builder">ポリゴンメッシュ生成メソッド</param>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateCurve(System.Func{Hisui.Spatial.IPolyline},System.Collections.Generic.IEnumerable{Hisui.Core.IBreath})">
+            <summary>
+            指定した折れ線生成メソッドと、IBreath (論理時間のタイムスタンプ)のシーケンスから曲線を生成します。
+            </summary>
+            <param name="builder">折れ線生成メソッド</param>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateCurve(System.Func{Hisui.Spatial.IPolyline},Hisui.Core.IBreath[])">
+            <summary>
+            指定した折れ線生成メソッドと、IBreath (論理時間のタイムスタンプ)の配列から曲線を生成します。
+            </summary>
+            <param name="builder">折れ線生成メソッド</param>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateColors``1(Hisui.Core.IStorage{``0},Hisui.Spatial.IColoring{``0})">
+            <summary>
+            指定した T 型タグのストレージと、T 型タグのカラーリングから色の集まりを生成します。
+            </summary>
+            <typeparam name="TTag"></typeparam>
+            <param name="tags"></param>
+            <param name="coloring"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateColors``1(Hisui.Core.IStorage{``0},System.Func{``0,Hisui.Geom.Color3b})">
+            <summary>
+            指定した T 型タグのストレージと、T 型タグと3色カラーのペア生成メソッドから色の集まりを生成します。
+            </summary>
+            <typeparam name="TTag"></typeparam>
+            <param name="tags"></param>
+            <param name="coloring">T 型タグと3色カラーのペア生成メソッド</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateColors``1(Hisui.Spatial.IColoring{``0})">
+            <summary>
+            T 型タグのカラーリングから色の集まりを生成します。
+            </summary>
+            <typeparam name="TTag"></typeparam>
+            <param name="coloring">T 型タグのカラーリング</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateColors``1(System.Func{``0,Hisui.Geom.Color3b})">
+            <summary>
+            指定した T 型タグと3色カラーのペア生成メソッドから色の集まりを生成します。
+            </summary>
+            <typeparam name="TTag"></typeparam>
+            <param name="coloring">T 型タグと3色カラーのペア生成メソッド</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateRangeColoring(Hisui.Geom.Range)">
+            <summary>
+            指定した区間から、区間付カラーリングを生成します。
+            </summary>
+            <param name="range"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacetPointArray(Hisui.Spatial.IFacet)">
+            <summary>
+            指定したファセット src からファセットを構成する点群からなる配列を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns>IDの配列</returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacetNormalArray(Hisui.Spatial.IFacet)">
+            <summary>
+            指定したファセット src が持つ法線ベクトルの配列を生成します。
+            </summary>
+            <param name="src"></param>
+            <returns>IDの配列</returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacet(Hisui.Spatial.IFacet)">
+            <summary>
+            指定したファセット src から新たにファセットを生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateReverseFacet(Hisui.Spatial.IFacet)">
+            <summary>
+            指定したファセット src から新たに(法線ベクトルがあれば、すべて)逆向きのファセットを生成します。
+            </summary>
+            <param name="src"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacet(System.Int32[])">
+            <summary>
+            指定した点のID配列から、ファセットを生成します。点は3点以上なくてはいけません。3点の時は三角形、4点の時は四辺形ファセット、5点以上は多角形ファセットを生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacet(System.Int32[],System.Int32[])">
+            <summary>
+            指定した点のID配列と法線ベクトルのID配列から法線付ファセットを生成します。3点以上なくてはいけません。3点の時は法線付三角形ファセット、4点の時は法線付四辺形ファセット、5点以上の時は法線付多角形ファセットを生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="normals"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacet(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            指定した点のIDのリストからファセットを生成します。点は3点以上なくてはいけません。3点の時は三角形、4点の時は四辺形ファセット、5点以上は多角形ファセットを生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacet(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            指定した点のIDリストと法線のIDリストから、法線付ファセットを生成します。3点以上なくてはいけません。3点の時は法線付三角形ファセット、4点の時は法線付四辺形ファセット、5点以上の時は法線付多角形ファセットを生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="normals"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateFacet(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジから、ファセットを生成します。
+            </summary>
+            <param name="he"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateTriangleFacet(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            3つの点のIDと法線のIDから法線付三角形ファセットを生成します。
+            </summary>
+            <param name="p0"></param>
+            <param name="n0"></param>
+            <param name="p1"></param>
+            <param name="n1"></param>
+            <param name="p2"></param>
+            <param name="n2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateTriangleFacet(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            3つの点のIDから三角形ファセットを生成します。
+            </summary>
+            <param name="p0"></param>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateQuadFacet(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            4つの点のIDと法線のIDから四辺形法線付ファセットを生成します。
+            </summary>
+            <param name="p0"></param>
+            <param name="n0"></param>
+            <param name="p1"></param>
+            <param name="n1"></param>
+            <param name="p2"></param>
+            <param name="n2"></param>
+            <param name="p3"></param>
+            <param name="n3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateQuadFacet(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            4つの点のIDから四辺形ファセットを生成します。
+            </summary>
+            <param name="p0"></param>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="p3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygon(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した3次元位置座標点配列から多角形を生成します。点配列が3つからなる場合は三角形を返します。それ以外は多角形を返します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygon(System.Collections.Generic.IEnumerable{Hisui.Geom.Point3d})">
+            <summary>
+            指定した3次元位置座標点のシーケンスから多角形を生成します。
+            </summary>
+            <remarks>
+            <seealso cref="M:Hisui.Spatial.Factory.CreatePolygon(Hisui.Geom.Point3d[])"/>
+            </remarks>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygon(Hisui.Spatial.IPoints,Hisui.Spatial.IFacet)">
+            <summary>
+            指定した点群とファセットから、多角形を生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="facet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreatePolygon(Hisui.Spatial.IPoints,Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定した点群とハーフエッジから多角形を生成します。
+            </summary>
+            <param name="points">点群</param>
+            <param name="facet">ハーフエッジ</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateScenePoints(Hisui.Geom.Point3f[])">
+            <summary>
+            指定した単精度版3次元位置座標点の配列からシーンポイント群を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateScenePointNormals(Hisui.Geom.PointNormal3f[])">
+            <summary>
+            指定した単精度版法線付3次元位置座標点の配列からシーンポイント群を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSceneTriangleMesh(System.Int32[],Hisui.Geom.PointNormal3f[])">
+            <summary>
+            指定したファセットのID群と単精度版3次元位置座標点の配列からシーン三角形メッシュを生成します。
+            </summary>
+            <param name="facets"></param>
+            <param name="vertices"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSceneParametricTriangleMesh(System.Int32[],Hisui.Geom.PointNormalUV3f[])">
+            <summary>
+            指定したファセットのID群と単精度版UVパラメータ、法線付3次元位置座標点の配列からシーンパラメトリック三角形メッシュを生成します。
+            </summary>
+            <param name="facets"></param>
+            <param name="vertices"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSceneTriangleSoup(Hisui.Geom.PointNormal3f[])">
+            <summary>
+            頂点配列形式の TriangleSoup エンティティを生成します。
+            </summary>
+            <param name="vertices">頂点配列（長さは3の倍数）</param>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateSceneTriangleSoup(Hisui.Spatial.Triangle[])">
+            <summary>
+            頂点配列形式の TriangleSoup エンティティを生成します。
+            </summary>
+            <param name="tris">三角形の配列</param>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolygon(Hisui.Geom.Point2d[])">
+            <summary>
+            指定した2次元位置座標点の配列からUV平面内の多角形を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolygon(System.Collections.Generic.IEnumerable{Hisui.Geom.Point2d})">
+            <summary>
+            指定した2次元位置座標点のシーケンスからUV平面内の多角形を生成します。
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.CreateUVPolygon(Hisui.Spatial.IUVPoints,Hisui.Spatial.IUVFacet)">
+            <summary>
+            指定したUVポイント群とファセットからUV平面内の多角形を生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="facet"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Hisui.Spatial.Factory.Polygon">
+            <summary>
+            法線ベクトルと頂点からなる多角形を表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygon">
+            <summary>
+            ポリゴンを表すインターフェースです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygon.Reverse">
+            <summary>
+            向きを逆転します。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygon.GetVertex(System.Int32)">
+            <summary>
+            i 番目の構成頂点を3次元座標点として取り出します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IPolygon.GetEdge(System.Int32)">
+            <summary>
+            i 番目の構成稜線を3次元線分として取り出します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygon.VertexCount">
+            <summary>
+            構成頂点数を get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygon.Normal">
+            <summary>
+            法線ベクトルを get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygon.Plane">
+            <summary>
+            乗っている3次元平面を get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygon.Vertices">
+            <summary>
+            構成頂点群を get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IPolygon.Edges">
+            <summary>
+            構成稜線群を get します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.Polygon.#ctor(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した3次元位置座標点配列から多角形を生成します。
+            </summary>
+            <param name="points"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.Polygon.#ctor(Hisui.Geom.Point3d[],Hisui.Geom.Vector3d)">
+            <summary>
+            指定した3次元位置座標点配列と法線ベクトルから多角形を生成します。
+            </summary>
+            <param name="points"></param>
+            <param name="normal"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.Polygon.Reverse">
+            <summary>
+            構成する頂点配列が逆順で、法線ベクトルも反対方向のの多角形を生成します。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.Polygon.GetVertex(System.Int32)">
+            <summary>
+            i 番目の頂点を取得します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.Polygon.GetEdge(System.Int32)">
+            <summary>
+            i 番目のエッジを取得します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.VertexCount">
+            <summary>
+            構成頂点数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.Normal">
+            <summary>
+            多角形が持つ法線ベクトルを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.Plane">
+            <summary>
+            多角形を構成する最初の頂点を通り、法線ベクトルに垂直な3次元平面を生成します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.Vertices">
+            <summary>
+            構成する頂点のシーケンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.Edges">
+            <summary>
+            構成するエッジの3次元線分シーケンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.BoundingBox">
+            <summary>
+            多角形を含む境界ボックスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.Polygon.BoundingSphere">
+            <summary>
+            多角形を含む3次元球を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.Factory.UVPolygon">
+            <summary>
+            2次元位置座標点群からなる、UV平面内の多角形を表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IUVPolygon">
+            <summary>
+            UV平面内の多角形を表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.IUVPolygon.GetVertex(System.Int32)">
+            <summary>
+            指定した i 番目の頂点を取得します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.IUVPolygon.GetEdge(System.Int32)">
+            <summary>
+            指定した i 番目の線分を取得します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolygon.VertexCount">
+            <summary>
+            全構成頂点の数を表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolygon.Vertices">
+            <summary>
+            構成する全頂点のシーケンスを取得します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.IUVPolygon.Edges">
+            <summary>
+            構成する全線分のシーケンスを取得します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.UVPolygon.#ctor(Hisui.Geom.Point2d[])">
+            <summary>
+            指定した2次元位置座標点の配列からUV平面内の多角形を生成します。
+            </summary>
+            <param name="points"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.UVPolygon.GetVertex(System.Int32)">
+            <summary>
+            i 番目の頂点を返します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Factory.UVPolygon.GetEdge(System.Int32)">
+            <summary>
+            i 番目のエッジを返します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.UVPolygon.VertexCount">
+            <summary>
+            構成頂点数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.UVPolygon.Vertices">
+            <summary>
+            構成する全頂点のシーケンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.UVPolygon.Edges">
+            <summary>
+            構成する全エッジのシーケンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Factory.UVPolygon.BoundingRect">
+            <summary>
+            UV平面内の多角形を含む境界矩形を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IMapping`1">
+            <summary>
+            マッピング全般のインターフェースを表します。
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Hisui.Spatial.IPointCloudMapping">
+            <summary>
+            ポイントクラウドの構成要素(点群、法線、色の集まり)を対応付けるマッピングのインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygonMeshMapping">
+            <summary>
+            ポリゴンメッシュの構成要素(点群、法線、色の集まり、ファセット)を対応付けるマッピングのインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.IPolygonShellMapping">
+            <summary>
+            ポリゴンシェルの構成要素(点群、法線、色の集まり、ファセット、稜線群)を対応付けるマッピングのインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ISceneParametricTriangleMesh">
+            <summary>
+            シーンオブジェクトとして用いるパラメトリック三角形メッシュを表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.ISceneTriangleMesh">
+            <summary>
+            シーンオブジェクトとして用いる三角形メッシュを表すインターフェースです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.Misc">
+            <summary>
+            Spatial で使う便利な機能です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.Reverse(Hisui.Spatial.IPolygonMesh)">
+            <summary>
+            指定したポリゴンメッシュの向きを逆転します。
+            </summary>
+            <param name="mesh"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.GetFacetPoints(Hisui.Spatial.IPolygonMesh,System.Int32)">
+            <summary>
+            指定したポリゴンメッシュとファセットのIDから該当するファセット上の頂点を3次元位置座標点配列として取得します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="fid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.GetFacetNormals(Hisui.Spatial.IPolygonMesh,System.Int32)">
+            <summary>
+            指定したポリゴンメッシュとファセットのIDから該当するファセット上の法線ベクトルを3次元列ベクトル配列として取得します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="fid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.GetFacetColors(Hisui.Spatial.IPolygonMesh,System.Int32)">
+            <summary>
+            指定したポリゴンメッシュとファセットのIDから該当するファセットの色の集まりを3色(RGB)カラー配列として取得します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="fid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.GetFacetNormalIDs(Hisui.Spatial.IPolygonMesh,System.Int32)">
+            <summary>
+            指定したポリゴンメッシュとファセットのIDから該当するファセット上の法線ベクトルのID配列を取得します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="fid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.GetFacetColorIDs(Hisui.Spatial.IPolygonMesh,System.Int32)">
+            <summary>
+            指定したポリゴンメッシュとファセットのIDから該当するファセットの色のID配列を取得します。
+            </summary>
+            <param name="mesh"></param>
+            <param name="fid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.CalcPolygonNormal(Hisui.Geom.Point3d[])">
+            <summary>
+            指定した多角形(3次元位置座標点の配列)から多角形の法線ベクトルを計算します。
+            </summary>
+            <param name="polygon"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.CalcPolygonNormal(Hisui.Geom.Point3f[])">
+            <summary>
+            指定した多角形(3次元位置座標点の配列)から多角形の法線ベクトルを計算します。
+            </summary>
+            <param name="polygon"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.CalcShellNormal(Hisui.Spatial.IPolygonShell,System.Int32)">
+            <summary>
+            指定したポリゴンシェルと頂点のIDから法線ベクトルを計算します。
+            </summary>
+            <param name="shell"></param>
+            <param name="vtx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.CalcShellNormal(Hisui.Spatial.IPolygonShell,Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したポリゴンシェルとハーフエッジから法線ベクトルを計算します。
+            </summary>
+            <param name="shell"></param>
+            <param name="vtx"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.Transform(System.Collections.Generic.IEnumerable{System.Int32},Hisui.Core.IReadOnlyStorage{System.Int32})">
+            <summary>
+            IDのシーケンスとマッピングで変換を定義します。
+            </summary>
+            <param name="src"></param>
+            <param name="mapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.Transform(System.Int32[],Hisui.Core.IReadOnlyStorage{System.Int32})">
+            <summary>
+            ID配列とマッピングで変換を定義します。
+            </summary>
+            <param name="src"></param>
+            <param name="mapping"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Misc.ClearLoopPrevNext(Hisui.Spatial.IHalfEdge)">
+            <summary>
+            指定したハーフエッジに接続する隣接関係をクリアします。
+            </summary>
+            <param name="he"></param>
+        </member>
+        <member name="T:Hisui.Spatial.Polygon">
+            <summary>
+            非推奨。代わりに Factory.CreatePolygon() を使用すること。
+            とりあえず今は互換性のために残してありますが、今後のバージョンで削除されます。
+            多角形を表す構造体です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Spatial.PropCtrls.PointCloudPropertyControl.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.PropCtrls.PointCloudPropertyControl.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Spatial.PropCtrls.PointCloudPropertyControl.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="F:Hisui.Spatial.PropCtrls.PolygonMeshPropertyControl.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.PropCtrls.PolygonMeshPropertyControl.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Spatial.PropCtrls.PolygonMeshPropertyControl.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="F:Hisui.Spatial.PropCtrls.PolylinePropertyControl.components">
+            <summary> 
+            必要なデザイナ変数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.PropCtrls.PolylinePropertyControl.Dispose(System.Boolean)">
+            <summary> 
+            使用中のリソースをすべてクリーンアップします。
+            </summary>
+            <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        </member>
+        <member name="M:Hisui.Spatial.PropCtrls.PolylinePropertyControl.InitializeComponent">
+            <summary> 
+            デザイナ サポートに必要なメソッドです。このメソッドの内容を 
+            コード エディタで変更しないでください。
+            </summary>
+        </member>
+        <member name="T:Hisui.Spatial.Segment">
+            <summary>
+            ハーフエッジ構造における両端点の頂点IDからなる線分の構造体です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Spatial.Segment.Vertex1">
+            <summary>
+            端点である頂点IDです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Segment.#ctor(System.Int32,System.Int32)">
+            <summary>
+            指定した2つの頂点IDから線分を生成します。Vertex1が値の小さいID、Vertex2が大きいIDです。
+            </summary>
+            <param name="vtx1"></param>
+            <param name="vtx2"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Segment.ToString">
+            <summary>
+            線分を文字列"segment: 頂点ID1,頂点ID2"化します。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Segment.GetHashCode">
+            <summary>
+            頂点IDの整数シフトによりハッシュコードを取得します。
+            </summary>
+            <returns>取得したハッシュコード</returns>
+        </member>
+        <member name="T:Hisui.Spatial.Triangle">
+            <summary>
+            3つの3次元位置座標点の頂点と法線ベクトルからなる三角形を表す構造体です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Spatial.Triangle.#ctor(Hisui.Geom.Point3f,Hisui.Geom.Point3f,Hisui.Geom.Point3f)">
+            <summary>
+            指定した3つの3次元位置座標点から三角形を生成します。法線ベクトルはベクトルp1->p2とベクトルp1->p3の外積（ベクトル積）を単位ベクトル化したものです。
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="p3"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Triangle.#ctor(Hisui.Geom.Point3d,Hisui.Geom.Point3d,Hisui.Geom.Point3d)">
+            <summary>
+            指定した3つの3次元位置座標点から三角形を生成します。法線ベクトルはベクトルp1->p2とベクトルp1->p3の外積（ベクトル積）を単位ベクトル化したものです。
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="p3"></param>
+        </member>
+        <member name="M:Hisui.Spatial.Triangle.Reverse">
+            <summary>
+            三角形の向きを逆向きに(1->2->3を3->2->1に）します。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Triangle.GetVertex(System.Int32)">
+            <summary>
+            指定した i 番目の頂点を返します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Spatial.Triangle.GetEdge(System.Int32)">
+            <summary>
+            指定した i 番目のエッジを返します。
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.VertexCount">
+            <summary>
+            頂点数を返します。常に3です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.Normal">
+            <summary>
+            法線ベクトルを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.Plane">
+            <summary>
+            三角形が乗っている3次元平面を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.Vertices">
+            <summary>
+            三角形を構成する頂点のシーケンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.Edges">
+            <summary>
+            三角形を構成するエッジのシーケンスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.BoundingBox">
+            <summary>
+            三角形の頂点を含む境界ボックスを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Spatial.Triangle.BoundingSphere">
+            <summary>
+            三角形の頂点を含む3次元球を返します。
+            </summary>
+        </member>
+    </members>
+</doc>
