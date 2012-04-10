@@ -9,7 +9,7 @@
 
 * `C#のサンプルコード <https://github.com/geis/KinectSDKBook4CS>`_
 * `VB.NETにコンバートしたサンプルコード <https://github.com/geis/KinectSDKBook4CS/tree/master/VB>`_
-* `F#にコンバートしたサンプルコード <https://github.com/geis/KinectSDKBook4CS/tree/master/FS>`_
+* `F#にコンバートしたサンプルコード(仮) <https://github.com/geis/KinectSDKBook4CS/tree/master/FS>`_
 
 コンテンツ:
 
