@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<title>シーングラフ</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+	
+<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>
+<h1>シーングラフ</h1>
+
+<h2>シーンをビューへ登録</h2>
+<h3>IScene インターフェイス</h3>
+<p>Hisui.Graphics ネームスペースには次のような IScene インターフェイスが定義されています。
+このインターフェイスが最も基本的な描画単位となります。
+ユーザーはこのインターフェイスを実装することで自由にシーンを定義することが出来ます。</p>
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface IScene
+  {
+    void Draw( ISceneContext context ) ;
+  }
+}
+</pre>
+
+<h3>IView インターフェイス</h3>
+<p>下記の定義を見れば分かるように、開発者は IView インターフェイスを介してシーングラフにアクセスすることが可能です。
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface IView
+  {
+    ....
+    ISceneGraph SceneGraph { get; }
+    ....    
+  }
+}
+</pre>
+
+<h3>ISceneGraph インターフェイス</h3>
+<p>下記のように ISceneGraph は複数の IScene を保持する構造となっています。</p>
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface ISceneGraph : ISceneHolder, ...
+  { }
+
+  public interface ISceneHolder
+  {
+    SceneCollection WorldScenes { get; }
+    SceneCollection CameraScenes { get; }
+    SceneCollection BackgroundScenes { get; }
+    SceneCollection ForgroundScenes { get; }
+  }
+}
+</pre>
+<p>ここで SceneCollection とは次のように定義されたクラスです。</p>
+<pre class="hisui">
+using System.Collections.Generic ;
+namespace Hisui.Graphics
+{
+  public class SceneCollection : List&lt;IScene&gt;, IScene
+  {
+    ...
+    public virtual void Draw( ISceneContext context )
+    {
+      foreach ( IScene scene in this ) scene.Draw( context ) ;
+    }
+  }
+}
+</pre>
+<p>SceneCollection も IScene を実装していること（Compositeパターン）に注意してください。</p>
+<p>各 SceneCollection の意味を次の表にまとめます。</p>
+<table>
+	<tr><td>BackgroundScenes</td>
+	<td>スクリーン座標系の背景シーン。デプステストは無効な状態で描画される。</td></tr>
+	<tr><td>ForgroundScenes</td>
+	<td>スクリーン座標系の前景シーン。デプステストは無効な状態で描画される。</td></tr>
+	<tr><td>CameraScenes</td>
+	<td>カメラ座標系のシーン。</td></tr>
+	<tr><td>WorldScenes</td>
+	<td>ワールド座標系（モデル座標系）のシーン。</td></tr>
+</table>
+<p>例えばカメラ座標系にシーンを追加するときには、次のようにします。</p>
+<pre>
+class MyScene : Hisui.Graphics.IScene { ... }
+...
+IView view = ...;
+view.SceneGraph.CameraScenes.Add( new MyScene() );
+</pre>
+
+<h3>ISceneGraph とモデルの境界球</h3>
+<p>先程は ISceneGraph インターフェイスの定義を少し端折って記述しました。正確には ISceneGraph は次のように定義されています。
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface ISceneGraph : Core.IBuild, Geom.IBoundary3d, ISceneHolder, IScene
+  {
+  }
+}
+</pre>
+<p>着目すべき点は Geom.IBoundary3d を実装していることです。
+IBoundary3d は境界ボックス（BoundingBox）や境界球（BoundingSphere）を取得できるインターフェイスです。
+つまり ISceneGraph は、ワールド座標系に描画されるシーン（つまりモデル）の境界情報を把握しているということです。</p>
+<p>ISceneGraph が正しく境界情報を認識するためには、ISceneGraph に追加されるシーンも IBoundary3d インターフェイスを実装しなくてはなりません。
+例えば次のように IBoundary3d も実装したシーンを登録しなくてはいけません。</p>
+<pre>
+class MyScene : Hisui.Graphics.IScene, Hisui.Geom.IBoundary3d
+{
+  ...
+}
+</pre>
+<p>シーングラフの境界情報は、各シーンの境界情報を積算したものとなります。
+この境界情報（特に境界球）は、カメラの視体積の設定やカメラのFit()などに利用されます。</p>
+
+<h2>ドキュメントから構築されるシーングラフ</h2>
+<p>前節では、シーンをビューに直接登録するコードを説明しました。
+しかし実際には、ビューに直接シーンを登録することはあまりないでしょう。</p>
+<p>ヒスイは、ドキュメントにエンティティを登録すると、そのエンティティに対応するシーンを自動的に new して登録します。
+本節では、ドキュメントのツリーに対応して構築されるシーングラフについて説明します。	
+</p>
+
+<h3>IDocumentScene</h3>
+<p>Hisui.Core.Document を描画するシーンとして、IDocumentScene が定義されています。</p>
+<pre class="hisui">
+namespace Hisui.Graphics
+{
+  public interface IDocumentScene
+    : IScene
+    , Geom.IBoundary3d
+    , Core.IBuild
+  {
+    Core.Document Document { get; }
+    Color Color { get; set; }
+    Material Material { get; set; }
+    PolygonMode PolygonMode { get; set; }
+    bool BackFaceCulling { get; set; }
+  }
+}
+</pre>
+<p>このインターフェイスは IBoundary3d を継承していますので、IView.SceneGraph.WorldScenes に登録することが出来ます。
+IDocumentScene のインスタンスは次のようにして生成・取得できます。</p>
+<pre>
+Hisui.Core.Document doc = ...;
+Hisui.Graphics.IDocumentScene scene = Hisui.SI.GetDocumentScene( doc );
+</pre>
+<p>doc に対応する IDocumentScene が既に存在する場合にはそれを返し、存在しない場合には新たにインスタンスを生成して返します。
+これを IView.SceneGraph.WorldScenes に登録すれば、ドキュメントに対応するシーングラフが構築・描画されるようになります。</p>
+<p>Hisui.SI.Build( (Hisui.Core.IBuild)scene ) などのコードで scene がビルドされると、そのタイミングでシーングラフが構築されます。
+</p>
+
+<h3>エンティティに対するシーンの登録</h3>
+<p>MyEntity オブジェクトを描画するシーンは、SecneAttribute 属性を付けて次のように定義することが出来ます。
+（詳細はチュートリアルを参照）</p>
+<pre>
+[Hisui.Graphics.Scene( typeof( MyEntity ) )]
+class MyScene : Hisui.Graphics.IScene { ... }	
+</pre>
+<p>この MyScene は起動時にヒスイ内部に登録されるため、次のようにしてシーンを生成することが出来ます。</p>
+<pre>
+MyEntity entity = ...;
+Hisui.Graphics.IScene scene = Hisui.SI.CreateScene( entity );
+</pre>
+<p>しかし基本的にはユーザーが自分でシーンを生成することはなく、フレームワーク側で自動的に生成されます。
+生成されたシーンは、エンティティを保持する Core.IEntry にエレメントとして登録されます。
+したがって、次のコードで生成されたシーンを取得することが出来ます。
+</p>
+<pre>
+// エンティティをドキュメントに登録
+MyEntity entity = ...;
+Hisui.Core.IEntry entry = Hisui.SI.Document.Entries.Put( entity );
+
+// このタイミングでシーングラフが構築される
+Hisui.SI.Build();
+
+// シーンを取得
+Hisui.Graphics.IScene scene = entry.GetElement&lt;Hisui.Graphics.IScene&gt;();
+</pre>
+<p>なお、Hisui.SI に定義された拡張メソッドを利用すると、シーンの取得は次のように簡潔に記述することも可能です。
+<pre>
+using Hisui;
+var scene = entry.GetScene();
+</pre>
+
+<h3>描画属性の設定</h3>
+<p>あるエントリにマテリアルなどの描画属性を設定するためには、エントリから ISceneDecorator インターフェイスを取得します。</p>
+<pre>
+Hisui.Core.IEntry entry = ...;
+ISceneDecorator deco = entry.GetElement&lt;ISceneDecorator&gt;();
+</pre>
+<p>このコードでは、entry に ISceneDecorator が登録されていない場合には null が返ってしまいます。
+したがって、下記のように SI の拡張メソッドを利用することを推奨します。これにより、ISceneDecorator が登録されていない場合には自動的に新たな空の ISceneDecorator インスタンスが生成されて取得されるようになります。</p>
+<pre>
+using Hisui;
+var deco = entry.GetDecorator();
+</pre>
+<p>この ISceneDecorator に対して、次のようにマテリアルを設定します。</p>
+<pre>
+MaterialDecoration mat = ...;
+deco.PutDecoration( mat );
+</pre>
+
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2010, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

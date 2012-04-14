@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / ポリゴンデータを操作してみよう</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>ポリゴンデータを操作してみよう</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+<p>2007年9月
+</center>
+
+<p>ポリゴンデータの詳細についてはSDKドキュメント<a href="../spatial.html">「Hisui.Spatial: ヒスイでポリゴンデータをラクラク操作」</a>を参照してください。
+<p>ここでは幾つかのポリゴンに関するサンプルコードを列挙していきます。
+
+
+<h2>四面体を作る</h2>
+
+<h3>ITriangleSoup で四面体を作る</h3>
+<pre>
+  [Hisui.Ctrl.Command( "四面体を作成" )]
+  static void MakeTetraByTriangleSoup( Hisui.Ctrl.IContext con )
+  {
+    Hisui.Geom.Point3d p0 = Hisui.Geom.Point3d.Zero;
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d( 1, 0, 0 );
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d( 0, 1, 0 );
+    Hisui.Geom.Point3d p3 = new Hisui.Geom.Point3d( 0, 0, 1 );
+
+    Hisui.Spatial.ITriangleSoup
+      soup = Hisui.Core.Factory.NewInstance&lt;Hisui.Spatial.ITriangleSoup&gt;();
+    soup.Put( p0, p1, p3 );
+    soup.Put( p0, p2, p1 );
+    soup.Put( p0, p3, p2 );
+    soup.Put( p1, p2, p3 );
+
+    con.ActiveEntries.Put( soup );
+  }
+</pre>
+
+<h3>IPolygonMesh で四面体を作る</h3>
+<pre>
+  [Hisui.Ctrl.Command( "四面体を作成" )]
+  static void MakeTetraByPolygonMesh( Hisui.Ctrl.IContext con )
+  {
+    Hisui.Geom.Point3d p0 = Hisui.Geom.Point3d.Zero;
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d( 1, 0, 0 );
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d( 0, 1, 0 );
+    Hisui.Geom.Point3d p3 = new Hisui.Geom.Point3d( 0, 0, 1 );
+
+    Hisui.Spatial.IPolygonMesh
+      mesh = Hisui.Core.Factory.NewInstance&lt;Hisui.Spatial.IPolygonMesh&gt;();
+
+    int id0 = mesh.Points.Put( p0 );
+    int id1 = mesh.Points.Put( p1 );
+    int id2 = mesh.Points.Put( p2 );
+    int id3 = mesh.Points.Put( p3 );
+
+    mesh.Facets.Put( id0, id1, id3 );
+    mesh.Facets.Put( id0, id2, id1 );
+    mesh.Facets.Put( id0, id3, id2 );
+    mesh.Facets.Put( id1, id2, id3 );
+
+    con.ActiveEntries.Put( mesh );
+  }
+</pre>
+
+
+<h2>ファイルを読む</h2>
+
+<h3>STLファイルを読む</h3>
+<pre>
+  [Hisui.Ctrl.Command( "STLファイルを読む" )]
+  static void ReadSTL( Hisui.Ctrl.IContext con )
+  {
+    string filename = @"c:\sample.stl";
+    foreach ( KeyValuePair&lt;string, Hisui.Spatial.ITriangleSoup&gt; pair in
+        Hisui.Spatial.Formats.STLFormat.Import( filename ) ) {
+      Hisui.Core.IEntry entry = con.ActiveEntries.Put( pair.Value );
+      entry.Caption = pair.Key;
+    }
+  }
+</pre>
+
+<h3>Wavefront Obj ファイルを読む</h3>
+<pre>
+  [Hisui.Ctrl.Command( "Wavefront Obj ファイルを読む" )]
+  static void ReadObj( Hisui.Ctrl.IContext con )
+  {
+    string filename = @"c:\sample.obj";
+    foreach ( Hisui.Spatial.IPolygonMesh mesh in
+        Hisui.Spatial.Formats.ObjFormat.Import( filename ) ) {
+      con.ActiveEntries.Put( mesh );
+    }
+  }
+</pre>
+
+  
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2007, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>

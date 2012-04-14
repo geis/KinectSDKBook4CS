@@ -1,0 +1,10 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KinectHeightMeasure" Height="350" Width="525" Closing="Window_Closing">
+    <Grid>
+        <Image Name="ImageRgb" Stretch="Uniform" />
+        <Canvas Name="CanvasMeasure" Width="{Binding ElementName=ImageRgb, Path=ActualWidth}"
+            Height="{Binding ElementName=ImageRgb, Path=ActualHeight}" />
+    </Grid>
+</Window>

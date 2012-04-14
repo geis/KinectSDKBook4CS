@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+	<title>ドキュメント構造</title>
+	<link rel="stylesheet" href="hisui.css" type="text/css">
+</head>
+<body>
+	
+<p align="right"><a href="../index.html#sdkdocuments">戻る</a></p>
+<h1>ドキュメント構造</h1>
+
+<h2>ドキュメントのツリー構造</h2>
+<p>ドキュメント関連のクラスは Hisui.Core ネームスペースに定義されています。</p>
+
+<h3>ドキュメント関連のクラス図</h3>
+<img src="docclass.png"></img>
+
+<h3>上記クラスが構成するツリー構造</h3>
+<img src="doctree.png"></img>
+
+<h3>各クラス/オブジェクトの簡単な説明</h3>
+<table>
+	<tr><td>Document</td>
+	<td>ドキュメント。ツリー構造のルート。Hisui.Core.Document.Currentで現在アクティブなのドキュメントを取得できる。</td></tr>
+	<tr><td>IEntry</td>
+	<td>エンティティを一つ格納するエントリ。CADEL系CADのHDR（ヘッダ）に相当する。</td></tr>
+	<tr><td>IEntryCollection</td>
+	<td>IEntry を複数保持するコレクション。IEntry を ID で管理する。</td></tr>
+	<tr><td>entity</td>
+	<td>任意のオブジェクトをエンティティとしてIEntryに登録することが出来る。
+	典型的なエンティティとしては、曲線や曲面、メッシュといった幾何要素が挙げられる。</td></tr>
+	<tr><td>element</td>
+	<td>任意のオブジェクトをエレメントとしてIEntryに登録することが出来る。
+	主となるのは entity であり、element はそれを補足・補助する付加的な要素である。
+	典型的なエレメントとしては、エンティティの表示要素（Hisui.Graphics.IScene）が挙げられる。</td></tr>
+</table>
+
+<hr><p align="center"><a href="../index.html#sdkdocuments">戻る</a></p>
+<p align="right">Copyright &copy; 2006, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a></p>
+</body>
+</html>

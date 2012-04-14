@@ -1,0 +1,580 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.Hix</name>
+    </assembly>
+    <members>
+        <member name="T:Hisui.Hix.AbstractSerializer`1">
+            <summary>
+            <see cref="T:Hisui.Hix.ISerializer"/> インターフェイスを実装した抽象クラスです。
+            このクラスを継承することでシリアライザを定義することが出来ます。
+            </summary>
+            <typeparam name="T">シリアライズ対象オブジェクトの型</typeparam>
+        </member>
+        <member name="T:Hisui.Hix.ISerializer">
+            <summary>
+            オブジェクトのシリアライザを表すインターフェイスです。
+            このインターフェイスを実装することで、任意のオブジェクトのシリアライザを作ることが出来ます。
+            </summary>
+            <remarks>
+            このインターフェイスを実装したクラスは、属性 <see cref="T:Hisui.Hix.SerializerAttribute"/> を付けることでプラグインとして登録されます。
+            <para>通常、このインターフェイスは直接実装されるのではなく、<see cref="T:Hisui.Hix.AbstractSerializer`1"/> の派生クラスとして実装されます。</para>
+            </remarks>
+            <seealso cref="T:Hisui.Hix.SerializerAttribute"/>
+            <seealso cref="T:Hisui.Hix.AbstractSerializer`1"/>
+        </member>
+        <member name="M:Hisui.Hix.ISerializer.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)">
+            <summary>
+            <see cref="P:Hisui.Hix.ISerializer.Target"/> オブジェクトをXML形式でシリアライズします。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="names">参照しているオブジェクトから、そのオブジェクトに割り当てられたID番号（名前）を取得します</param>
+        </member>
+        <member name="M:Hisui.Hix.ISerializer.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            XMLからオブジェクトをデシリアライズし <see cref="P:Hisui.Hix.ISerializer.Target"/> に設定します。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="refs">参照しているID番号からデシリアライズ済みのオブジェクトを取得します</param>
+        </member>
+        <member name="P:Hisui.Hix.ISerializer.Target">
+            <summary>
+            シリアライズ対象のオブジェクトを set/get します。
+            書き込み時には、<see cref="M:Hisui.Hix.ISerializer.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)"/> 関数が <see cref="P:Hisui.Hix.ISerializer.Target"/> プロパティに設定されたオブジェクトをシリアライズします。
+            読み込み時には、<see cref="M:Hisui.Hix.ISerializer.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)"/> 関数がオブジェクトをデシリアライズし <see cref="P:Hisui.Hix.ISerializer.Target"/> プロパティに設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Hix.ISerializer.References">
+            <summary>
+            <see cref="P:Hisui.Hix.ISerializer.Target"/> が参照するオブジェクトを全て返します。
+            書き込み時には、参照先のオブジェクトが全て書き出されてから <see cref="M:Hisui.Hix.ISerializer.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)"/> 関数が呼び出されます。
+            読み込み時には、参照先のオブジェクトが全て読み込まれてから <see cref="M:Hisui.Hix.ISerializer.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)"/> 関数が呼び出されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Hix.AbstractSerializer`1.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)">
+            <summary>
+            <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> オブジェクトをXML形式でシリアライズします。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="names">参照しているオブジェクトから、そのオブジェクトに割り当てられたID番号（名前）を取得します</param>
+        </member>
+        <member name="M:Hisui.Hix.AbstractSerializer`1.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            XMLからオブジェクトをデシリアライズし <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> に設定します。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="refs">参照しているID番号からデシリアライズ済みのオブジェクトを取得します</param>
+        </member>
+        <member name="P:Hisui.Hix.AbstractSerializer`1.Target">
+            <summary>
+            シリアライズ対象のオブジェクトを set/get します。
+            書き込み時には、<see cref="M:Hisui.Hix.AbstractSerializer`1.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)"/> 関数が <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> プロパティに設定されたオブジェクトをシリアライズします。
+            読み込み時には、<see cref="M:Hisui.Hix.AbstractSerializer`1.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)"/> 関数がオブジェクトをデシリアライズし <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> プロパティに設定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Hix.AbstractSerializer`1.References">
+            <summary>
+            <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> が参照するオブジェクトを全て返します。
+            書き込み時には、参照先のオブジェクトが全て書き出されてから <see cref="M:Hisui.Hix.AbstractSerializer`1.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)"/> 関数が呼び出されます。
+            読み込み時には、参照先のオブジェクトが全て読み込まれてから <see cref="M:Hisui.Hix.AbstractSerializer`1.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)"/> 関数が呼び出されます。
+            </summary>
+        </member>
+        <member name="T:Hisui.HixUT">
+            <summary>
+            シリアライザの実装に利用するための拡張メソッド群を定義するクラスです。
+            </summary>
+        </member>
+        <member name="F:Hisui.HixUT.UseReadToFollowing">
+            <summary>
+            互換性のためのオプション
+            </summary>
+            <remarks>
+            次の要素に進むときに ReadToFollowing() と ReadToNextSibling() のどちらを用いるかを指定。
+            従来の仕様と互換性を保つには true を設定する。
+            </remarks>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixBytes(System.Xml.XmlWriter,System.Byte[])">
+            <summary>
+            バイナリデータを Base64 形式の文字列に変換して書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="data">バイト列</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixBytes(System.Xml.XmlWriter,System.String,System.Byte[])">
+            <summary>
+            バイナリデータを Base64 形式の文字列に変換して書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="data">バイト列</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixImage(System.Xml.XmlWriter,System.Drawing.Image,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            画像データをHIX形式で書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="image">画像データ</param>
+            <param name="format">画像フォーマット</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixImage(System.Xml.XmlWriter,System.String,System.Drawing.Image,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            画像データをHIX形式で書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="image">画像データ</param>
+            <param name="format">画像フォーマット</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixData(System.Xml.XmlWriter,System.Type,System.Object)">
+            <summary>
+            データをHIX形式で書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="type">データ型</param>
+            <param name="data">データオブジェクト</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixData(System.Xml.XmlWriter,System.Object)">
+            <summary>
+            データをHIX形式で書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="data">書き出すデータ</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixData``1(System.Xml.XmlWriter,``0)">
+            <summary>
+            データをHIX形式で書き出します。
+            </summary>
+            <typeparam name="T">データ型</typeparam>
+            <param name="writer">書き出し先</param>
+            <param name="data">書き出すデータ</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixData(System.Xml.XmlWriter,System.String,System.Type,System.Object)">
+            <summary>
+            データをHIX形式で書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="type">データ型</param>
+            <param name="data">データオブジェクト</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixData(System.Xml.XmlWriter,System.String,System.Object)">
+            <summary>
+            データをHIX形式で書き出します。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="data">書き出すデータ</param>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixData``1(System.Xml.XmlWriter,System.String,``0)">
+            <summary>
+            データをHIX形式で書き出します。
+            </summary>
+            <typeparam name="T">書き出すデータの型</typeparam>
+            <param name="writer">書き出し先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="data">書き出すデータ</param>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixBytes(System.Xml.XmlReader)">
+            <summary>
+            Base64 でエンコードされたバイナリデータを読み込みます。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <returns>バイト列</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixBytes(System.Xml.XmlReader,System.String)">
+            <summary>
+            Base64 でエンコードされたバイナリデータを読み込みます。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="localName">データを読み込むXMLエレメント名</param>
+            <returns>バイト列</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixImage(System.Xml.XmlReader)">
+            <summary>
+            HIX形式から画像データを読み込みます。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <returns>読み込まれた画像</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixImage(System.Xml.XmlReader,System.String)">
+            <summary>
+            HIX形式から画像データを読み込みます。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="localName">データを読み込むXMLエレメント名</param>
+            <returns>読み込まれた画像</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixData(System.Xml.XmlReader,System.Type)">
+            <summary>
+            HIX形式からデータを読み込みます。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="type">データ型</param>
+            <returns>読み込まれたデータ</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixData``1(System.Xml.XmlReader)">
+            <summary>
+            HIX形式からデータを読み込みます。
+            </summary>
+            <typeparam name="T">データ型</typeparam>
+            <param name="reader">読み込み元</param>
+            <returns>読み込まれたデータ</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixData(System.Xml.XmlReader,System.String,System.Type)">
+            <summary>
+            HIX形式からデータを読み込みます。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="localName">データを読み込むXMLエレメント名</param>
+            <param name="type">データ型</param>
+            <returns>読み込まれたデータ</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixData``1(System.Xml.XmlReader,System.String)">
+            <summary>
+            HIX形式からデータを読み込みます。
+            </summary>
+            <typeparam name="T">データ型</typeparam>
+            <param name="reader">読み込み元</param>
+            <param name="localName">データを読み込むXMLエレメント名</param>
+            <returns>読み込まれたデータ</returns>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixRef(System.Xml.XmlWriter,System.String,Hisui.Hix.INameResolver,System.Object)">
+            <summary>
+            オブジェクトへの参照（リンク）を書き出します。
+            既にオブジェクト <paramref name="obj"/> が書き出し済みであることが前提となります。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="localName">リンク名（リンクを書き込むXMLエレメント名）</param>
+            <param name="names">オブジェクトからID（名前）を取得するためのインターフェイス</param>
+            <param name="obj">参照先（リンク先）のオブジェクト</param>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixRef(System.Xml.XmlReader,System.String,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            参照情報（リンク情報）からリンク先のオブジェクトを取得します。
+            既にリンク先のオブジェクトが読み込み済みで <paramref name="refs"/> に格納されていることが前提となります。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="localName">参照情報（リンク情報）が書かれているXMLエレメント</param>
+            <param name="refs">ID（名前）から読み込み済みのオブジェクトを取得するためのインターフェイス</param>
+            <returns>取得された参照先のオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixRef``1(System.Xml.XmlReader,System.String,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            参照情報（リンク情報）からリンク先のオブジェクトを取得します。
+            既にリンク先のオブジェクトが読み込み済みで <paramref name="refs"/> に格納されていることが前提となります。
+            </summary>
+            <typeparam name="T">取得するオブジェクトの型</typeparam>
+            <param name="reader">読み込み元</param>
+            <param name="localName">参照情報（リンク情報）が書かれているXMLエレメント</param>
+            <param name="refs">ID（名前）から読み込み済みのオブジェクトを取得するためのインターフェイス</param>
+            <returns>取得された参照先のオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixArray``1(System.Xml.XmlWriter,``0[])">
+            <summary>
+            配列データをHIX形式で書き出します。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="writer">書込み先</param>
+            <param name="array">書き出す配列データ</param>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixArray``1(System.Xml.XmlReader)">
+            <summary>
+            HIX形式から配列データを読み込みます。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="reader">読み込み元</param>
+            <returns>読み込んだ配列データ</returns>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixArray``1(System.Xml.XmlWriter,System.String,``0[])">
+            <summary>
+            配列データをHIX形式で書き出します。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="writer">書込み先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="array">書き出す配列データ</param>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixArray``1(System.Xml.XmlReader,System.String)">
+            <summary>
+            HIX形式から配列データを読み込みます。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="reader">読み込み元</param>
+            <param name="localName">データを読み込むXMLエレメント名</param>
+            <returns>読み込んだ配列データ</returns>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixArrayRef``1(System.Xml.XmlWriter,Hisui.Hix.INameResolver,``0[])">
+            <summary>
+            オブジェクトへの参照（リンク）の配列を書き出します。
+            既に配列の各要素が書き出し済みであることが前提となります。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="writer">書込み先</param>
+            <param name="names">オブジェクトからID（名前）を取得するためのインターフェイス</param>
+            <param name="array">書き出す配列データ</param>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixArrayRef``1(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            参照情報（リンク情報）の配列を読み込み、リンク先のオブジェクトを配列の要素に設定します。
+            既にリンク先のオブジェクトが読み込み済みで <paramref name="refs"/> に格納されていることが前提となります。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="reader">読み込み元</param>
+            <param name="refs">ID（名前）から読み込み済みのオブジェクトを取得するためのインターフェイス</param>
+            <returns>取得された参照先のオブジェクトの配列</returns>
+        </member>
+        <member name="M:Hisui.HixUT.WriteHixArrayRef``1(System.Xml.XmlWriter,System.String,Hisui.Hix.INameResolver,``0[])">
+            <summary>
+            オブジェクトへの参照（リンク）の配列を書き出します。
+            既に配列の各要素が書き出し済みであることが前提となります。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="writer">書込み先</param>
+            <param name="localName">データを書き込むXMLエレメント名</param>
+            <param name="names">オブジェクトからID（名前）を取得するためのインターフェイス</param>
+            <param name="array">書き出す配列データ</param>
+        </member>
+        <member name="M:Hisui.HixUT.ReadHixArrayRef``1(System.Xml.XmlReader,System.String,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            参照情報（リンク情報）の配列を読み込み、リンク先のオブジェクトを配列の要素に設定します。
+            既にリンク先のオブジェクトが読み込み済みで <paramref name="refs"/> に格納されていることが前提となります。
+            </summary>
+            <typeparam name="T">配列の要素の型</typeparam>
+            <param name="reader">読み込み元</param>
+            <param name="localName">データを読み込むXMLエレメント名</param>
+            <param name="refs">ID（名前）から読み込み済みのオブジェクトを取得するためのインターフェイス</param>
+            <returns>取得された参照先のオブジェクトの配列</returns>
+        </member>
+        <member name="T:Hisui.Hix.HoxFormat">
+            <summary>
+            HOX形式によるオブジェクトのインポート/エクスポートを行います。
+            HOX形式とは Hisui Object XML の略称で、オブジェクトをXML形式でシリアライズするためのデータフォーマットです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Hix.HoxFormat.Import(System.String)">
+            <summary>
+            HOXファイルからオブジェクトをデシリアライズして返します。
+            </summary>
+            <param name="filename">HOXファイルのパス</param>
+            <returns>読み込んだオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Hix.HoxFormat.Export(System.Object,System.String)">
+            <summary>
+            HOX形式にオブジェクトをシリアライズしてファイルに書き出します。
+            </summary>
+            <param name="obj">シリアライズするオブジェクト</param>
+            <param name="filename">書込み先のファイルパス</param>
+        </member>
+        <member name="M:Hisui.Hix.HoxFormat.Import(System.IO.TextReader)">
+            <summary>
+            HOX形式からオブジェクトをデシリアライズして返します。
+            </summary>
+            <param name="input">HOX形式XMLの<see cref="T:System.IO.TextReader"/></param>
+            <returns>読み込んだオブジェクト</returns>
+        </member>
+        <member name="M:Hisui.Hix.HoxFormat.Export(System.Object,System.IO.TextWriter)">
+            <summary>
+            HOX形式にオブジェクトをシリアライズして<see cref="T:System.IO.TextWriter"/>に書き出します。
+            </summary>
+            <param name="obj">シリアライズするオブジェクト</param>
+            <param name="output">書込み先の<see cref="T:System.IO.TextWriter"/></param>
+        </member>
+        <member name="T:Hisui.Hix.INameResolver">
+            <summary>
+            参照しているオブジェクトから、そのオブジェクトに割り当てられたID番号（名前）を取得するためのインターフェイスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Hix.INameResolver.GetName(System.Object)">
+            <summary>
+            オブジェクトに割り当てられXMLに記載されているID番号（名前）を取得します。
+            </summary>
+            <param name="obj">オブジェクト参照</param>
+            <returns>割り当てられたID番号</returns>
+        </member>
+        <member name="T:Hisui.Hix.IReferenceResolver">
+            <summary>
+            XMLに記載されたID番号（名前）から、それに対応するデシリアライズ済みのオブジェクトを取得するためのインターフェイスです。
+            <see cref="M:Hisui.Hix.ISerializer.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)"/> の引数に使われます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Hix.IReferenceResolver.GetReference(System.Int32)">
+            <summary>
+            ID番号（名前）に対応するオブジェクトを取得します。
+            </summary>
+            <param name="name">ID番号</param>
+            <returns>対応するオブジェクト</returns>
+        </member>
+        <member name="T:Hisui.Hix.SerializerAttribute">
+            <summary>
+            <see cref="T:Hisui.Hix.ISerializer"/> の実装クラスをシリアライザとして登録するための属性です。
+            この属性を付けられたシリアライザクラスは <see cref="T:Hisui.Hix.SerializerFactory"/> に登録されます。
+            </summary>
+        </member>
+        <member name="F:Hisui.Hix.SerializerAttribute.EntityType">
+            <summary>
+            シリアライズの対象となるエンティティの型です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Hix.SerializerAttribute.EntityName">
+            <summary>
+            シリアライズ対象エンティティの型名です。
+            デフォルトでは <c>EntityType.FullName</c> が設定されています。
+            </summary>
+        </member>
+        <member name="F:Hisui.Hix.SerializerAttribute.CompatibleNames">
+            <summary>
+            互換性のあるシリアライズ対象の型名です。
+            <see cref="F:Hisui.Hix.SerializerAttribute.CompatibleNames"/> に設定された型名のエンティティは、この属性が付与されたシリアライザでデシリアライズされます。
+            デフォルトでは空の配列が設定されています。
+            </summary>
+        </member>
+        <member name="F:Hisui.Hix.SerializerAttribute.Version">
+            <summary>
+            シリアライザのバージョン番号です。
+            同じ <see cref="F:Hisui.Hix.SerializerAttribute.EntityType"/> に対してバージョンの異なる複数のシリアライザを定義することができます。
+            書き出し時には、バージョン番号の最も新しい（大きい）シリアライザを用いてシリアライズされます。
+            読み込み時には、XMLから読み取ったバージョン番号に合致するシリアライザを用いてデシリアライズされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Hix.SerializerAttribute.#ctor(System.Type)">
+            <summary>
+            コンストラクタ。シリアライズ対象オブジェクトの型を指定します。
+            </summary>
+            <param name="entity">シリアライズ対象の型</param>
+        </member>
+        <member name="T:Hisui.Hix.SerializerFactory">
+            <summary>
+            シリアライザを管理したり生成したりするクラスです。
+            プラグインされたシリアライザはこのクラスに登録され、管理されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.NewInstance(System.String)">
+            <summary>
+            エンティティの型名から、それに対応するシリアライザを生成します。
+            複数のバージョンが登録されている場合には、最新のシリアライザを生成します。
+            対応するシリアライザが登録されていない場合は null を返します。
+            </summary>
+            <param name="name">エンティティの型名</param>
+            <returns>生成されたシリアライザ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.NewInstance(System.String,System.Int32)">
+            <summary>
+            エンティティの型名とシリアライザのバージョン番号から、それに対応するシリアライザを生成します。
+            対応するシリアライザが登録されていない場合は null を返します。
+            </summary>
+            <param name="name">エンティティの型名</param>
+            <param name="version">シリアライザのバージョン番号</param>
+            <returns>生成されたシリアライザ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.NewInstance(System.Object)">
+            <summary>
+            指定されたオブジェクト <paramref name="entity"/> をシリアライズするための最新バージョンのシリアライザを生成します。
+            対応するシリアライザが見つからない場合には null を返します。
+            </summary>
+            <param name="entity">シリアライズ対象のオブジェクト</param>
+            <returns>生成されたシリアライザ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.NewInstance(System.Type)">
+            <summary>
+            指定された型 <paramref name="entityType"/> のオブジェクトをシリアライズするための最新バージョンのシリアライザを生成します。
+            対応するシリアライザが見つからない場合には null を返します。
+            </summary>
+            <param name="entityType">シリアライズ対象の型</param>
+            <returns>生成されたシリアライザ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.NewInstance(System.Object,System.String@,System.Int32@)">
+            <summary>
+            指定されたオブジェクト <paramref name="entity"/> をシリアライズするための最新バージョンのシリアライザを生成します。
+            対応するシリアライザが見つからない場合には null を返します。
+            </summary>
+            <param name="entity">シリアライズ対象のオブジェクト</param>
+            <param name="name">生成されたシリアライザに関連付けられているエンティティ名</param>
+            <param name="version">生成されたシリアライザのバージョン番号</param>
+            <returns>生成されたシリアライザ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.NewInstance(System.Type,System.String@,System.Int32@)">
+            <summary>
+            指定された型 <paramref name="entityType"/> のオブジェクトをシリアライズするための最新バージョンのシリアライザを生成します。
+            対応するシリアライザが見つからない場合には null を返します。
+            </summary>
+            <param name="entityType">シリアライズ対象の型</param>
+            <param name="name">生成されたシリアライザに関連付けられているエンティティ名</param>
+            <param name="version">生成されたシリアライザのバージョン番号</param>
+            <returns>生成されたシリアライザ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.GetEntityType(System.String)">
+            <summary>
+            エンティティ名からエンティティタイプを取得します。
+            対応するタイプが見つからない場合は null を返します。
+            </summary>
+            <param name="name">エンティティ名</param>
+            <returns>エンティティ名に対応するエンティティタイプ</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.GetEntityName(System.Type)">
+            <summary>
+            エンティティタイプからエンティティ名を取得します。
+            対応する名前が見つからない場合は null を返します。
+            </summary>
+            <param name="type">エンティティタイプ</param>
+            <returns>エンティティ名</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.ContainsCustomSerializer(System.String)">
+            <summary>
+            <paramref name="typeName"/> に対応するシリアライザが登録されているかどうか判定します。
+            </summary>
+            <param name="typeName">エンティティ名</param>
+            <returns>シリアライザが存在する場合は true</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.ContainsCustomSerializer(System.Object)">
+            <summary>
+            <paramref name="entity"/> を書き出すためのシリアライザが登録されているかどうか判定します。
+            </summary>
+            <param name="entity">エンティティ</param>
+            <returns>シリアライザが存在する場合は true</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.Register(System.Type)">
+            <summary>
+            シリアライザ型 <paramref name="type"/> を登録します。
+            </summary>
+            <param name="type">登録するシリアライザ型</param>
+            <returns>登録に成功した場合は true</returns>
+        </member>
+        <member name="M:Hisui.Hix.SerializerFactory.RegisterToPluginLoader">
+            <summary>
+            <see cref="T:Hisui.Core.PluginLoader"/> の <c>TypeLoadEvent</c> でシリアライザを登録するように設定します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Hix.StorageRefSerializer`1">
+            <summary>
+            <see cref="T:Hisui.Core.IStorage`1"/> の実装クラスのシリアライザを定義するためのベースクラスです。
+            コレクション要素は参照型とし、各要素のシリアライザは別途に定義されている場合に使用できます。
+            </summary>
+            <typeparam name="T">コレクションの要素型</typeparam>
+        </member>
+        <member name="M:Hisui.Hix.StorageRefSerializer`1.CreateInstance">
+            <summary>
+            このメソッドをオーバーライドして、<see cref="T:Hisui.Core.IStorage`1"/>のインスタンスを生成するコードを実装します。
+            </summary>
+            <returns>生成されたインスタンス（空のコレクション）</returns>
+        </member>
+        <member name="M:Hisui.Hix.StorageRefSerializer`1.Write(System.Xml.XmlWriter,Hisui.Hix.INameResolver)">
+            <summary>
+            <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> をXML形式でシリアライズします。
+            </summary>
+            <param name="writer">書き出し先</param>
+            <param name="names">参照しているオブジェクトから、そのオブジェクトに割り当てられたID番号（名前）を取得します</param>
+        </member>
+        <member name="M:Hisui.Hix.StorageRefSerializer`1.Read(System.Xml.XmlReader,Hisui.Hix.IReferenceResolver)">
+            <summary>
+            XMLからコレクションをデシリアライズし <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> に設定します。
+            </summary>
+            <param name="reader">読み込み元</param>
+            <param name="refs">参照しているID番号からデシリアライズ済みのオブジェクトを取得します</param>
+        </member>
+        <member name="P:Hisui.Hix.StorageRefSerializer`1.References">
+            <summary>
+            <see cref="P:Hisui.Hix.AbstractSerializer`1.Target"/> コレクションの全要素を参照オブジェクトとして返します。
+            </summary>
+        </member>
+    </members>
+</doc>

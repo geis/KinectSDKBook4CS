@@ -1,0 +1,32 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TiltMotor" Height="350" Width="525"
+    Closing="Window_Closing" HorizontalContentAlignment="Center">
+    <Grid>
+        <Image Name="ImageRgb" Stretch="Uniform" />
+        <Image Name="ImageDepth" Stretch="Uniform" Opacity="0.5" />
+        <Canvas Name="CanvasSkeleton"
+            Width="{Binding ElementName=ImageRgb, Path=ActualWidth}"
+            Height="{Binding ElementName=ImageRgb, Path=ActualHeight}" />
+        <ComboBox Height="24" HorizontalAlignment="Left" Name="ComboBoxRange"
+              VerticalAlignment="Top" Width="120"
+              SelectionChanged="ComboBoxRange_SelectionChanged" />
+        <Border Height="300" Width="20" Background="#FFFF0000">
+            <Border.RenderTransform>
+                <RotateTransform Angle="0" x:Name="SoundSource" ></RotateTransform>
+            </Border.RenderTransform>
+        </Border>
+        <Border Height="300" Width="10" Background="#FF0000FF">
+            <Border.RenderTransform>
+                <RotateTransform Angle="0" x:Name="Beam" ></RotateTransform>
+            </Border.RenderTransform>
+        </Border>
+        <Slider Height="190" HorizontalAlignment="Left" Margin="12,82,0,0"
+            Name="SliderTiltAngle" VerticalAlignment="Top" Width="24"
+            Orientation="Vertical" ValueChanged="SliderTiltAngle_ValueChanged" />
+        <Label Content="{Binding Path=Value, ElementName=SliderTiltAngle}"
+           Height="28" HorizontalAlignment="Left" Margin="0,60,0,0"
+           Name="label1" VerticalAlignment="Top" Width="36" HorizontalContentAlignment="Center" />
+    </Grid>
+</Window>

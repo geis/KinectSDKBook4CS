@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / 直線エンティティを自作してみよう (1)</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>直線エンティティを自作してみよう (1)</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+</center>
+<div align="right">
+<p>2007年9月
+<br>HixUT の追加に合わせて加筆修正 2008年8月
+</div>
+
+<p>これまでは Hisui.Spatial に含まれている定義済みのエンティティを使用してきました。ここでは直線エンティティを自分で定義してみます。次の３つのチュートリアルを理解していることを前提とします。
+<ul>
+<li>Hello World を作ってみよう
+<li>OpenGL命令で直線を描画してみよう
+<li>直線作図機能を作ってみよう
+</ul>
+
+
+<h2>このチュートリアルのゴール</h2>
+<p>まず次のようなコマンドを作りましょう。
+<pre>
+  [Hisui.Ctrl.Command( "直線作図" )]
+  static void PutMyLine( Hisui.Ctrl.IContext con )
+  {
+    Hisui.Geom.Point3d p1 = new Hisui.Geom.Point3d( 0, 0, 0 );
+    Hisui.Geom.Point3d p2 = new Hisui.Geom.Point3d( 1, 2, 3 );
+    con.ActiveEntries.Put( new MyLine( p1, p2 ) ); 
+  }
+</pre>
+<p>このコマンドを動かすと次の結果が得られることをゴールとします。
+<ul>
+  <li>ドキュメントツリーに MyLine エンティティが登録される（エンティティの定義）
+  <li>ビューに直線が描画される（シーンの定義）
+  <li>ドキュメントの保存/読込が出来る（シリアライズ）
+</ul>
+  
+
+
+
+<h2>直線エンティティの作成</h2>
+
+<p>特にエンティティだからといって何か特別なクラスを継承する必要ありません。ごく普通に直線クラスを定義すればOKです。
+<pre>
+class MyLine
+{
+  Hisui.Geom.Point3d _p1;
+  Hisui.Geom.Point3d _p2;
+
+  public Hisui.Geom.Point3d P1
+  {
+    get { return _p1; }
+    set { _p1 = value; }
+  }
+
+  public Hisui.Geom.Point3d P2
+  {
+    get { return _p2; }
+    set { _p2 = value; }
+  }
+
+  public MyLine( Hisui.Geom.Point3d p1, Hisui.Geom.Point3d p2 )
+  {
+    _p1 = p1;
+    _p2 = p2;
+  }
+}
+</pre>
+<p>これで PutMyLine コマンドを起動してみてください。次のようにツリービューに登録されたら成功です。
+<p><img src="fig07_01.png" alt="[図07-01: ツリービュー]"></img>
+<p>しかし、ビューには何も表示されません。次は MyLine を描画するシーンクラスを作成することにします。
+
+<h2>直線を描画するシーンクラスの作成</h2>
+<p>チュートリアル「<a href="opengl.html">OpenGL 命令で直線を描画してみよう</a>」では LineScene という直線を描画するシーンクラスを作成しました。それと同じ要領で MyLine エンティティを描画する MyLineScene クラスを作成することにします。
+<p>ポイントは次の3つです。
+<ul>
+  <li>Hisui.Graphics.IScene インターフェイスを実装する
+  <li>Hisui.Graphics.Scene 属性を付与する
+  <li>コンストラクタ引数で MyLine を受け取る
+</ul>
+
+<h3>IScene インターフェイスの実装</h3>
+<p>次のように IScene インターフェイスを実装した MyLineScene クラスを作成します。とりあえず Draw() メソッドの中身は空のままにしておきます。
+<pre>
+class MyLineScene : Hisui.Graphics.IScene
+{
+  public void Draw( Hisui.Graphics.ISceneContext sc )
+  {
+  }
+}
+</pre>
+
+
+<h3>Scene 属性の付与</h3>
+<p>MyLineScene クラスに Scene 属性を付与します。ヒスイのプラグイン機構は Scene 属性の付いたクラスを見つけるとそれをエンティティにバインドされたシーンとして Hisui.Graphics.SceneFactory に登録します。Scene 属性の引数にはバインドするエンティティの型を指定します。
+<pre>
+<strong>[Hisui.Graphics.Scene( typeof( MyLine ) )]</strong>
+class MyLineScene : Hisui.Graphics.IScene
+{
+  public void Draw( Hisui.Graphics.ISceneContext sc )
+  {
+  }
+}
+</pre>
+このように、typeof(MyLine) を引数に渡して Scene 属性をつけます。こうすることで MyLineScene クラスが MyLine エンティティに対応するシーンとしてバインドされます。
+
+<h3>コンストラクタ引数で MyLine を受け取る</h3>
+<p>シーンをエンティティにバインドするには、Scene 属性だけでなく、以下のようにコンストラクタ引数でエンティティを受け取るようにする必要があります。
+<pre>
+[Hisui.Graphics.Scene( typeof( MyLine ) )]
+class MyLineScene : Hisui.Graphics.IScene
+{<strong>
+  readonly MyLine _line;
+
+  public MyLineScene( MyLine line )
+  {
+    _line = line;
+  }
+  </strong>
+  public void Draw( Hisui.Graphics.ISceneContext sc )
+  {
+  }
+}
+</pre>
+
+<h3>Draw メソッドの実装</h3>
+<p>あとは Draw メソッドの実装だけです。
+<pre>
+using Hisui.OpenGL;
+...
+  public void Draw( Hisui.Graphics.ISceneContext sc )
+  {<strong>
+    GL.glBegin( GL.GL_LINES );
+    GL.glVertex3d( _line.P1.x, _line.P1.y, _line.P1.z );
+    GL.glVertex3d( _line.P2.x, _line.P2.y, _line.P2.z );
+    GL.glEnd();</strong>
+  }
+</pre>
+<p>これでコマンドを実行してみましょう。直線が描画されるはずです。
+
+
+<h2>画面フィットに対応</h2>
+
+<h3>フィットボタンを押してみよう</h3>
+<p>このエンティティクラスには一つ問題があります。
+<p>ツールバーにこんなアイコン <img src="HomeHS.png"></img> があります。これはビューの拡大率などをオブジェクトにフィットさせるコマンドです。試しに、ビューを拡大・縮小してからこのボタンをクリックしてみてください。描画されている直線にビューがフィットするはずなのですが、残念ながら直線が画面からはみ出してしまいます。
+<p>フィットさせるためには、描画しているエンティティの「大きさ」をフレームワーク側に伝える必要があります。正確にはエンティティの境界ボックスや境界球が必要です。エンティティの大きさが分からないと、画面フィットをしようにも情報が足らないのです。
+<p>フィットを正しく動作させるには、エンティティに IBoundary3d インターフェイスを実装する必要があります。
+
+<h3>エンティティに IBoundary3d を実装</h3>
+<p>次のようにエンティティに IBoundary3d インターフェイスを実装します。
+<pre>
+class MyLine <strong>: Hisui.Geom.IBoundary3d</strong>
+{
+  ...
+
+  public Hisui.Geom.Box3d BoundingBox
+  {
+    get { return new Hisui.Geom.Box3d(P1, P2); }
+  }
+
+  public Hisui.Geom.Sphere3d BoundingSphere
+  {
+    get
+    {
+      return new Hisui.Geom.Sphere3d(
+          Hisui.Geom.Point3d.Interpolate(P1, P2),
+          0.5 * (P2 - P1).Length
+      );
+    }
+  }
+}
+</pre>
+<p>これでもう一度フィットボタンを押してみましょう。きちんとフィットされましたか？
+
+
+<h2>直線エンティティのシリアライズ</h2>
+
+<h3>概要</h3>
+<p>ヒスイは、ドキュメントを XML 形式で保存する機能を備えています。このファイル形式を HiX (Hisui XML) と呼びます。HiX ではシリアライズ機能を各エンティティごとにプラグインできるようになっています。
+<p>Hisui.Hix.dll には、Hisui.Hix.ISerializer というインターフェイスが用意されています。このインターフェイスを実装したシリアライザを作成することで、MyLine エンティティをシリアライズすることが可能です。
+<p>ポイントは次の2つです。
+<ul>
+  <li>Hisui.Hix.ISerializer インターフェイスを実装する
+  <li>Hisui.Hix.Serializer 属性を付与する
+</ul>
+
+
+<h3>ISerializerインターフェイス</h3>
+<p>ISerializer インターフェイスは次のように定義されています。
+<pre class="hisui">
+namespace Hisui.Hix
+{
+  public interface ISerializer
+  {
+    object Target { get; set; }
+    IEnumerable&lt;object&gt; References { get; }
+    void Write( XmlWriter writer, INameResolver names );
+    void Read( XmlReader reader, IReferenceResolver refs );
+  }
+}
+</pre>
+<p>このインターフェイスを実装して、次のように MyLineSerializer クラスを作成します。ここでは各メソッドの実装は空になっています。
+<pre>
+class MyLineSerializer : Hisui.Hix.ISerializer
+{
+  public object Target
+  {
+    get { ... }
+    set { ... }
+  }
+
+  public IEnumerable&lt;object&gt; References
+  {
+    get { yield break; }
+  }
+
+  public void Write( XmlWriter writer, Hisui.Hix.INameResolver names )
+  {
+  }
+
+  public void Read( XmlReader reader, Hisui.Hix.IReferenceResolver refs )
+  {
+  }
+}
+</pre>
+<p>ここに Serializer 属性を付与します。引数に MyLine 型を指定することで、シリアライザとエンティティがバインドされます。
+<pre>
+<strong>[Hisui.Hix.Serializer( typeof( MyLine ) )]</strong>
+class MyLineSerializer : Hisui.Hix.ISerializer
+{
+  ...
+}
+</pre>
+
+
+<h3>Target プロパティの実装</h3>
+<p>Target プロパティはシリアライズの対象となっているエンティティを get/set するプロパティです。
+次のように MyLine エンティティを get/set します。
+<pre>
+[Hisui.Hix.Serializer( typeof( MyLine ) )]
+class MyLineSerializer : Hisui.Hix.ISerializer
+{
+  <strong>MyLine _line;</strong>
+
+  public object Target
+  {
+    get { <strong>return _line;</strong> }
+    set { <strong>_line = (MyLine)value;</strong> }
+  }
+  ...
+}
+</pre>
+
+<h3>Rerefences プロパティの実装</h3>
+<p>ここでは References プロパティは使用しません。従って、実装は yield break するだけでOKです。
+<pre>
+  public IEnumerable&lt;object&gt; References
+  {
+    get { yield break; }
+  }
+</pre>
+<p>このプロパティは、ターゲットエンティティが他のエンティティを参照している場合に、その参照先のエンティティを返すものです。MyLine エンティティは他のエンティティを参照していないので、yield break でOKなのです。
+
+<h3>Write メソッドの実装 - XML書き出し</h3>
+<p>XMLにシリアライズするコードを Write() に記述します。
+<pre>
+  <strong>using Hisui;</strong>
+  ...
+  public void Write( XmlWriter writer, Hisui.Hix.INameResolver names )
+  {<strong>
+    writer.WriteHixData( "p1", _line.P1 );
+    writer.WriteHixData( "p2", _line.P2 );</strong>
+  }
+</pre>
+<p>このコードで使用している WriteHixData() という関数は、XmlWriter に対する拡張メソッドです。この関数は HixUT というクラスに下記のように定義されています。
+<pre class="hisui">
+namespace Hisui
+{
+  public static class HixUT
+  {
+    public static void WriteHixData<T>( this XmlWriter writer, string localName, T data ) { ... }
+  }
+}
+</pre>
+<p>この HixUT クラスは Hisui ネームスペースに定義されています。したがって、この拡張メソッドを有効にするには using Hisui が必要です。HixUT には他にもシリアライズに必要なユーティリティが幾つか定義されています。
+<p>ここでは引数の names は使用しません。この引数が必要になるのは、ターゲットエンティティが他のエンティティを参照している場合のみです。
+<p>上記のコードでは次のような出力結果が得られます。
+<pre>
+  &lt;object name=&quot;1&quot; type=&quot;Tutorial.MyLine&quot;&gt;
+    &lt;p1&gt;0 0 0&lt;/p1&gt;
+    &lt;p2&gt;1 2 3&lt;/p2&gt;
+  &lt;/object&gt;
+</pre>
+
+<h3>Read メソッドの実装 - XML読み込み</h3>
+<p>次に読み込み側 Read() を作ります。
+<pre>
+  using Hisui;
+  ...
+  public void Read(XmlReader reader, Hisui.Hix.IReferenceResolver refs)
+  {<strong>
+    var p1 = reader.ReadHixData&lt;Hisui.Geom.Point3d&gt;( "p1" );
+    var p2 = reader.ReadHixData&lt;Hisui.Geom.Point3d&gt;( "p2" );
+    _line = new MyLine(p1, p2);</strong>
+  }
+</pre>
+<p>引数の refs は使用しません。この引数が必要になるのは、ターゲットエンティティが他のエンティティを参照している場合のみです。
+
+<h3>確認してみよう</h3>
+<p>では PutMyLine コマンドを起動して MyLine エンティティをドキュメントに登録し、その状態で HiX ファイルを出力してみましょう。また、そのファイルが正しく読み込めるか確認してみましょう。
+
+<h3>AbstractSerializer の利用</h3>
+<p>上記では ISerializer インターフェイスを全て自分で実装しましたが、Hisui.Hix には AbstractSerializer&lt;T&gt; という抽象クラスが用意されており、これを利用するとより簡潔にシリアライザを実装することが出来ます。以下に AbstractSerializer&lt;T&gt; の定義を示します。
+<pre class="hisui">
+namespace Hisui.Hix
+{
+  public abstract class AbstractSerializer&lt;T&gt; : ISerializer
+  {
+    T _target;
+
+    protected T Target
+    {
+      get { return _target; }
+      set { _target = value; }
+    }
+
+    #region ISerializer メンバ
+
+    object ISerializer.Target
+    {
+      get { return _target; }
+      set { _target = (T)value; }
+    }
+
+    public virtual IEnumerable&lt;object&gt; References
+    {
+      get { yield break; }
+    }
+
+    public abstract void Write( System.Xml.XmlWriter writer, INameResolver names );
+    public abstract void Read( System.Xml.XmlReader reader, IReferenceResolver refs );
+
+    #endregion
+  }
+}
+</pre>
+<p>これを継承すれば MyLineSerializer は下記のようにより簡潔に実装することが出来ます。
+</pre>
+<pre>
+using Hisui;
+...
+[Hisui.Hix.Serializer( typeof( MyLine ) )]
+class MyLineSerializer : Hisui.Hix.AbstractSerializer&lt;MyLine&gt;
+{
+  public override void Write( XmlWriter writer, Hisui.Hix.INameResolver names )
+  {
+    writer.WriteHixData( "p1", base.Target.P1 );
+    writer.WriteHixData( "p2", base.Target.P2 );
+  }
+
+  public override void Read( XmlReader reader, Hisui.Hix.IReferenceResolver refs )
+  {
+    var p1 = reader.ReadHixData&lt;Hisui.Geom.Point3d&gt;( "p1" );
+    var p2 = reader.ReadHixData&lt;Hisui.Geom.Point3d&gt;( "p2" );
+    base.Target = new MyLine( p1, p2 );
+  }
+}
+</pre>
+
+
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2007-2008, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>
+

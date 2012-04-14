@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Script-Type" content="text/javascript">
+<META http-equiv="Content-Style-Type" content="text/css">
+<TITLE>Hisuiチュートリアル / 直線作図機能を作ってみよう (1)</TITLE>
+<link rel="stylesheet" href="tutorial.css" type="text/css">
+</HEAD>
+<BODY>
+
+<p align="right"><a href="../../index.html#tutorial">戻る</a></p>
+<center>
+<h1>直線作図機能を作ってみよう (1)</h1>
+<p>～ OpenGLプラットフォーム「ヒスイ」 チュートリアル ～
+</center>
+
+<p>標準プラグインである Hisui.Spatial.dll に含まれる IPolyline エンティティを利用して、直線作図を行うコマンドを作成します。開発チュートリアル「Hello World を作ってみよう」を理解していることを前提とします。
+
+
+<h2>直線作図コマンドの作成</h2>
+
+<h3>まずは直線作図メニューを作成</h3>
+<p>「Hello World を作ってみよう」と同様の手順で、下記のように PutLine コマンドを作成します。
+<pre>
+  [Hisui.Ctrl.Command("直線作図")]
+  static void PutLine()
+  {
+  }
+</pre>
+<p>起動してみて、直線作図メニューが作成されているのを確認してください。
+
+<h3>引数でコンテキスト情報を受け取る</h3>
+下記のように、Hisui.Ctrl.IContext を引数で受け取るようにします。
+<pre>
+  [Hisui.Ctrl.Command("直線作図")]
+  static void PutLine( <strong>Hisui.Ctrl.IContext con</strong> )
+  {
+  }
+</pre>
+コンテキスト情報からは View オブジェクトや Document オブジェクトを取得することが出来ます。これから Document オブジェクトに直線を登録することになります。
+
+
+<h2>エンティティの登録</h2>
+
+<h3>Hisui.Spatial.IPolyline エンティティの生成</h3>
+<p>Hisui.Spatial.dll には、IPolyline というインターフェイスが定義されています。このチュートリアルでは、直線を IPolyline を用いて表現することにします。IPolyline はその名の通り、本来は折線を表現するクラスですので直線だけでなくn点から構成される折線データも保持することが出来ますが、このチュートリアルでは直線としてしか扱いません。
+<p>IPolyline はインターフェイスですので、new することは出来ません。次のようにファクトリー関数を利用してインスタンスを生成します。
+<pre>
+using Hisui;
+
+  [Hisui.Ctrl.Command("直線作図")]
+  static void PutLine( Hisui.Ctrl.IContext con )
+  {
+    <strong>var polyline = SI.NewInstance&lt;Hisui.Spatial.IPolyline&gt;();</strong>
+  }
+</pre>
+
+<h3>直線の端点座標を設定</h3>
+<p>ここでは (0, 0, 0) から (1, 1, 1) を結ぶ直線を作成しましょう。
+<pre>
+  [Hisui.Ctrl.Command("直線作図")]
+  static void PutLine( Hisui.Ctrl.IContext con )
+  {
+    var polyline = SI.NewInstance&lt;Hisui.Spatial.IPolyline&gt;();
+    <strong>polyline.Add( new Hisui.Geom.Point3d( 0, 0, 0 ) );</strong>
+    <strong>polyline.Add( new Hisui.Geom.Point3d( 1, 1, 1 ) );</strong>
+  }
+</pre>
+
+<h3>直線をドキュメントに登録</h3>
+<p>作成した IPolyline インスタンスを、次のようにしてドキュメントに登録します。
+<pre>
+  [Hisui.Ctrl.Command("直線作図")]
+  static void PutLine( Hisui.Ctrl.IContext con )
+  {
+    var polyline = SI.NewInstance&lt;Hisui.Spatial.IPolyline&gt;();
+    polyline.Add( new Hisui.Geom.Point3d( 0, 0, 0 ) );
+    polyline.Add( new Hisui.Geom.Point3d( 1, 1, 1 ) );
+    <strong>con.ActiveEntries.Put( polyline );</strong>
+  }
+</pre>
+<p>早速実行してみて、直線が表示されるか確認してみましょう。
+<p>なお、次のいずれの書き方でも、同様に polyline を登録できます。
+<pre>
+  con.Document.ActiveEntries.Put( polyline );
+</pre>
+<pre>
+  Hisui.Core.Document.Current.ActiveEntries( polyline );
+</pre>
+<pre>
+  Hisui.Ctrl.Current.Document.ActiveEntries( polyline );
+</pre>
+<pre>
+  Hisui.SI.PutEntry( polyline );
+</pre>
+
+
+<h2>マウスオペレーションで作図</h2>
+<p>直線は作成できるようになりましたが、両端点の座標は固定されています。マウスで自由に作図できるようにコマンドを修正しましょう。具体的には、マウスで２点をクリックするとその２点間に直線が作成される作図コマンドを作ります。
+
+<h3>状態遷移モデル</h3>
+この作図コマンドのオペレーションは次のような状態遷移図で表せます。この状態遷移図を元にプログラミングを進めます。
+<p><img src="fig08_01.png" alt="[図08-01:状態遷移図]"></img>
+<p>ヒスイでは、この状態遷移を IEnumerator を用いて次のようにあらわします。
+<pre>
+  IEnumerator&lt;状態&gt;
+</pre>
+IEnumerator&lt;&gt; は System.Collections.Generic に用意されているイテレータです。IEnumerator&lt;状態&gt;.Current は現在の状態を返し、IEnumerator&lt;状態&gt;.MoveNext() で次の状態への遷移を表すのです。これを用いて、直線作図コマンド PutLine() は次のように表せます。
+<pre>
+static IEnumerator&lt;状態&gt; PutLine(Hisui.Ctrl.IContext con)
+{
+  yield return クリック待ち状態 ; // １点目
+  yield return クリック待ち状態 ; // ２点目
+  直線の作成 ;
+}
+</pre>
+なお、yield return は C#2.0 で新たに加わった新機能です。これを使うと IEnumerator オブジェクトが簡単に作成できます。ご存じない方はインターネットで "C# yield" などを検索してみてください。多くの解説ページが見つかると思います。
+
+<h3>プログラミング開始</h3>
+<p>PutLine() コマンドを次のように書き換えます。
+<pre>
+[Hisui.Ctrl.Command("直線作図")]
+static <strong>IEnumerator&lt;Hisui.Ctrl.IOperation&gt;</strong> PutLine(Hisui.Ctrl.IContext con)
+{<strong>
+    var click1 = new Hisui.Ctrl.LButtonClick( con );
+    var click2 = new Hisui.Ctrl.LButtonClick( con );
+    yield return click1;
+    yield return click2;
+    </strong>
+    var polyline = SI.NewInstance&lt;Hisui.Spatial.IPolyline&gt;();
+    polyline.Add( new Hisui.Geom.Point3d( 0, 0, 0 ) );
+    polyline.Add( new Hisui.Geom.Point3d( 1, 1, 1 ) );
+    con.ActiveEntries.Put( polyline );
+}
+</pre>
+<p>Hisui.Ctrl.IOperation がオペレーションの状態を表すインターフェイスです。この IEnumerator を返すことで作図コマンドの状態遷移を表します。
+<p>Hisui.Ctrl.LButtonClick はマウス左ボタンのクリック待ち状態を表すクラスです。click1 が1点目、click2 が2点目のクリックです。
+<p>では早速起動してみましょう。コマンドを起動しても、すぐには直線が描画されません。ここでビュー上で適当に２回クリックすると、直線が作図されると思います。
+
+<h3>クリック位置から直線の始終点を決める</h3>
+<p>現状では、マウスのクリック位置とは無関係な直線が作図されてしまいます。ちゃんとクリック位置を使って直線を作図するように修正しましょう。
+<p>まずマウスのクリック位置を取得します。
+<pre>
+    System.Drawing.Point pt1 = click1.EventArgs.Location;
+    System.Drawing.Point pt2 = click2.EventArgs.Location;
+</pre>
+<p>pt1, pt2 はスクリーン座標の点ですから、これをワールド座標に変換する必要があります。これには con.View.Camera オブジェクトを使います。Camera にはワールド座標をどのような向きからどのような大きさで「撮影」しているかを表す情報が格納されています。次のコードでスクリーン座標をワールド座標に変換することができます。
+<pre>
+    con.View.Camera.ScreenToWorld( スクリーン座標 );
+</pre>
+<p>こうして得られるワールド座標を polyline に Add すればOKです。以下に PutLine() コマンド全体を載せておきます。
+<pre>
+[Hisui.Ctrl.Command("直線作図")]
+static IEnumerator&lt;Hisui.Ctrl.IOperation&gt; PutLine(Hisui.Ctrl.IContext con)
+{
+    var click1 = new Hisui.Ctrl.LButtonClick( con );
+    var click2 = new Hisui.Ctrl.LButtonClick( con );
+    yield return click1;
+    yield return click2;
+
+    <strong>var pt1 = click1.EventArgs.Location;</strong>
+    <strong>var pt2 = click2.EventArgs.Location;</strong>
+
+    var polyline = SI.NewInstance&lt;Hisui.Spatial.IPolyline&gt;();
+    polyline.Add( <strong>con.View.Camera.ScreenToWorld( pt1 )</strong> );
+    polyline.Add( <strong>con.View.Camera.ScreenToWorld( pt2 )</strong> );
+    con.ActiveEntries.Put( polyline );
+}
+</pre>
+
+
+
+
+<hr><p align="center"><a href="../../index.html#tutorial">戻る</a></p>
+<p align="right">Copyright &copy; 2007, 株式会社カタッチ
+<br><a href="http://www.quatouch.com">http://www.quatouch.com</a>
+
+</BODY>
+</HTML>
+
+
