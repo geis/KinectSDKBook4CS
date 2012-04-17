@@ -1,0 +1,2274 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hisui.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Hisui.Core.IMemory">
+            <summary>
+            履歴管理対象の <c>IMemorable</c> オブジェクトに対応する履歴情報 <c>IMemento</c> を保持するインターフェイスです。
+            <c>History</c> クラスに実装され、<c>Memorable</c> クラスで使用されています。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IMemory.Item(Hisui.Core.IMemorable)">
+            <summary>
+            履歴管理対象 <c>IMemorable</c> に対応する履歴情報 <c>IMemento</c> を set/get。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.BreathObject">
+            <summary>
+            <c>IBreath</c> インターフェイスを実装しただけのシンプルなクラスです。
+            このクラスを継承することで容易に <c>IBreath</c> を実装したクラスを定義することが出来ます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IBreath">
+            <summary>
+            論理時刻のタイムスタンプ（BreathCount）を保持します。
+            </summary>
+            <remarks>
+            <c>IBreath</c> は <c>IBuild</c> と合わせてビルドグラフと呼ばれるグラフ構造を形成します。
+            このグラフ構造はDAG（Directed Acyclic Graph; 非循環有向グラフ）となります。
+            </remarks>
+            <seealso cref="T:Hisui.Core.IBuild"/>
+            <seealso cref="T:Hisui.Core.Builder"/>
+        </member>
+        <member name="M:Hisui.Core.IBreath.Touch">
+            <summary>
+            自身の BreathCount を現在の論理時刻（SystemBreathCount）で更新します。
+            このメソッド名はUNIXの touch コマンドに由来しています。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IBreath.BreathCount">
+            <summary>
+            論理時刻によるタイムスタンプ（BreathCount）を get。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.BreathObject.#ctor">
+            <summary>
+            コンストラクタ。
+            自身が <c>IBuild</c> でない場合はコンストラクタ内で <see cref="M:Hisui.Core.BreathObject.Touch"/> され、タイムスタンプが最新に更新されます。
+            </summary>
+            <remarks>
+            自身が <c>IBuild</c> の場合には <c>Builder.Build()</c> によって更新されるべきであるため、
+            コンストラクタ内では <see cref="M:Hisui.Core.BreathObject.Touch"/> されません。
+            </remarks>
+        </member>
+        <member name="M:Hisui.Core.BreathObject.Touch">
+            <summary>
+            自身の BreathCount を現在の論理時刻（SystemBreathCount）で更新します。
+            このメソッド名はUNIXの touch コマンドに由来しています。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.BreathObject.BreathCount">
+            <summary>
+            論理時刻によるタイムスタンプ（BreathCount）を get。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IDependent`1">
+            <summary>
+            値を保持している<see cref="T:Hisui.Core.IDependent"/>オブジェクトです。
+            </summary>
+            <typeparam name="T">保持する値の型</typeparam>
+        </member>
+        <member name="T:Hisui.Core.IBreath`1">
+            <summary>
+            値と BreathCount を保持します。
+            </summary>
+            <typeparam name="T">保持する値の型</typeparam>
+        </member>
+        <member name="P:Hisui.Core.IBreath`1.Value">
+            <summary>
+            保持している値を get。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IDependent">
+            <summary>
+            <see cref="T:Hisui.Core.IBreath"/> オブジェクトに依存したオブジェクトを表します。
+            </summary>
+            <remarks>
+            <see cref="T:Hisui.Core.IDependent"/> は <see cref="T:Hisui.Core.IBreath"/> や <see cref="T:Hisui.Core.IBuild"/> と合わせてビルドグラフと呼ばれるグラフ構造を形成します。
+            このグラフ構造はDAG（Directed Acyclic Graph; 非循環有向グラフ）となります。
+            <para>アプリケーションは <see cref="M:Hisui.Core.IBreath.Touch"/>メソッドや<see cref="M:Hisui.Core.IBuild.Build"/>メソッドを直接呼び出すべきではありません。
+            これらのメソッドは <see cref="T:Hisui.Core.Builder"/> クラスを介して呼び出す必要があります。</para>
+            </remarks>
+        </member>
+        <member name="P:Hisui.Core.IDependent.Sources">
+            <summary>
+            依存先のオブジェクト群を返します。
+            自身よりも依存先の BreathCount の値の方が大きい場合に <see cref="M:Hisui.Core.IBreath.Touch"/> 関数が呼ばれます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IMemorable`1">
+            <summary>
+            <see cref="P:Hisui.Core.IMemorable`1.Value"/>プロパティの変更（<c>set</c>操作）が Undo/Redo 可能なオブジェクトを表します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IMemorable">
+            <summary>
+            オブジェクトを Undo/Redo に対応するためにはこのインターフェイスを実装する必要があります。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IMemorable.AddRef">
+            <summary>
+            ヒストリからの参照カウントをインクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IMemorable.Release">
+            <summary>
+            ヒストリからの参照カウントをデクリメントします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IMemorable`1.Value">
+            <summary>
+            保持している値。変更履歴の Undo/Redo が可能です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IStorage`1">
+            <summary>
+            整数のIDをキーとして値を格納するコレクションクラスです。
+            IDは 1 以上の整数です。
+            </summary>
+            <typeparam name="T">値として格納するオブジェクトの型</typeparam>
+        </member>
+        <member name="T:Hisui.Core.IStorage">
+            <summary>
+            整数のIDをキーとしてオブジェクトを格納するコレクションクラスです。
+            IDは 1 以上の整数です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IReadOnlyStorage">
+            <summary>
+            整数のIDをキーとしてオブジェクトを格納する読み取り専用のコレクションクラスです。
+            IDは 1 以上の整数です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IReadOnlyStorage.Contains(System.Int32)">
+            <summary>
+            IDに対応する要素が存在する場合に true を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IReadOnlyStorage.Find(System.Int32,System.Object@)">
+            <summary>
+            IDに対応する値を検索し、見つかった場合には値を<c>val</c>に格納します。見つからない場合には<c>false</c>を返します。
+            </summary>
+            <param name="id">検索キーのID</param>
+            <param name="val">見つかったオブジェクト</param>
+            <returns>見つかった場合に true、存在しない場合は false</returns>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage.Count">
+            <summary>
+            要素数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage.IDs">
+            <summary>
+            格納されている要素のIDをすべて列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage.Values">
+            <summary>
+            格納されている要素の値（<c>object</c>型）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage.Items">
+            <summary>
+            格納されている要素（IDと値のペア）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage.Item(System.Int32)">
+            <summary>
+            指定されたIDに対応する値を取得します。要素が存在しない場合には<c>KeyNotFoundException</c>がスローされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IStorage.Remove(System.Int32)">
+            <summary>
+            IDに対応する要素を削除します。削除された場合は true、要素が見つからなかった場合は false を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IStorage.Clear">
+            <summary>
+            コレクションを空にします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IStorage.IsReadOnly">
+            <summary>
+            読み取り専用の場合 true を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IReadOnlyStorage`1">
+            <summary>
+            整数のIDをキーとして値を格納する読み取り専用のコレクションクラスです。
+            IDは 1 以上の整数です。
+            </summary>
+            <typeparam name="T">値として格納するオブジェクトの型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.IReadOnlyStorage`1.Find(System.Int32,`0@)">
+            <summary>
+            IDに対応する値を検索し、見つかった場合には値を<c>val</c>に格納します。見つからない場合には<c>false</c>を返します。
+            </summary>
+            <param name="id">検索キーのID</param>
+            <param name="val">見つかったオブジェクト</param>
+            <returns>見つかった場合に true、存在しない場合は false</returns>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage`1.Values">
+            <summary>
+            格納されている要素の値（<c>T</c>型）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage`1.Items">
+            <summary>
+            格納されている要素（IDと値のペア）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IReadOnlyStorage`1.Item(System.Int32)">
+            <summary>
+            指定されたIDに対応する値を取得します。要素が存在しない場合には<c>KeyNotFoundException</c>がスローされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IStorage`1.Put(`0)">
+            <summary>
+            新しく要素を追加し、自動で採番されたIDを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IStorage`1.Item(System.Int32)">
+            <summary>
+            指定されたIDに対応する値を set/get します。
+            要素が存在しないIDで get すると<c>KeyNotFoundException</c>がスローされます。
+            要素が存在しないIDで set すると新しく要素が追加されます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Memento`1">
+            <summary>
+            <c>IMemento</c> インターフェイスを実装したジェネリック型を利用した抽象クラスです。
+            <c>IMemento</c> を直接実装するよりもこのクラスを継承したサブクラスを定義するほうがシンプルに記述できます。
+            </summary>
+            <typeparam name="T"><c>IMemorable</c>を実装した履歴管理対象</typeparam>
+        </member>
+        <member name="T:Hisui.Core.IMemento">
+            <summary>
+            履歴管理対象の <c>IMemorable</c> オブジェクトの変更履歴情報を保持するクラスです。
+            <c>IMemorable</c> オブジェクトは変更単位（エピソード）毎にその履歴情報を
+            <c>IMemento</c>オブジェクトとして生成し、<c>History</c> に登録します。
+            アプリケーションが直接このインターフェイスを呼び出すことはありません。
+            このインターフェイスのメソッドは <c>History</c> クラスの内部からのみ使用されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IMemento.Start(Hisui.Core.IMemorable)">
+            <summary>
+            変更エピソードが開始されたときに呼び出されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IMemento.End(Hisui.Core.IMemorable)">
+            <summary>
+            変更エピソードが終了されるとき（コミットされるとき）に呼び出されます。
+            </summary>
+            <param name="self"></param>
+        </member>
+        <member name="M:Hisui.Core.IMemento.Rollback(Hisui.Core.IMemorable)">
+            <summary>
+            この<c>IMemento</c>に記録された変更履歴を巻き戻して、<c>IMemorable</c> オブジェクトの状態を元に戻します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IMemento.Replay(Hisui.Core.IMemorable)">
+            <summary>
+            この<c>IMemento</c>に記録された変更履歴を再生して、<c>IMemorable</c> オブジェクトの状態変更をやり直します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Memento`1.Start(`0)">
+            <summary>
+            変更エピソードが開始されたときに呼び出されます。
+            デフォルトの実装は空です。オーバーライドすることで動作をカスタマイズ出来ます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Memento`1.End(`0)">
+            <summary>
+            変更エピソードが終了されるとき（コミットされるとき）に呼び出されます。
+            デフォルトの実装は空です。オーバーライドすることで動作をカスタマイズ出来ます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Memento`1.Rollback(`0)">
+            <summary>
+            オーバーライドし、記録された変更履歴を巻き戻して <c>IMemorable</c> オブジェクトの状態を元に戻す実装を定義します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Memento`1.Replay(`0)">
+            <summary>
+            オーバーライドし、記録された変更履歴を再生して <c>IMemorable</c> オブジェクトの状態変更をやり直す実装を定義します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IEntryCollection">
+            <summary>
+            <c>IEntry</c>オブジェクトのコレクションです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Contains(System.Int32)">
+            <summary>
+            指定されたIDのエントリがある場合に true を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Find(System.Int32,Hisui.Core.IEntry@)">
+            <summary>
+            指定されたIDのエントリを <paramref name="val"/> に取得します。エントリが見つからない場合は false を返します。
+            </summary>
+            <param name="id">取得したいエントリのID</param>
+            <param name="val">見つかったエントリ</param>
+            <returns>エントリが見つかった場合は true、見つからなかった場合は false</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Remove(System.Int32)">
+            <summary>
+            指定されたIDのエントリを削除します。エントリが見つからなかった場合は false を返します。
+            </summary>
+            <param name="id">削除するエントリのID</param>
+            <returns>エントリが削除された場合は true、エントリが見つからなかった場合は false</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Clear">
+            <summary>
+            コレクションをクリアします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Put(System.Object)">
+            <summary>
+            新たに<c>IEntry</c>オブジェクトを生成・登録します。
+            生成されたエントリの<see cref="P:Hisui.Core.IEntry.Entity"/>プロパティには<paramref name="entity"/>が設定されます。
+            IDは自動で割り当てられます。
+            </summary>
+            <param name="entity">登録するエンティティ</param>
+            <returns>追加されたエントリ</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Put(System.Int32,System.Object)">
+            <summary>
+            指定されたIDのエントリを生成・登録します。
+            そのIDのエントリが既にある場合は上書きされます。
+            生成されたエントリの<see cref="P:Hisui.Core.IEntry.Entity"/>プロパティには<paramref name="entity"/>が設定されます。
+            </summary>
+            <param name="id">登録するエントリのID</param>
+            <param name="entity">登録するエンティティ</param>
+            <returns>追加されたエントリ</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.GetEntriesRecursive">
+            <summary>
+            このコレクションの配下にあるエントリをすべて再帰的に取得し列挙します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.Find(System.Predicate{Hisui.Core.IEntry})">
+            <summary>
+            <paramref name="match"/>で指定された述語関数が true となる最初のエントリを返します。見つからなかった場合はnullを返します。
+            検索対象はこのエントリの中だけで、子エントリまで含めた再帰的な探索はしません。
+            </summary>
+            <param name="match">検索条件の述語関数</param>
+            <returns>最初に見つかったエントリ</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.FindAll(System.Predicate{Hisui.Core.IEntry})">
+            <summary>
+            <paramref name="match"/>で指定された述語関数が true となるエントリをすべて列挙します。
+            検索対象はこのエントリの中だけで、子エントリまで含めた再帰的な探索はしません。
+            </summary>
+            <param name="match">検索条件の述語関数</param>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.FindRecursive(System.Predicate{Hisui.Core.IEntry})">
+            <summary>
+            <paramref name="match"/>で指定された述語関数が true となる最初のエントリを返します。見つからなかった場合はnullを返します。
+            子エントリまで含めて再帰的に探索します。
+            </summary>
+            <param name="match">検索条件の述語関数</param>
+            <returns>最初に見つかったエントリ</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntryCollection.FindAllRecursive(System.Predicate{Hisui.Core.IEntry})">
+            <summary>
+            <paramref name="match"/>で指定された述語関数が true となるエントリをすべて列挙します。
+            子エントリまで含めて再帰的に探索します。
+            </summary>
+            <param name="match">検索条件の述語関数</param>
+        </member>
+        <member name="P:Hisui.Core.IEntryCollection.Count">
+            <summary>
+            要素数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntryCollection.Item(System.Int32)">
+            <summary>
+            指定されたIDのエントリを返します。IDに対応するエントリが存在しない場合は<c>KeyNotFoundException</c>がスローされます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntryCollection.Owner">
+            <summary>
+            親エントリがある場合は親エントリを、親エントリがない場合（ルートの場合）は所属するドキュメントを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntryCollection.Document">
+            <summary>
+            所属するドキュメントを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IEntry">
+            <summary>
+            <c>Document</c>に保持されるエントリです。エンティティやエレメントなどを保持、管理します。
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="M:Hisui.Core.IEntry.HasElement(System.Type)">
+            <summary>
+            <paramref name="type"/> をキーとするエレメントを保持している場合に true を返します。
+            </summary>
+            <param name="type">エレメントのキーとなる型</param>
+        </member>
+        <member name="M:Hisui.Core.IEntry.GetElement(System.Type)">
+            <summary>
+            <paramref name="type"/> をキーとして保持されているエレメントを返します。エレメントが見つからない場合は null を返します。
+            </summary>
+            <param name="type">エレメントのキーとなる型</param>
+        </member>
+        <member name="M:Hisui.Core.IEntry.SetElement(System.Type,System.Object)">
+            <summary>
+            <paramref name="type"/> をキーとしてエレメント<paramref name="elm"/>を格納します。
+            既に<paramref name="type"/>をキーとするエレメントが存在する場合は<paramref name="elm"/>で上書きされます。
+            <paramref name="elm"/>がnullの場合には<paramref name="type"/>をキーとするエレメントは削除されます。
+            </summary>
+            <param name="type">エレメントのキーとなる型</param>
+            <param name="elm">エレメント</param>
+        </member>
+        <member name="M:Hisui.Core.IEntry.RemoveElement(System.Type)">
+            <summary>
+            <paramref name="type"/> をキーとするエレメントを削除します。エレメントが見つからない場合には false を返します。
+            </summary>
+            <param name="type">エレメントのキーとなる型</param>
+            <returns>エレメントが削除された場合は true、エレメントが見つからなかった場合は false</returns>
+        </member>
+        <member name="M:Hisui.Core.IEntry.HasElement``1">
+            <summary>
+            <typeparamref name="T"/> をキーとするエレメントを保持している場合に true を返します。
+            </summary>
+            <typeparam name="T">エレメントのキーとなる型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.IEntry.GetElement``1">
+            <summary>
+            <typeparamref name="T"/> をキーとして保持されているエレメントを返します。エレメントが見つからない場合は null を返します。
+            </summary>
+            <typeparam name="T">エレメントのキーとなる型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.IEntry.SetElement``1(``0)">
+            <summary>
+            <typeparamref name="T"/> をキーとしてエレメント<paramref name="elm"/>を格納します。
+            既に<typeparamref name="T"/> をキーとするエレメントが存在する場合は<paramref name="elm"/>で上書きされます。
+            <paramref name="elm"/>がnullの場合には <typeparamref name="T"/> をキーとするエレメントは削除されます。
+            </summary>
+            <typeparam name="T">エレメントのキーとなる型</typeparam>
+            <param name="elm">エレメント</param>
+        </member>
+        <member name="M:Hisui.Core.IEntry.RemoveElement``1">
+            <summary>
+            <typeparamref name="T"/> をキーとするエレメントを削除します。エレメントが見つからない場合には false を返します。
+            </summary>
+            <typeparam name="T">エレメントのキーとなる型</typeparam>
+            <returns>エレメントが削除された場合は true、エレメントが見つからなかった場合は false</returns>
+        </member>
+        <member name="P:Hisui.Core.IEntry.ID">
+            <summary>
+            エントリに割り振られたIDを get。
+            このIDは1以上の整数で、<see cref="P:Hisui.Core.IEntry.Owner"/>の中で一意な値となります。
+            ドキュメント全体で一意なIDではありません。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Parent">
+            <summary>
+            親エントリを get。親エントリがない場合は null を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Entity">
+            <summary>
+            エンティティを set/get。set されるオブジェクトが<c>IMemorable</c>の場合は<see cref="M:Hisui.Core.IMemorable.AddRef"/>が呼び出されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Caption">
+            <summary>
+            キャプション文字列を set/get。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Enabled">
+            <summary>
+            このエントリが有効か無効かを set/get。無効なエントリは非表示となり、ビルドグラフからも除外されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Document">
+            <summary>
+            このエントリが属する<c>Document</c>オブジェクトを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Owner">
+            <summary>
+            このエントリが属する<c>IEntryCollection</c>オブジェクトを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Entries">
+            <summary>
+            このエントリに属する子エントリ群を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Depth">
+            <summary>
+            このエントリが属するエントリツリーにおける自身の深さを返します。ドキュメント直下のエントリの場合は 1 を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Path">
+            <summary>
+            このエントリを一意に特定するIDの配列（長さ = <see cref="P:Hisui.Core.IEntry.Depth"/>）を返します。
+            ドキュメント直下のエントリから順に配列中のIDを辿っていくことでこのエントリが得られます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.PathString">
+            <summary>
+            <see cref="P:Hisui.Core.IEntry.Path"/>プロパティが返す配列を表現した文字列を返します。IDを . で区切った文字列となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.IsSelected">
+            <summary>
+            このエントリが選択されている場合に true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Layer">
+            <summary>
+            このエントリが属するレイヤーオブジェクトを set/get します。デフォルト値は null です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IEntry.Elements">
+            <summary>
+            登録されているエレメントをすべて列挙します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Backup`1">
+            <summary>
+            <c>IBackup</c> を実装した抽象クラスです。
+            ジェネリック引数を用いて関数がオーバーロードされているため、
+            このクラスを継承することでよりシンプルな記述で <c>IBackup</c> を実装することが可能になります。
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Hisui.Core.IBackup">
+            <summary>
+            <c>MementoByBackup</c> クラスにおいて、データのバックアップによる <c>IMemento</c> の実装に利用されます。
+            </summary>
+            <seealso cref="T:Hisui.Core.MementoByBackup`1"/>
+        </member>
+        <member name="M:Hisui.Core.IBackup.BackupFrom(Hisui.Core.IMemorable)">
+            <summary>
+            引数 src の現在の状態をバックアップします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IBackup.RecoveryTo(Hisui.Core.IMemorable)">
+            <summary>
+            バックアップした状態を引数 dst に適用し、状態を復元します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Backup`1.BackupFrom(`0)">
+            <summary>
+            引数 src の現在の状態をバックアップします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Backup`1.RecoveryTo(`0)">
+            <summary>
+            バックアップした状態を引数 dst に適用し、状態を復元します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Builder">
+            <summary>
+            ビルドグラフをビルドする静的関数が定義されたクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.Run">
+            <summary>
+            <see cref="P:Hisui.Core.Builder.Tasks"/>をビルドします。
+            内部で <see cref="M:Hisui.Core.Progress.Start(System.String)"/> が呼ばれ、プログレス通知処理が行われます。
+            処理終了後にシステム全体の論理時刻がインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.RunRebuild">
+            <summary>
+            <see cref="P:Hisui.Core.Builder.Tasks"/>をリビルドします。
+            内部で <see cref="M:Hisui.Core.Progress.Start(System.String)"/> が呼ばれ、プログレス通知処理が行われます。
+            処理前に1回、処理終了後に1回、システム全体の論理時刻がインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.Build">
+            <summary>
+            <see cref="P:Hisui.Core.Builder.Tasks"/>をビルドします。
+            処理終了後にシステム全体の論理時刻がインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.Rebuild">
+            <summary>
+            <see cref="P:Hisui.Core.Builder.Tasks"/>をリビルドします。
+            処理前に1回、処理終了後に1回、システム全体の論理時刻がインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.Build(Hisui.Core.IDependent)">
+            <summary>
+            指定された <see cref="T:Hisui.Core.IDependent"/> ノードをビルドします。
+            指定ノードが Touch された場合は true を、Touch 不要だった場合は false を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.Rebuild(Hisui.Core.IDependent)">
+            <summary>
+            指定された <see cref="T:Hisui.Core.IDependent"/> ノードをリビルドします。
+            指定ノードから <c>Sources</c> プロパティで辿ることが可能なグラフを強制的にリビルドします。
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Hisui.Core.Builder.NeedToBuild">
+            <summary>
+            ルートノード <see cref="P:Hisui.Core.Builder.Tasks"/> がビルドを必要としている状態かどうかを判定します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Builder.NeedToBuild(Hisui.Core.IDependent)">
+            <summary>
+            指定されたノードがビルドを必要としている状態かどうかを判定します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Builder.Tasks">
+            <summary>
+            ビルドグラフのルートノードとなる <see cref="T:Hisui.Core.IDependent"/> のコレクションです。
+            引数なしのビルド関数（<see cref="M:Hisui.Core.Builder.Run"/> や <see cref="M:Hisui.Core.Builder.Build"/> など）はこのルートノードをビルドします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Builder.IsRunning">
+            <summary>
+            ビルド処理が実行中の場合に <c>true</c> を返します。
+            </summary>
+        </member>
+        <member name="F:Hisui.CoreUT.ModuleDirectory">
+            <summary>
+            Hisui.Core.dll モジュールの位置
+            </summary>
+        </member>
+        <member name="M:Hisui.CoreUT.GetFullPath(System.String)">
+            <summary>
+            ModuleDirectory からの相対パスを絶対パスに変換
+            </summary>
+        </member>
+        <member name="M:Hisui.CoreUT.SortInheritanceDAG(System.Type)">
+            <summary>
+            指定された型の継承ツリーをトポロジカルソートして返します。
+            先頭が自分自身で後ろの要素がベースクラスの順となります。
+            </summary>
+        </member>
+        <member name="M:Hisui.CoreUT.PushErrorReport">
+            <summary>
+            エラーレポート機能を開始します。
+            通常 <c>using</c> 節で使用され、スコープを抜けて <c>Dispose()</c> が呼ばれるとエラーレポート機能が終了します。
+            </summary>
+            <remarks>
+            例えば次のようにして呼び出されます。
+            <code>
+            using ( var report = CoreUT.PushErrorReport() ) {
+              // Try() 関数に指定するアクションで例外を catch したい処理を記述します。
+              report.Try( () => { エラーが起りうる処理1; } );
+              report.Try( () => { エラーが起りうる処理2; } );
+              report.Try( () => { エラーが起りうる処理3; } );
+              
+              // 最後に一括して例外処理を行います。
+              foreach ( var e in report.Errors ) {
+                エラー処理;
+              }
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Hisui.CoreUT.PushErrorReport(System.Object)">
+            <summary>
+            エラーレポート機能を開始します。
+            通常 <c>using</c> 節で使用され、スコープを抜けて <c>Dispose()</c> が呼ばれるとエラーレポート機能が終了します。
+            </summary>
+            <remarks>
+            例えば次のようにして呼び出されます。
+            <code>
+            using ( var report = CoreUT.PushErrorReport() ) {
+              // Try() 関数に指定するアクションで例外を catch したい処理を記述します。
+              report.Try( () => { エラーが起りうる処理1; } );
+              report.Try( () => { エラーが起りうる処理2; } );
+              report.Try( () => { エラーが起りうる処理3; } );
+              
+              // 最後に一括して例外処理を行います。
+              foreach ( var e in report.Errors ) {
+                エラー処理;
+              }
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Hisui.CoreUT.PushErrorReport(System.Action{Hisui.Core.IErrorReport})">
+            <summary>
+            エラーレポート機能を開始します。
+            通常 <c>using</c> 節で使用され、スコープを抜けて <c>Dispose()</c> が呼ばれるとエラーレポート機能が終了します。
+            </summary>
+            <remarks>
+            次のようにエラーハンドラを指定して使用することが出来ます。
+            <code>
+            using ( CoreUT.PushErrorReport( report => { 最後に一括して例外処理; } ) ) {
+              // Try() 関数に指定するアクションで例外を catch したい処理を記述します。
+              CoreUT.Try( () => { エラーが起りうる処理1; } );
+              CoreUT.Try( () => { エラーが起りうる処理2; } );
+              CoreUT.Try( () => { エラーが起りうる処理3; } );
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Hisui.CoreUT.PushErrorReport(System.Object,System.Action{Hisui.Core.IErrorReport})">
+            <summary>
+            エラーレポート機能を開始します。
+            通常 <c>using</c> 節で使用され、スコープを抜けて <c>Dispose()</c> が呼ばれるとエラーレポート機能が終了します。
+            </summary>
+            <remarks>
+            次のようにエラーハンドラを指定して使用することが出来ます。
+            <code>
+            using ( CoreUT.PushErrorReport( this, report => { 最後に一括して例外処理; } ) ) {
+              // Try() 関数に指定するアクションで例外を catch したい処理を記述します。
+              CoreUT.Try( () => { エラーが起りうる処理1; } );
+              CoreUT.Try( () => { エラーが起りうる処理2; } );
+              CoreUT.Try( () => { エラーが起りうる処理3; } );
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Hisui.CoreUT.Try(System.Action)">
+            <summary>
+            指定されたアクションを実行します。
+            エラーレポートがアクティブな場合には、アクション実行中に throw された例外は catch されてエラーレポートに報告されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.CoreUT.Try(System.Object,System.Action)">
+            <summary>
+            指定されたアクションを実行します。
+            エラーレポートがアクティブな場合には、アクション実行中に throw された例外は catch されてエラーレポートに報告されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.CoreUT.Breatheable``1(``0)">
+            <summary>
+            <see cref="T:Hisui.Core.Breatheable`1"/> オブジェクトを生成します。
+            </summary>
+            <seealso cref="T:Hisui.Core.Breatheable`1"/>
+        </member>
+        <member name="M:Hisui.CoreUT.Memorable``1(``0)">
+            <summary>
+            <see cref="T:Hisui.Core.MemorableObject`1"/> オブジェクトを生成します。
+            </summary>
+            <seealso cref="T:Hisui.Core.MemorableObject`1"/>
+        </member>
+        <member name="M:Hisui.CoreUT.Each2``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.CyclicEach2``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.GetAncestors(Hisui.Core.IEntry)">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.As``1(System.Object,System.Action{``0})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.As``2(System.Object,System.Func{``0,``1},``1)">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.IDs``1(System.Collections.Generic.IEnumerable{Hisui.Core.Item{``0}})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.Values``1(System.Collections.Generic.IEnumerable{Hisui.Core.Item{``0}})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.FindMinIndex``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.FindMaxIndex``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.FindMin``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.FindMax``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.FindMin``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double},``0)">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.FindMax``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double},``0)">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="M:Hisui.CoreUT.WhereNotNull``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>[Hisui.CoreUT]</summary>
+        </member>
+        <member name="P:Hisui.CoreUT.DefaultErrorReportHandler">
+            <summary>
+            デフォルトのエラーレポートのハンドラ関数です。
+            <see cref="M:Hisui.CoreUT.PushErrorReport"/> 関数でハンドラを明示的に指定しない場合は、このデフォルトのハンドラが使用されます。
+            このハンドラは <see cref="T:Hisui.Core.IErrorReport"/> が <see cref="M:System.IDisposable.Dispose"/> されたときに呼び出されます。
+            </summary>
+            <seealso cref="M:Hisui.CoreUT.PushErrorReport"/>
+        </member>
+        <member name="P:Hisui.CoreUT.DefaultErrorHandler">
+            <summary>
+            デフォルトのエラーハンドラ関数です。
+            このハンドラは <see cref="T:Hisui.Core.IErrorReport"/> の <c>AddError()</c> メソッドでエラーが報告されたときに呼び出されます。
+            </summary>
+            <seealso cref="M:Hisui.CoreUT.PushErrorReport"/>
+        </member>
+        <member name="P:Hisui.CoreUT.CurrentErrorReport">
+            <summary>
+            現在アクティブに設定されている <see cref="T:Hisui.Core.IErrorReport"/> を返します。
+            <see cref="M:Hisui.CoreUT.PushErrorReport"/> によって設定された直近の <see cref="T:Hisui.Core.IErrorReport"/> が返されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.CoreUT.UnhandledErrorReport">
+            <summary>
+            ハンドルされなかったエラーレポートが取得できます。
+            <see cref="M:Hisui.CoreUT.PushErrorReport"/> でハンドラが指定されず、<see cref="P:Hisui.CoreUT.DefaultErrorReportHandler"/> も null
+            の場合にはこのプロパティにエラーレポートが設定されます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.BuildObject`1">
+            <summary>
+            <see cref="T:Hisui.Core.IBuild`1"/>を実装するためのベースクラスです。
+            このクラスを継承することで<see cref="T:Hisui.Core.IBuild`1"/>を実装したクラスがシンプルに記述できます。
+            </summary>
+            <typeparam name="T">保持する値の型</typeparam>
+        </member>
+        <member name="T:Hisui.Core.IHeavyBuild`1">
+            <summary>
+            重みつきの<c>IBuild&lt;T&gt;</c>です。
+            プログレス通知をより正確に行うために、<see cref="M:Hisui.Core.IBuild.Build"/>処理の重みを設定することが出来ます。
+            </summary>
+            <typeparam name="T">保持する値の型</typeparam>
+        </member>
+        <member name="T:Hisui.Core.IBuild`1">
+            <summary>
+            値を保持している<see cref="T:Hisui.Core.IBuild"/>オブジェクトです。
+            </summary>
+            <typeparam name="T">保持する値の型</typeparam>
+        </member>
+        <member name="T:Hisui.Core.IBuild">
+            <summary>
+            <see cref="T:Hisui.Core.IBreath"/> オブジェクトに依存して状態がビルドされるオブジェクトを表します。
+            </summary>
+            <remarks>
+            <see cref="T:Hisui.Core.IBuild"/> は <see cref="T:Hisui.Core.IBreath"/> や <see cref="T:Hisui.Core.IDependent"/> と合わせてビルドグラフと呼ばれるグラフ構造を形成します。
+            このグラフ構造はDAG（Directed Acyclic Graph; 非循環有向グラフ）となります。
+            <para>アプリケーションは <see cref="M:Hisui.Core.IBreath.Touch"/>メソッドや<see cref="M:Hisui.Core.IBuild.Build"/>メソッドを直接呼び出すべきではありません。
+            これらのメソッドは <see cref="T:Hisui.Core.Builder"/> クラスを介して呼び出す必要があります。</para>
+            </remarks>
+        </member>
+        <member name="M:Hisui.Core.IBuild.Build">
+            <summary>
+            依存先の状態変化に応じて自身の状態をビルドします。
+            自身よりも依存先 <see cref="P:Hisui.Core.IDependent.Sources"/> の BreathCount の値の方が大きい場合に呼び出されます。
+            </summary>
+            <remarks>
+            このメソッドは <see cref="M:Hisui.Core.Builder.Build"/> 関数などから呼び出されます。
+            <para>アプリケーションはこのメソッドを直接呼び出さないでください。
+            必ず <see cref="T:Hisui.Core.Builder"/> クラスを介して呼び出す必要があります。</para>
+            </remarks>
+        </member>
+        <member name="T:Hisui.Core.IHeavyBuild">
+            <summary>
+            重みつきの<c>IBuild</c>です。
+            プログレス通知をより正確に行うために、<see cref="M:Hisui.Core.IBuild.Build"/>処理の重みを設定することが出来ます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IHeavyBuild.Weight">
+            <summary>
+            <see cref="M:Hisui.Core.IBuild.Build"/>処理の重みを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.BuildObject`1.Hisui#Core#IBuild#Build">
+            <summary>
+            <c>IBuild.Build()</c>の実装です。<c>this.Build()</c>の戻り値を<see cref="P:Hisui.Core.BuildObject`1.Value"/>に設定します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.BuildObject`1.System#IDisposable#Dispose">
+            <summary>
+            <see cref="M:System.IDisposable.Dispose"/> の実装です。
+            <see cref="P:Hisui.Core.BuildObject`1.Value"/> が <see cref="T:System.IDisposable"/> ならばその Dispose() メソッドを呼び出します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.BuildObject`1.Build">
+            <summary>
+            オーバーライドして <see cref="P:Hisui.Core.BuildObject`1.Sources"/> の入力値を元に <see cref="P:Hisui.Core.BuildObject`1.Value"/> に設定される値を計算します。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Core.BuildObject`1.Value">
+            <summary>
+            保持する値です。ビルドグラフの評価（evaluation）の結果として得られる値です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.BuildObject`1.Sources">
+            <summary>
+            <see cref="P:Hisui.Core.IDependent.Sources"/> の実装です。ビルド処理の入力となる <see cref="T:Hisui.Core.IBreath"/> オブジェクトを列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.BuildObject`1.Weight">
+            <summary>
+            ビルド処理の重みを返します。デフォルト実装は 0.0 を返すようになっています。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.InjectionAttribute">
+            <summary>
+            フレームワークはこの属性がついたクラスをDIコンテナ（<c>Factory</c>クラス）に格納します。
+            <c>Hisui.Core.Factory.NewInstance&lt;T&gt;()</c> によってインスタンスを生成できます。
+            なお、この属性をつけるクラスは引数なしのデフォルトコンストラクタを備えている必要があります。
+            </summary>
+        </member>
+        <member name="F:Hisui.Core.InjectionAttribute.Interface">
+            <summary>
+            キーとなるインターフェイスの型です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.InjectionAttribute.#ctor(System.Type)">
+            <summary>
+            キーとなるインターフェイスの型を指定します。
+            この型をキーとして <c>Factory.NewInstance()</c> でインスタンスが生成されます。
+            </summary>
+            <param name="intf"></param>
+        </member>
+        <member name="T:Hisui.Core.Factory">
+            <summary>
+            DIコンテナのような役割を果たすファクトリクラスです。
+            <see cref="M:Hisui.Core.Factory.NewInstance(System.Type)"/> 関数により、インターフェイス型をキーとしてその実装クラスのインスタンスを生成できます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Factory.NewInstance(System.Type)">
+            <summary>
+            インターフェイス型をキーとしてその実装クラスのインスタンスを生成します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Factory.NewInstance``1">
+            <summary>
+            インターフェイス型をキーとしてその実装クラスのインスタンスを生成します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Factory.NewStorage``1">
+            <summary>
+            型 <c>T</c> をキーとして <c>IStorage&lt;T&gt;</c> のインスタンスを生成します。
+            </summary>
+            <typeparam name="T">生成する <c>IStorage</c> の要素型を指定します。</typeparam>
+        </member>
+        <member name="M:Hisui.Core.Factory.Register(System.Type,System.Type)">
+            <summary>
+            インターフェイス型をキーとしてその実装クラスを登録します。
+            既に指定されたインターフェイスに対する実装が登録されている場合は、新しく指定された実装クラスで上書きされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Factory.Register``2">
+            <summary>
+            インターフェイス型をキーとしてその実装クラスを登録します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Factory.Register(System.Type)">
+            <summary>
+            指定された型が引数なしのデフォルトコンストラクタを備えていて、
+            かつ <c>InjectionAttribute</c> 属性が付与されている場合に、その型をDIコンテナに登録します。
+            登録できなかった場合は false を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Factory.OnTypeLoad(System.Type)">
+            <summary>
+            <c>PluginLoader.TypeLoadEvent</c> のイベントハンドラとして使用されるメソッドです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IStorageSubset">
+            <summary>
+            <c>IReadOnlyStorage</c> のサブセット（部分集合）を表します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IStorageSubset.PutRef(System.Int32)">
+            <summary>
+            <see cref="P:Hisui.Core.IStorageSubset.Source"/>に格納されている要素への参照を追加します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IStorageSubset.RemoveRef(System.Int32)">
+            <summary>
+            <see cref="P:Hisui.Core.IStorageSubset.Source"/>の要素への参照を除去します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IStorageSubset.ClearRef">
+            <summary>
+            すべての参照を削除し、コレクションを空にします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IStorageSubset.Source">
+            <summary>
+            元となるコレクションを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IStorageSubset`1">
+            <summary>
+            <c>IReadOnlyStorage</c> のサブセット（部分集合）を表します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IStorageSubset`1.Source">
+            <summary>
+            元となるコレクションを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Memorable`1">
+            <summary>
+            <c>IMemorable</c> インターフェイスの実装を補助する構造体です。
+            この構造体をメンバに保持し利用して <c>IMemorable</c> インターフェイスを実装できます。
+            </summary>
+            <typeparam name="TMemento">履歴情報の保持に用いる <c>IMemento</c> の実装クラスを指定します。</typeparam>
+        </member>
+        <member name="M:Hisui.Core.Memorable`1.AddRef">
+            <summary>
+            ヒストリからの参照カウントをインクリメントします。
+            <see cref="M:Hisui.Core.IMemorable.AddRef"/> の実装に利用されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Memorable`1.Release">
+            <summary>
+            ヒストリからの参照カウントをデクリメントします。
+            <see cref="M:Hisui.Core.IMemorable.Release"/> の実装に利用されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Memorable`1.StartEdit(Hisui.Core.IMemorable)">
+            <summary>
+            <c>IMemorable</c> の実装クラスでは、オブジェクトが変更される時にこのメソッドを呼び出して
+            <typeparamref name="TMemento"/> オブジェクトを取得し、変更内容を通知することで変更履歴情報が構築します。
+            ヒストリに <typeparamref name="TMemento"/> オブジェクトが未登録の場合は新たに <typeparamref name="TMemento"/> が生成されます。
+            </summary>
+            <param name="self">履歴管理対象オブジェクト。
+            通常は履歴管理対象のクラス内で使用されるため <c>this</c> を指定します。</param>
+            <returns>エピソードの変更を記憶する <c>IMemento</c> オブジェクト。
+            参照カウントがゼロの場合や履歴管理機能が無効化されている場合は null が返ります。</returns>
+        </member>
+        <member name="P:Hisui.Core.Memorable`1.RefCount">
+            <summary>
+            ヒストリからの参照カウントを返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IElement">
+            <summary>
+            このインターフェイスを実装したオブジェクトが<see cref="P:Hisui.Core.IEntry.Elements"/>に
+            登録された場合、<see cref="P:Hisui.Core.IElement.Entry"/>プロパティに親<c>IEntry</c>オブジェクトが設定されます。
+            </summary>
+            <remarks>
+            <see cref="P:Hisui.Core.IEntry.Elements"/>は<c>System.Object</c>型で保持されており、
+            <c>IElement</c>インターフェイスを実装していないオブジェクトでも登録することが可能です。
+            <para><c>IElement</c>インターフェイスは、<see cref="P:Hisui.Core.IElement.Entry"/>プロパティによって親エントリに
+            アクセスしたい場合にのみ実装します。</para>
+            </remarks>
+        </member>
+        <member name="P:Hisui.Core.IElement.Entry">
+            <summary>
+            このエレメントが登録されている親エントリを set/get。
+            ただし set はF/W側によって呼び出されます。アプリケーションが<see cref="P:Hisui.Core.IElement.Entry"/>プロパティに set すべきではありません。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Document">
+            <summary>
+            <c>IEntry</c>のツリー構造を保持するドキュメントクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.#ctor">
+            <summary>
+            コンストラクタ。空のドキュメントを構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.FindEntry(System.Int32[])">
+            <summary>
+            指定されたパス（IDの配列）をキーとするエントリを返します。
+            見つからない場合は null を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.FindEntry(System.String)">
+            <summary>
+            指定されたパス（IDをドット区切りにした文字列）をキーとするエントリを返します。
+            見つからない場合は null を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.FindEntry(System.Predicate{Hisui.Core.IEntry})">
+            <summary>
+            <paramref name="match"/>で指定された述語関数が true となる最初のエントリを返します。見つからなかった場合はnullを返します。
+            子エントリまで含めて再帰的に探索します。
+            </summary>
+            <param name="match">検索条件の述語関数</param>
+            <returns>最初に見つかったエントリ</returns>
+        </member>
+        <member name="M:Hisui.Core.Document.FindEntries(System.Predicate{Hisui.Core.IEntry})">
+            <summary>
+            <paramref name="match"/>で指定された述語関数が true となるエントリをすべて列挙します。
+            子エントリまで含めて再帰的に探索します。
+            </summary>
+            <param name="match">検索条件の述語関数</param>
+        </member>
+        <member name="M:Hisui.Core.Document.Clear">
+            <summary>
+            ドキュメントを空に初期化します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.Current">
+            <summary>
+            現在アクティブなドキュメントのインスタンスを seg/get します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.FilePath">
+            <summary>
+            ドキュメント保存先のファイルパスを seg/get します。
+            保存先がない状態（デフォルト状態）では null が設定されています。
+            値を設定すると <see cref="P:Hisui.Core.Document.FileAge"/> がヒストリの <c>CurrentAge</c> の値で更新され、
+            <see cref="E:Hisui.Core.Document.FileAgeChanged"/> イベントが発生します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.FileAge">
+            <summary>
+            ファイルに保存された時点（<see cref="P:Hisui.Core.Document.FilePath"/>が設定された時点）におけるヒストリの<c>CurrentAge</c>を返します。
+            <c>CurrentAge</c>はヒストリに変更がコミットされるごとにインクリメントされる整数値です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.Name">
+            <summary>
+            <see cref="P:Hisui.Core.Document.FilePath"/> から拡張子なしのファイル名のみを取り出して返します。
+            <see cref="P:Hisui.Core.Document.FilePath"/> が null の場合はこのプロパティも null を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.IsModified">
+            <summary>
+            ファイルを開いた時点からドキュメントが変更されている場合に true を返します。
+            <see cref="P:Hisui.Core.Document.FileAge"/> とヒストリの <c>CurrentAge</c> が等しくない場合に true となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.SelectedEntries">
+            <summary>
+            選択されているエントリ群を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.SelectedLayers">
+            <summary>
+            選択されているレイヤ群を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.SelectedEntry">
+            <summary>
+            選択されているエントリを set/get します。
+            複数のエントリが選択されている場合には、先頭のエントリを一つだけ返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.SelectedLayer">
+            <summary>
+            選択されているレイヤを set/get します。
+            複数のレイヤが選択されている場合には、先頭のレイヤを一つだけ返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.Tasks">
+            <summary>
+            ドキュメントと一緒にビルドしたい <c>IBuild</c> オブジェクト群を格納します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.History">
+            <summary>
+            このドキュメントの変更履歴を管理するヒストリオブジェクトを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.Entries">
+            <summary>
+            ドキュメント直下に登録されているエントリのコレクションを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.ActiveEntries">
+            <summary>
+            アクテイブなエントリコレクションを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.Layers">
+            <summary>
+            ドキュメントに定義されたレイヤのコレクションを返します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.Document.SelectedEntryChanged">
+            <summary>
+            選択エントリが変更されたときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.Document.SelectedLayerChanged">
+            <summary>
+            選択レイヤが変更されたときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.Document.FileAgeChanged">
+            <summary>
+            <see cref="P:Hisui.Core.Document.FileAge"/> が変更されたときに発生するイベントです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Document.SelectedEntryCollection">
+            <summary>
+            複数の選択エントリを保持するコレクションクラスです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Set`1">
+            <summary>
+            重複を許さない要素の集合を表すコレクションクラスです。
+            内部に <c>Dictionary</c> クラスを保持して実装されています。
+            また <c>IBreath</c> を実装しているためビルドグラフに組み込むことが可能です。
+            （.NET Framework 3.5 から <c>HashSet</c> クラスが提供されたため、現在は存在意義が薄くなりました。）
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.#ctor">
+            <summary>
+            デフォルトコンストラクタ。空の集合を構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            コンストラクタ。指定された列で要素を初期化した集合を構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Pop">
+            <summary>
+            要素を一つ取り出します。取り出された要素は <see cref="M:Hisui.Core.Set`1.Remove(`0)"/> されます。
+            </summary>
+            <returns>取り出された要素</returns>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Peek">
+            <summary>
+            先頭の要素を返します。<see cref="M:Hisui.Core.Set`1.Pop"/> と違い <see cref="M:Hisui.Core.Set`1.Remove(`0)"/> はされません。
+            集合が空の場合には例外がスローされます。
+            </summary>
+            <returns>先頭の要素</returns>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Add(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            複数の要素を追加します。<see cref="M:Hisui.Core.IBreath.Touch"/> されて <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Add(`0)">
+            <summary>
+            要素を追加します。<see cref="M:Hisui.Core.IBreath.Touch"/> されて <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Clear">
+            <summary>
+            集合を空にします。<see cref="M:Hisui.Core.IBreath.Touch"/> されて <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Contains(`0)">
+            <summary>
+            要素が集合に含まれている場合 true を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            要素を配列にコピーします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Set`1.Remove(`0)">
+            <summary>
+            要素を集合から削除します。<see cref="M:Hisui.Core.IBreath.Touch"/> されて <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Hisui.Core.Set`1.Count">
+            <summary>
+            集合の要素数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Set`1.IsReadOnly">
+            <summary>
+            常に false を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedEntryCollection.Add(Hisui.Core.IEntry)">
+            <summary>
+            選択エントリを追加します。
+            代わりにレイヤの選択状態はすべてクリアされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedEntryCollection.Remove(Hisui.Core.IEntry)">
+            <summary>
+            選択エントリを除去します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedEntryCollection.Clear">
+            <summary>
+            選択エントリをクリアし、全て選択状態を解除します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedEntryCollection.Reset(System.Collections.Generic.IEnumerable{Hisui.Core.IEntry})">
+            <summary>
+            選択エントリを指定されたエントリ列に置き換えます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.SelectedEntryCollection.Value">
+            <summary>
+            先頭の選択エントリを set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Document.SelectedLayerCollection">
+            <summary>
+            複数の選択レイヤを保持するコレクションクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedLayerCollection.Add(Hisui.Core.ILayer)">
+            <summary>
+            選択レイヤを追加します。
+            代わりに選択エントリはすべてクリアされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedLayerCollection.Remove(Hisui.Core.ILayer)">
+            <summary>
+            選択レイヤを削除します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Document.SelectedLayerCollection.Clear">
+            <summary>
+            選択レイヤをクリアし、全て選択状態を解除します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Document.SelectedLayerCollection.Top">
+            <summary>
+            先頭の選択レイヤを set/get します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.ProgressAbortException">
+            <summary>
+            プログレス通知の最中に処理がアボートされた場合、この例外がスローされます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IProgress">
+            <summary>
+            処理の進捗を通知するために使用されます。
+            </summary>
+            <remarks>
+            下記コードのように、<see cref="M:Hisui.Core.IProgress.Step(System.Double)"/>に指定する<c>stepweight</c>の値は
+            その次に実行する処理が全体に占める割合を意味しています。
+            <code>
+            using ( var progress = Hisui.Core.Progress.Push() ) {
+              progress.Step( 0.1 ); // 処理1の占める割合が全体の1割であると通知します。
+              処理1;
+              
+              progress.Step( 0.5 ); // 処理2の占める割合が全体の5割であると通知します。
+              処理2;
+            
+              progress.Step( 0.4 ); // 処理3の占める割合が全体の4割であると通知します。
+              処理3;
+            }
+            </code>
+            </remarks>
+            <seealso cref="T:Hisui.Core.Progress"/>
+        </member>
+        <member name="M:Hisui.Core.IProgress.Step(System.Double)">
+            <summary>
+            次に実行する処理の重さ（処理全体に対する割合）を0以上1以下の値で指定します。
+            </summary>
+            <param name="stepweight">次に実行する処理の重さ。0以上1以下の値を設定します。</param>
+        </member>
+        <member name="T:Hisui.Core.ProgressEventArgs">
+            <summary>
+            プログレス通知のイベント引数です。<c>Hisui.Core.Progress.Changed</c>イベントで使用されます。
+            </summary>
+            <seealso cref="T:Hisui.Core.Progress"/>
+            <seealso cref="E:Hisui.Core.Progress.Changed"/>
+        </member>
+        <member name="P:Hisui.Core.ProgressEventArgs.Value">
+            <summary>
+            イベント発生時点の進捗を0以上1以下の値で返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.ProgressEventArgs.Caption">
+            <summary>
+            イベント発生時点で実行中の処理名を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Progress">
+            <summary>
+            処理の進捗を通知するために使用されます。
+            </summary>
+            <remarks>
+            下記コードのように、<see cref="M:Hisui.Core.IProgress.Step(System.Double)"/>に指定する<c>stepweight</c>の値は
+            その次に実行する処理が全体に占める割合を意味しています。
+            <code>
+            using ( var progress = Hisui.Core.Progress.Push() ) {
+              progress.Step( 0.1 ); // 処理1の占める割合が全体の1割であると通知します。
+              処理1;
+              
+              progress.Step( 0.5 ); // 処理2の占める割合が全体の5割であると通知します。
+              処理2;
+            
+              progress.Step( 0.4 ); // 処理3の占める割合が全体の4割であると通知します。
+              処理3;
+            }
+            </code>
+            </remarks>
+            <seealso cref="T:Hisui.Core.IProgress"/>
+        </member>
+        <member name="M:Hisui.Core.Progress.PostAbort">
+            <summary>
+            アボート処理のリクエストをポストします。
+            即時にアボートされるわけではなく、次に <see cref="E:Hisui.Core.Progress.Changed"/> イベントが発生するタイミングでアボートされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Progress.Start(System.String)">
+            <summary>
+            プログレス通知処理を開始します。通常 <c>using</c> 節で使用され、最後に <c>Dispose()</c> されてプログレス通知処理が終了します。
+            </summary>
+            <param name="caption">処理名を設定します。</param>
+        </member>
+        <member name="M:Hisui.Core.Progress.Push(System.String)">
+            <summary>
+            プログレス通知処理をスタックにプッシュします。
+            通常 <c>using</c> 節で使用され、最後に <c>Dispose()</c> されてスタックからポップされます。
+            ただし、プログレス通知処理が開始していない場合（<c>Progress.Start()</c> されていない場合）はプッシュされません。
+            </summary>
+            <param name="caption">処理名を設定します。</param>
+        </member>
+        <member name="M:Hisui.Core.Progress.Push">
+            <summary>
+            プログレス通知処理をスタックにプッシュします。
+            通常 <c>using</c> 節で使用され、最後に <c>Dispose()</c> されてスタックからポップされます。
+            ただし、プログレス通知処理が開始していない場合（<c>Progress.Start()</c> されていない場合）はプッシュされません。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Progress.Suspend">
+            <summary>
+            プログレス通知処理をサスペンド（一時停止）します。<c>Dispose()</c> でサスペンド状態から復帰します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.Progress.Changed">
+            <summary>
+            処理の進捗状態が変化した場合に発生するイベントです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Progress.IntervalMilliseconds">
+            <summary>
+            <see cref="E:Hisui.Core.Progress.Changed"/>イベントを発生させるインターバルをミリ秒単位で get/set します。
+            進捗状態が変化しても、前回のイベントからの経過時間がインターバルに達しない場合には
+            <see cref="E:Hisui.Core.Progress.Changed"/>イベントは発火されません。
+            デフォルト値は1000msec（1秒）です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Progress.IsBusy">
+            <summary>
+            現在プログレス通知が行われている場合（プログレス通知のスタックが空でない場合）に <c>true</c> を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Progress.IsAborting">
+            <summary>
+            アボートのリクエストがされていている場合に <c>true</c> を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Progress.Value">
+            <summary>
+            現在の進捗状態を0以上1未満の数値で取得します。<c>IsBusy == false</c> の場合には1.0を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Progress.Caption">
+            <summary>
+            現在実行中の処理名を返します。プログレス通知が実行中でない場合には空文字列を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IArray`1">
+            <summary>
+            <c>IBreath</c>を継承した固定長配列インターフェイスです。
+            <c>ISequence</c>とは違って<c>IArray</c>は読み取り専用ではなく、要素の値を変更することができます。
+            </summary>
+            <typeparam name="T">配列要素の型</typeparam>
+        </member>
+        <member name="T:Hisui.Core.ISequence`1">
+            <summary>
+            読み取り専用の配列を表します。通常の配列と違い IBreath を実装しています。
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Hisui.Core.ISequence`1.Count">
+            <summary>
+            要素数を get
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.ISequence`1.Item(System.Int32)">
+            <summary>
+            i 番目の要素を get
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IArray`1.CloneArray">
+            <summary>
+            内部の配列のコピーを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IArray`1.Reset(`0[])">
+            <summary>
+            内部の配列を指定された配列に置き換えます。
+            </summary>
+            <param name="array">新たに内部データとなる配列</param>
+        </member>
+        <member name="P:Hisui.Core.IArray`1.Data">
+            <summary>
+            内部の配列を返します。この配列の値を変更しても <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されないので注意が必要です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IArray`1.Item(System.Int32)">
+            <summary>
+            i番目の要素を set/get。値を set すると <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+            <param name="i">配列インデックス。0以上<see cref="P:Hisui.Core.ISequence`1.Count"/>未満の値を指定します。</param>
+        </member>
+        <member name="T:Hisui.Core.Storage`1">
+            <summary>
+            整数のIDをキーとして値を格納するコレクションクラスです。
+            IDは 1 以上の整数です。Undo/Redoに対応しています。
+            </summary>
+            <typeparam name="T">値として格納するオブジェクトの型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.#ctor(Hisui.Core.IStorage{`0})">
+            <summary>
+            コンストラクタ。
+            元になるストレージ <c>body</c> をラップしたコレクションを構築します。
+            </summary>
+            <param name="body"></param>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.#ctor">
+            <summary>
+            デフォルトコンストラクタ。空のコレクションを構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            コンストラクタ。指定されたシーケンスを要素として含むコレクションを構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.#ctor(System.Collections.Generic.IEnumerable{Hisui.Core.Item{`0}})">
+            <summary>
+            コンストラクタ。指定されたシーケンスを要素として含むコレクションを構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Put(`0)">
+            <summary>
+            新しく要素を追加し、自動で採番されたIDを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Remove(System.Int32)">
+            <summary>
+            IDに対応する要素を削除します。削除された場合は true、要素が見つからなかった場合は false を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Clear">
+            <summary>
+            コレクションを空にします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Contains(System.Int32)">
+            <summary>
+            IDに対応する要素が存在する場合に true を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Hisui#Core#IReadOnlyStorage#Find(System.Int32,System.Object@)">
+            <summary>
+            IDに対応する値を検索し、見つかった場合には値を<c>val</c>に格納します。見つからない場合には<c>false</c>を返します。
+            </summary>
+            <param name="id">検索キーのID</param>
+            <param name="val">見つかったオブジェクト</param>
+            <returns>見つかった場合に true、存在しない場合は false</returns>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Find(System.Int32,`0@)">
+            <summary>
+            IDに対応する値を検索し、見つかった場合には値を<c>val</c>に格納します。見つからない場合には<c>false</c>を返します。
+            </summary>
+            <param name="id">検索キーのID</param>
+            <param name="val">見つかったオブジェクト</param>
+            <returns>見つかった場合に true、存在しない場合は false</returns>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Touch">
+            <summary>
+            ブレスカウント（最終更新時点の論理時刻）を現在の論理時刻に更新します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.AddRef">
+            <summary>
+            ヒストリの参照カウントをインクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Storage`1.Release">
+            <summary>
+            ヒストリの参照カウントをデクリメントします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Body">
+            <summary>
+            実体となるストレージオブジェクトを返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Item(System.Int32)">
+            <summary>
+            指定されたIDに対応する値を set/get します。
+            要素が存在しないIDで get すると<c>KeyNotFoundException</c>がスローされます。
+            要素が存在しないIDで set すると新しく要素が追加されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.IsReadOnly">
+            <summary>
+            読み取り専用の場合 true を返します。
+            通常は false が返ります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Count">
+            <summary>
+            要素数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.IDs">
+            <summary>
+            格納されている要素のIDをすべて列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Hisui#Core#IReadOnlyStorage#Values">
+            <summary>
+            格納されている要素の値（<c>object</c>型）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Hisui#Core#IReadOnlyStorage#Items">
+            <summary>
+            格納されている要素（IDと値のペア）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Hisui#Core#IReadOnlyStorage#Item(System.Int32)">
+            <summary>
+            指定されたIDに対応する値を取得します。要素が存在しない場合には<c>KeyNotFoundException</c>がスローされます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Values">
+            <summary>
+            格納されている要素の値（<c>T</c>型）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.Items">
+            <summary>
+            格納されている要素（IDと値のペア）を全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Storage`1.BreathCount">
+            <summary>
+            ブレスカウント（最終更新時点の論理時刻）を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Tuple`2">
+            <summary>
+            2つの値をペアにして保持します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Tuple`3">
+            <summary>
+            3つの値を束ねて保持します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Tuple`4">
+            <summary>
+            4つの値を束ねて保持します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Error">
+            <summary>
+            エラー情報を保持します。
+            </summary>
+            <seealso cref="T:Hisui.Core.IErrorReport"/>
+            <seealso cref="M:Hisui.CoreUT.PushErrorReport"/>
+        </member>
+        <member name="T:Hisui.Core.IErrorReport">
+            <summary>
+            エラー情報をリストに蓄えるクラスです。
+            <see cref="M:Hisui.Core.IErrorReport.Try(System.Action)"/>関数で指定されたアクション実行中に発生した例外を catch し、リストに蓄えます。
+            </summary>
+            <remarks>
+            <c>IErrorReport</c>は<see cref="M:Hisui.CoreUT.PushErrorReport"/>関数で生成できます。
+            <code>
+            using ( var report = CoreUT.PushErrorReport( ... ) ) {
+              // Try() 関数に指定するアクションで例外を catch したい処理を記述します。
+              report.Try( () =&gt; { エラーが起りうる処理1; } );
+              report.Try( () =&gt; { エラーが起りうる処理2; } );
+              report.Try( () =&gt; { エラーが起りうる処理3; } );
+              
+              // 最後に一括して例外処理を行います。
+              foreach ( var e in report.Errors ) {
+                エラー処理;
+              }
+            }
+            </code>
+            </remarks>
+            <seealso cref="M:Hisui.CoreUT.PushErrorReport"/>
+            <seealso cref="M:Hisui.CoreUT.Try(System.Action)"/>
+            <seealso cref="T:Hisui.Core.Error"/>
+        </member>
+        <member name="M:Hisui.Core.IErrorReport.AddError(System.Object,System.Exception)">
+            <summary>
+            エラーを追加します。
+            </summary>
+            <param name="reporter">例外を発生させたオブジェクト</param>
+            <param name="e">発生した例外</param>
+        </member>
+        <member name="M:Hisui.Core.IErrorReport.AddError(System.Exception)">
+            <summary>
+            エラーを追加します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IErrorReport.AddError(Hisui.Core.Error)">
+            <summary>
+            エラーを追加します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IErrorReport.Clear">
+            <summary>
+            報告されたエラーリストをクリアします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IErrorReport.Try(System.Action)">
+            <summary>
+            <c>try</c>節で<c>action</c>を実行し、catchされた例外を<see cref="M:Hisui.Core.IErrorReport.AddError(Hisui.Core.Error)"/>します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IErrorReport.Try(System.Object,System.Action)">
+            <summary>
+            <c>try</c>節で<c>action</c>を実行し、catchされた例外を<see cref="M:Hisui.Core.IErrorReport.AddError(Hisui.Core.Error)"/>します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IErrorReport.Reporter">
+            <summary>
+            エラーを報告するオブジェクトです。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IErrorReport.Errors">
+            <summary>
+            報告された（catchされた）エラーを全て列挙します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IErrorReport.ErrorCount">
+            <summary>
+            報告された（catchされた）エラーの数を返します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.IArray2`1">
+            <summary>
+            2次元配列インターフェイスです。<c>IBreath</c>を継承しています。
+            </summary>
+            <typeparam name="T">配列要素の型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.IArray2`1.CloneArray">
+            <summary>
+            内部の配列のコピーを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.IArray2`1.GetArray1(System.Int32)">
+            <summary>
+            i番目の行を1次元配列として取得します。配列の長さは <see cref="P:Hisui.Core.IArray2`1.Count2"/> です。
+            </summary>
+            <param name="i">行番号。0以上<see cref="P:Hisui.Core.IArray2`1.Count1"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.IArray2`1.GetArray2(System.Int32)">
+            <summary>
+            j番目の列を1次元配列として取得します。配列の長さは <see cref="P:Hisui.Core.IArray2`1.Count1"/> です。
+            </summary>
+            <param name="j">列番号。0以上<see cref="P:Hisui.Core.IArray2`1.Count2"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.IArray2`1.GetValues1(System.Int32)">
+            <summary>
+            i番目の行データを返します。
+            </summary>
+            <param name="i">行番号。0以上<see cref="P:Hisui.Core.IArray2`1.Count1"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.IArray2`1.GetValues2(System.Int32)">
+            <summary>
+            j番目の列データを返します。
+            </summary>
+            <param name="j">列番号。0以上<see cref="P:Hisui.Core.IArray2`1.Count2"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.IArray2`1.Reset(`0[0:,0:])">
+            <summary>
+            内部の配列を指定された配列に置き換えます。
+            </summary>
+            <param name="array">新たに内部データとなる配列</param>
+        </member>
+        <member name="P:Hisui.Core.IArray2`1.Count1">
+            <summary>
+            行列の行数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IArray2`1.Count2">
+            <summary>
+            行列の列数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IArray2`1.Data">
+            <summary>
+            内部の配列を返します。この配列の値を変更しても <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されないので注意が必要です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.IArray2`1.Item(System.Int32,System.Int32)">
+            <summary>
+            i行j列の要素を set/get。値を set すると <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+            <param name="i">行番号。0以上<see cref="P:Hisui.Core.IArray2`1.Count1"/>未満の値を指定します。</param>
+            <param name="j">列番号。0以上<see cref="P:Hisui.Core.IArray2`1.Count2"/>未満の値を指定します。</param>
+        </member>
+        <member name="T:Hisui.Core.Breath">
+            <summary>
+            <c>IBreath</c> インターフェイスを実装した構造体です。
+            <c>IBreath</c> を実装したクラスを作成する際に、この構造体を
+            private 変数として保持することで実装が容易になります。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Breath.Increment">
+            <summary>
+            システム全体の論理時刻をインクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Breath.Touch">
+            <summary>
+            自身の BreathCount を現在の論理時刻（SystemBreathCount）で更新します。
+            このメソッド名はUNIXの touch コマンドに由来しています。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Breath.SystemBreathCount">
+            <summary>
+            システム全体の論理時刻を返します。
+            システム起動時の初期値は 1 です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Breath.BreathCount">
+            <summary>
+            論理時刻によるタイムスタンプ（BreathCount）を get。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Item`1">
+            <summary>
+            <c>IStorage&lt;T&gt;</c> の要素型です。
+            <c>int</c>型のIDとジェネリック引数で指定された型の値をペアで保持します。
+            </summary>
+            <typeparam name="T">値の型</typeparam>
+        </member>
+        <member name="F:Hisui.Core.Item`1.Null">
+            <summary>
+            ヌルを表す定数です。
+            </summary>
+        </member>
+        <member name="F:Hisui.Core.Item`1.ID">
+            <summary>
+            <c>IStorage</c>コレクションのキーとなるIDです。
+            </summary>
+        </member>
+        <member name="F:Hisui.Core.Item`1.Value">
+            <summary>
+            <c>IStorage</c>コレクションが格納する値です。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Item`1.#ctor(System.Int32,`0)">
+            <summary>
+            コンストラクタ。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.History">
+            <summary>
+            ドキュメントの変更履歴を管理するヒストリクラスです。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.AddRef(System.Object)">
+            <summary>
+            引数のオブジェクトが <c>IMemorable</c> ならば <c>AddRef()</c> して参照カウントをインクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Release(System.Object)">
+            <summary>
+            引数のオブジェクトが <c>IMemorable</c> ならば <c>Release()</c> して参照カウントをデクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.AddRefItems``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            引数の列の各要素が <c>IMemorable</c> ならば <c>AddRef()</c> して要素の参照カウントをインクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.ReleaseItems``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            引数の列の各要素が <c>IMemorable</c> ならば <c>Release()</c> して要素の参照カウントをデクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.AddRefItems(System.Collections.IEnumerable)">
+            <summary>
+            引数の列の各要素が <c>IMemorable</c> ならば <c>AddRef()</c> して要素の参照カウントをインクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.ReleaseItems(System.Collections.IEnumerable)">
+            <summary>
+            引数の列の各要素が <c>IMemorable</c> ならば <c>Release()</c> して要素の参照カウントをデクリメントします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Lock">
+            <summary>
+            一時的にヒストリ機能を無効化したい時に使用します。
+            通常 <c>using</c> 節で使用され、その <c>using</c> スコープで <see cref="P:Hisui.Core.History.Enabled"/> プロパティが false に設定されます。
+            スコープを抜けて <c>Dispose()</c> が呼ばれると <see cref="P:Hisui.Core.History.Enabled"/> プロパティが true に戻ります。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Clear">
+            <summary>
+            履歴情報を空にクリアします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Commit">
+            <summary>
+            前回の <see cref="M:Hisui.Core.History.Commit"/> 呼び出し以降の変更履歴をひとつの履歴単位（エピソード）としてコミットします。
+            Undo/Redo ではこのエピソードの単位で履歴操作が行われます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Undo">
+            <summary>
+            一つ前の状態に戻します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Redo">
+            <summary>
+            一つ先の状態に進めます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.Cancel">
+            <summary>
+            まだ <see cref="M:Hisui.Core.History.Commit"/> されていない処理中のエピソードをキャンセルします。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.History.DumpCurrentEpisode(System.IO.TextWriter)">
+            <summary>
+            デバッグ用。まだ <see cref="M:Hisui.Core.History.Commit"/> されていない処理中の変更情報（エピソード）をダンプします。
+            </summary>
+            <param name="writer">ダンプ先の <c>TextWriter</c></param>
+        </member>
+        <member name="P:Hisui.Core.History.Episodes">
+            <summary>
+            <see cref="M:Hisui.Core.History.Commit"/> で区切られた変更履歴（エピソード）の列です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.CurrentEpisode">
+            <summary>
+            まだ <see cref="M:Hisui.Core.History.Commit"/> されていない現在処理中の変更履歴です。
+            なお、<see cref="M:Hisui.Core.History.Commit"/> と  <see cref="M:Hisui.Core.History.Commit"/> の間に行われた変更をひとつの塊としてエピソードと呼びます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.CurrentAge">
+            <summary>
+            <see cref="M:Hisui.Core.History.Commit"/> されるたびに1つずつインクリメントされる整数値です。初期値は 0 です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.Capacity">
+            <summary>
+            記憶可能なヒストリの長さです。
+            Undo で戻れる回数の上限がこの長さとなります。
+            デフォルト値は 16 に設定されています。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.Enabled">
+            <summary>
+            履歴管理機能の有効/無効状態を set/get します。
+            false を設定するとその間の変更操作はヒストリに記録されなくなり、Undo/Redoの対象から外れます。
+            デフォルト値は true です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.CanUndo">
+            <summary>
+            Undo する履歴情報が存在する場合は true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.CanRedo">
+            <summary>
+            Redo する履歴情報が存在する場合は true を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.History.CanCancel">
+            <summary>
+            キャンセルする履歴情報が存在する場合は true を返します。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.History.AgeChanged">
+            <summary>
+            <see cref="P:Hisui.Core.History.CurrentAge"/> が変更されると発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.History.Undone">
+            <summary>
+            <see cref="M:Hisui.Core.History.Undo"/> されると発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.History.Redone">
+            <summary>
+            <see cref="M:Hisui.Core.History.Redo"/> されると発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.History.Committed">
+            <summary>
+            <see cref="M:Hisui.Core.History.Commit"/> されると発生するイベントです。
+            </summary>
+        </member>
+        <member name="E:Hisui.Core.History.Canceled">
+            <summary>
+            <see cref="M:Hisui.Core.History.Cancel"/> されると発生するイベントです。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Breatheable`1">
+            <summary>
+            <c>IBreath</c> ではない型をラップして <c>IBreath</c> として扱えるようにします。
+            値型（<c>int</c>や<c>double</c>のようなプリミティブ型や<c>struct</c>）をラップする使い方が典型的です。
+            </summary>
+            <typeparam name="TValue">ラップする値の型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.Breatheable`1.#ctor">
+            <summary>
+            デフォルトコンストラクタ。<see cref="P:Hisui.Core.Breatheable`1.Value"/> はデフォルト値（<c>default( TValue )</c>）に初期化されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Breatheable`1.#ctor(`0)">
+            <summary>
+            コンストラクタ。<see cref="P:Hisui.Core.Breatheable`1.Value"/> の初期値を指定して構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Breatheable`1.op_Implicit(Hisui.Core.Breatheable{`0})~`0">
+            <summary>
+            <typeparamref name="TValue"/> 型に暗黙の型変換を行います。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Breatheable`1.Value">
+            <summary>
+            ラップした値を set/get。値を set すると <see cref="M:Hisui.Core.IBreath.Touch"/> が呼ばれて <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.Array2`1">
+            <summary>
+            2次元配列クラスです。<c>IBreath</c>を実装しています。
+            また<c>IMemorable</c>も実装しているためUndo/Redoに対応しています。
+            </summary>
+            <typeparam name="T">配列要素の型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            コンストラクタ。行数と列数を指定します。
+            </summary>
+            <param name="count1">行数</param>
+            <param name="count2">列数</param>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.#ctor(`0[0:,0:])">
+            <summary>
+            コンストラクタ。普通の配列データから構築します。
+            </summary>
+            <param name="array"></param>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.Reset(`0[0:,0:])">
+            <summary>
+            内部の配列を指定された配列に置き換えます。
+            </summary>
+            <param name="array">新たに内部データとなる配列</param>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.CloneArray">
+            <summary>
+            内部の配列のコピーを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.GetArray1(System.Int32)">
+            <summary>
+            i番目の行を1次元配列として取得します。配列の長さは <see cref="P:Hisui.Core.Array2`1.Count2"/> です。
+            </summary>
+            <param name="i">行番号。0以上<see cref="P:Hisui.Core.Array2`1.Count1"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.GetArray2(System.Int32)">
+            <summary>
+            j番目の列を1次元配列として取得します。配列の長さは <see cref="P:Hisui.Core.Array2`1.Count1"/> です。
+            </summary>
+            <param name="j">列番号。0以上<see cref="P:Hisui.Core.Array2`1.Count2"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.GetValues1(System.Int32)">
+            <summary>
+            i番目の行データを返します。
+            </summary>
+            <param name="i">行番号。0以上<see cref="P:Hisui.Core.Array2`1.Count1"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.GetValues2(System.Int32)">
+            <summary>
+            j番目の列データを返します。
+            </summary>
+            <param name="j">列番号。0以上<see cref="P:Hisui.Core.Array2`1.Count2"/>未満の値を指定します。</param>
+            <returns></returns>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.Hisui#Core#IMemorable#AddRef">
+            <summary>
+            ヒストリ管理の参照カウントをインクリメントします。
+            配列要素の参照カウントもインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array2`1.Hisui#Core#IMemorable#Release">
+            <summary>
+            ヒストリ管理の参照カウントをデクリメントします。
+            配列要素の参照カウントもデクリメントされます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Array2`1.Count1">
+            <summary>
+            行列の行数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Array2`1.Count2">
+            <summary>
+            行列の列数を返します。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Array2`1.Data">
+            <summary>
+            内部の配列を返します。この配列の値を変更しても <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されないので注意が必要です。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Array2`1.Item(System.Int32,System.Int32)">
+            <summary>
+            i行j列の要素を set/get。値を set すると <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+            <param name="i">行番号。0以上<see cref="P:Hisui.Core.Array2`1.Count1"/>未満の値を指定します。</param>
+            <param name="j">列番号。0以上<see cref="P:Hisui.Core.Array2`1.Count2"/>未満の値を指定します。</param>
+        </member>
+        <member name="T:Hisui.Core.Array`1">
+            <summary>
+            <c>IBreath</c>, <c>IMemorable</c> を実装した固定長配列クラスです。
+            </summary>
+            <typeparam name="T">配列要素の型</typeparam>
+        </member>
+        <member name="M:Hisui.Core.Array`1.#ctor(`0[])">
+            <summary>
+            コンストラクタ。普通の配列を元に構築します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array`1.#ctor(System.Int32)">
+            <summary>
+            コンストラクタ。指定された長さの配列を生成します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array`1.CloneArray">
+            <summary>
+            内部の配列のコピーを返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array`1.Reset(`0[])">
+            <summary>
+            内部の配列を指定された配列に置き換えます。
+            </summary>
+            <param name="array">新たに内部データとなる配列</param>
+        </member>
+        <member name="M:Hisui.Core.Array`1.GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            コレクションを反復処理する列挙子を返します。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array`1.Hisui#Core#IMemorable#AddRef">
+            <summary>
+            ヒストリ管理の参照カウントをインクリメントします。
+            配列要素の参照カウントもインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.Array`1.Hisui#Core#IMemorable#Release">
+            <summary>
+            ヒストリ管理の参照カウントをデクリメントします。
+            配列要素の参照カウントもデクリメントされます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Array`1.Item(System.Int32)">
+            <summary>
+            i番目の要素を set/get。値を set すると <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されます。
+            </summary>
+            <param name="i">配列インデックス。0以上<see cref="P:Hisui.Core.Array`1.Count"/>未満の値を指定します。</param>
+        </member>
+        <member name="P:Hisui.Core.Array`1.Count">
+            <summary>
+            要素数を get
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.Array`1.Data">
+            <summary>
+            内部の配列を返します。この配列の値を変更しても <see cref="P:Hisui.Core.IBreath.BreathCount"/> が更新されないので注意が必要です。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.MemorableObject">
+            <summary>
+            <c>IMemorable</c> を実装するための抽象ベースクラスです。
+            内部データを <c>ICloneable</c> として定義すると、<c>MementoByBackup</c> を利用して履歴記録機能が実装されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.MemorableObject.StartEdit">
+            <summary>
+            変更操作の前にこのメソッドを呼び出すことで内部情報のバックアップが記録されます。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.MemorableObject.InternalData">
+            <summary>
+            オーバーライドし、記録するべき内部情報を set/get 出来るようにします。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.MemorableObject`1">
+            <summary>
+            ジェネリック引数で指定された型の値を <c>IMemorable</c> として保持します。
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Hisui.Core.MemorableObject`1.#ctor">
+            <summary>
+            デフォルトコンストラクタ。<see cref="P:Hisui.Core.MemorableObject`1.Value"/> は <c>default( T )</c> で初期化されます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.MemorableObject`1.#ctor(`0)">
+            <summary>
+            コンストラクタ。<see cref="P:Hisui.Core.MemorableObject`1.Value"/> の値を指定して構築します。
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Hisui.Core.MemorableObject`1.op_Implicit(Hisui.Core.MemorableObject{`0})~`0">
+            <summary>
+            暗黙の型変換で <see cref="P:Hisui.Core.MemorableObject`1.Value"/> を取得できます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.MemorableObject`1.AddRef">
+            <summary>
+            ヒストリからの参照カウントをインクリメントします。
+            <see cref="P:Hisui.Core.MemorableObject`1.Value"/> が <c>IMemorable</c> の場合には、
+            最初の一回だけ <see cref="P:Hisui.Core.MemorableObject`1.Value"/> の参照カウントもインクリメントされます。
+            </summary>
+        </member>
+        <member name="M:Hisui.Core.MemorableObject`1.Release">
+            <summary>
+            ヒストリからの参照カウントをデクリメントします。
+            <see cref="P:Hisui.Core.MemorableObject`1.Value"/> が <c>IMemorable</c> の場合には、
+            自身の <see cref="P:Hisui.Core.MemorableObject`1.RefCount"/> がゼロになったときに <see cref="P:Hisui.Core.MemorableObject`1.Value"/> の参照カウントもデクリメントします。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.MemorableObject`1.Value">
+            <summary>
+            保持している値を set/get します。set の履歴は記憶されて、Undo/Redo の対象となります。
+            </summary>
+        </member>
+        <member name="P:Hisui.Core.MemorableObject`1.RefCount">
+            <summary>
+            ヒストリからの参照カウントを取得します。
+            </summary>
+        </member>
+        <member name="T:Hisui.Core.MementoByBackup`1">
+            <summary>
+            単純なデータコピー（バックアップ）による <c>IMemento</c> の実装です。
+            変更前と変更後の状態をバックアップし、<see cref="M:Hisui.Core.IMemento.Rollback(Hisui.Core.IMemorable)"/> や <see cref="M:Hisui.Core.IMemento.Replay(Hisui.Core.IMemorable)"/> で状態を行き来します。
+            </summary>
+            <typeparam name="TBackup"><c>IBackup</c>を実装したバックアップデータを保持するクラス</typeparam>
+        </member>
+    </members>
+</doc>
