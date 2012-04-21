@@ -240,30 +240,8 @@ namespace Microsoft.Kinect.Wrapper
             try
             {
                 _colorframe_callback = colorframe_callback;
-                _kinect.ColorStream.Enable((Microsoft.Kinect.ColorImageFormat)format);
+                ColorStream_Enable(format);
                 _kinect.ColorFrameReady += ColorFrame_OneFrame;
-
-
-                //画像サイズ設定
-                switch (format)
-                {
-                    case ColorImageFormat.RgbResolution640x480Fps30:
-                        _width = 640;
-                        _height = 480;
-                        break;
-                    case ColorImageFormat.RgbResolution1280x960Fps12:
-                        _width = 1280;
-                        _height = 960;
-                        break;
-                    case ColorImageFormat.RawYuvResolution640x480Fps15:
-                        _width = 640;
-                        _height = 480;
-                        break;
-                    case ColorImageFormat.YuvResolution640x480Fps15:
-                        _width = 640;
-                        _height = 480;
-                        break;
-                }
 
 
                 return "ready";
@@ -307,6 +285,55 @@ namespace Microsoft.Kinect.Wrapper
 
 
         #endregion
+
+
+        /// <summary>
+        /// ColorStream.Enable
+        /// </summary>
+        /// <param name="format"></param>
+        public void ColorStream_Enable(ColorImageFormat format = ColorImageFormat.RgbResolution640x480Fps30)
+        {
+            _kinect.ColorStream.Enable((Microsoft.Kinect.ColorImageFormat)format);
+
+            //画像サイズ設定
+            switch (format)
+            {
+                case ColorImageFormat.RgbResolution640x480Fps30:
+                    _width = 640;
+                    _height = 480;
+                    break;
+                case ColorImageFormat.RgbResolution1280x960Fps12:
+                    _width = 1280;
+                    _height = 960;
+                    break;
+                case ColorImageFormat.RawYuvResolution640x480Fps15:
+                    _width = 640;
+                    _height = 480;
+                    break;
+                case ColorImageFormat.YuvResolution640x480Fps15:
+                    _width = 640;
+                    _height = 480;
+                    break;
+            }
+
+        }
+
+
+        /// <summary>
+        /// RGBカメラのピクセルデータを取得し、_colorPixelへコピーする
+        /// </summary>
+        public bool GetColorFramePixcel()
+        {
+            using (ColorImageFrame colorFrame = _kinect.ColorStream.OpenNextFrame(100))
+            {
+                if (colorFrame == null) return false;
+
+                // RGBカメラのピクセルデータを取得する
+                _colorPixel = new byte[colorFrame.PixelDataLength];
+                colorFrame.CopyPixelDataTo(_colorPixel);
+                return true;
+            }
+        }
 
 
 
