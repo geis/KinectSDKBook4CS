@@ -4,6 +4,7 @@ Kinect for Windows SDK プログラミング C#編 のサポートページで�
 
 Kinect for Windows SDK プログラミング C#編
 
+* http://www.shuwasystem.co.jp/products/7980html/3326.html
 * http://www.amazon.co.jp/dp/479803326X/
 
 ライセンス
